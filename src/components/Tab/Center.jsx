@@ -115,7 +115,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         </div>
 
         <form className="w-full">
-          <div className="relative z-0 mb-6 w-full group">
+          {/* <div className="relative z-0 mb-6 w-full group">
             <input
               type="text"
               name="recepient_name"
@@ -130,7 +130,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             >
               Full Name
             </label>
-          </div>
+          </div> */}
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="text"
