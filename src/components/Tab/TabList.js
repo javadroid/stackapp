@@ -1,6 +1,6 @@
 const TabList = [
   {
-    label: "Sign up as a donor",
+    label: "Sign up as a Donor",
   },
   {
     label: "Sign up as a Center",
