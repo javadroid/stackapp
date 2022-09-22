@@ -101,8 +101,11 @@ const awardData = [
 ];
 
 const History = () => {
+  //eslint-disable-next-line
   const [summary, setSummary] = useState(summaryData);
+  //eslint-disable-next-line
   const [donationHistory, setDonationHistory] = useState(historyData);
+  //eslint-disable-next-line
   const [award, setAward] = useState(awardData);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full h-full p-4">

@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState, useRef, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { FiCopy } from "react-icons/fi";
 import { BsClipboardPlus } from "react-icons/bs";
 import { ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/solid";

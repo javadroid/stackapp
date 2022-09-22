@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import { useUserContext } from "../../context/user/UserContext";
 import { Gradient, Patient } from "../../assets/images";
-
 import { Link } from "react-router-dom";
-
 import GaugeChart from "react-gauge-chart";
 import {
   AreaChart,
@@ -18,8 +15,9 @@ import {
 } from "recharts";
 import Calendar from "react-calendar";
 import "./Calendar.css";
-
 import { ArrowUpIcon, TrashIcon } from "@heroicons/react/outline";
+import { useSelector } from "react-redux";
+
 const data = [
   {
     name: "Page A",
@@ -129,7 +127,7 @@ const PerformanceData = [
   },
 ];
 const Dashboard = () => {
-  const { username } = useUserContext();
+  const { username } = useSelector((state) => state.user);
   const names = username.split(" ");
   const firstname = names[0];
 

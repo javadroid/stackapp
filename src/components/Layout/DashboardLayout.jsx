@@ -2,10 +2,10 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import { Navbar, SideBar } from "../Dashboard";
 import { Navigate } from "react-router-dom";
-import { useUserContext } from "../../context/user/UserContext";
+import { useSelector } from "react-redux";
 
 const DashboardLayout = () => {
-  const { loginState } = useUserContext();
+  const { loginState } = useSelector((state) => state.user);
   if(!loginState) {
     return <Navigate to="/" />;
   }

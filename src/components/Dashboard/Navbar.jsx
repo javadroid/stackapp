@@ -5,14 +5,14 @@ import { ProfilePhoto, DropletIcon } from "../../assets/images";
 import { Link } from "react-router-dom";
 import { Popover, Transition } from "@headlessui/react";
 import SideBarMobile from "./SideBarMobile";
-import { useUserContext } from "../../context/user/UserContext";
 import { UploadIcon } from "@heroicons/react/outline";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const { username, dispatch } = useUserContext();
+  const { username } = useSelector((state) => state.user);
 
   const handleLogout = () => {
-    dispatch({type: 'LOGOUT'});
+    // dispatch({type: 'LOGOUT'});
   }
 
   function classNames(...classes) {

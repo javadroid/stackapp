@@ -3,7 +3,6 @@ import { GoogleIcon } from "../../assets/images";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "../../api/axios";
 
-import { useUserContext } from "../../context/user/UserContext";
 
 const REGISTER_URL = "registration/";
 
@@ -13,7 +12,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
 
   const [regInfo, setRegInfo] = useState({
     email: "",
-
     account_type: "donation_center",
     rc_number: "",
     center_name: "",
@@ -23,11 +21,17 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   });
 
   const [loading, setloading] = useState(false);
-  const { dispatch } = useUserContext();
+
+  /**
+   * Function to handle form element change
+   */
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
   };
 
+  /**
+   * Sign up function handler
+   */
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (regInfo.password1 !== regInfo.password2) return;
@@ -37,20 +41,23 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       const response = await axios.post(REGISTER_URL, JSON.stringify(regInfo));
 
       console.log(JSON.stringify(response?.data));
-
-      const name =
-        response?.data.user.first_name + " " + response?.data.user.last_name;
-
-      dispatch({
-        type: "LOGIN",
-        payload: { username: name, emailAddress: response?.data?.user?.email },
-      });
+      //eslint-disable-next-line
+      const name = response?.data.user.first_name + " " + response?.data.user.last_name;
+      //////////////////////TODO////////////////
+      //Fix login dispatch
+      
+      // dispatch({
+      //   type: "LOGIN",
+      //   payload: { username: name, emailAddress: response?.data?.user?.email },
+      // });
       closeModal();
     } catch (err) {
       console.log(err);
     }
     setloading(false);
   };
+
+
   return (
     <div className={activeTabIndex === 1 ? "block mt-2" : "hidden"}>
       <div className="flex flex-col justify-between px-auto w-full mb-7 items-center">

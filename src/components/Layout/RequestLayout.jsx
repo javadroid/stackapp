@@ -1,10 +1,11 @@
 import React from "react";
 import { Navbar2 } from "../LandingPage";
 import { Outlet, Navigate } from "react-router-dom";
-import { useUserContext } from "../../context/user/UserContext";
+import { useSelector } from "react-redux";
 
 const RequestLayout = () => {
-  const { loginState } = useUserContext();
+  
+  const { loginState } = useSelector((state) => state.user);
   if (!loginState) {
     return <Navigate to="/" />;
   }

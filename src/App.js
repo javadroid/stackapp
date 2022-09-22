@@ -14,12 +14,10 @@ import {
 } from "./components/Layout";
 import "./index.css";
 import { MedicalsPage, Dashboard, History, Wallet } from "./components/Dashboard";
-import { UserProvider } from "./context/user/UserContext";
 
 function App() {
   return (
     <>
-    <UserProvider>
       <Router>
         <>
           <Routes>
@@ -48,7 +46,6 @@ function App() {
           </Routes>
         </>
       </Router>
-      </UserProvider>
     </>
   );
 }

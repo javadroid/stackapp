@@ -3,16 +3,16 @@ import { Popover, Transition, Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/solid";
 import { XIcon } from "@heroicons/react/outline";
 import { LogoDark } from "../../assets/images";
-import { useUserContext } from "../../context/user/UserContext";
 
 import { Link } from "react-router-dom";
 import { solutions, resources } from "./NavbarData";
+import { useSelector } from "react-redux";
 
 const Sidebar = ({ openModal, openSignUpModal }) => {
-  const { loginState, dispatch } = useUserContext();
+  const { loginState } = useSelector((state) => state.user);
 
   const handleLogout = () => {
-    dispatch({ type: "LOGOUT" });
+    // dispatch({ type: "LOGOUT" });
   };
   return (
     <Transition

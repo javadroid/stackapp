@@ -3,8 +3,6 @@ import { Fragment, useState } from "react";
 import { FiTwitter, FiFacebook } from "react-icons/fi";
 import { XIcon } from "@heroicons/react/outline";
 import { GoogleIcon } from "../../assets/images";
-import { useUserContext } from "../../context/user/UserContext";
-import { loginAuth } from "../../api/Login";
 import axios from "../../api/axios";
 
 const LOGIN_URL = "auth/login/";
@@ -17,7 +15,6 @@ export default function SignIn({
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
-  const { dispatch } = useUserContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,13 +28,15 @@ export default function SignIn({
       );
 
       console.log(response);
-      const name =
-        response?.data?.user.first_name + " " + response?.data?.user.last_name;
-
-      dispatch({
-        type: "LOGIN",
-        payload: { username: name, emailAddress: response?.data?.user?.email },
-      });
+      //eslint-disable-next-line
+      const name = response?.data?.user.first_name + " " + response?.data?.user.last_name;
+         //////////////////////TODO////////////////
+      //Fix login dispatch
+      
+      // dispatch({
+      //   type: "LOGIN",
+      //   payload: { username: name, emailAddress: response?.data?.user?.email },
+      // });
 
       closeModalFunc();
     } catch (err) {

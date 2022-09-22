@@ -9,7 +9,7 @@ import SignIn from "../Modal/SignIn";
 import SignUp from "../Modal/SignUp";
 import Sidebar from "./Sidebar";
 import { solutions, resources } from "./NavbarData";
-import { useUserContext } from "../../context/user/UserContext";
+import { useSelector } from "react-redux";
 
 
 function classNames(...classes) {
@@ -17,10 +17,10 @@ function classNames(...classes) {
 }
 
 export default function NavBar({ bgColor, textColor }) {
-  const { username, loginState, dispatch } = useUserContext();
+  const { username, loginState } = useSelector((state) => state.user);
 
   const handleLogout = () => {
-    dispatch({ type: 'LOGOUT'})
+    // dispatch({ type: 'LOGOUT'})
   }
   let [SignUpOpen, setSignUpOpen] = useState(false);
 
