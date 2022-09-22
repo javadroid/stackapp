@@ -1,52 +1,43 @@
 import React, { useState } from "react";
-import { signUpAuth } from "../../api/SignUp";
+import axios from "../../api/axios";
+
 import { useUserContext } from "../../context/user/UserContext";
 
+const REGISTER_URL = "registration/";
 const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
-  const [fullname, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [bloodGroup, setBloodGroup] = useState("");
-  const [password1, setPassword1] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [regInfo, setRegInfo] = useState({
+    email: "",
+    blood_group: "",
+    account_type: "donor",
+    first_name: "",
+    last_name: "",
+    phone: "",
+    password1: "",
+    password2: "",
+  });
   const [loading, setloading] = useState(false);
   const { dispatch } = useUserContext();
 
+  const handleChange = (event) => {
+    setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
+  };
+
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (
-      email === "" ||
-      password1 === "" ||
-      password2 === "" ||
-      fullname === "" ||
-      bloodGroup === ""
-    )
-      return;
+    if (regInfo.password1 !== regInfo.password2) return;
+
     try {
       setloading(true);
-      const account_type = "donor";
-      const blood_group = bloodGroup;
-      const first_name = fullname.split(" ")[0];
-      const last_name = fullname.split(" ")[1];
+      const response = await axios.post(REGISTER_URL, JSON.stringify(regInfo));
 
-      const tokens = await signUpAuth({
-        email,
-        account_type,
-        fullname,
-        blood_group,
-        password1,
-        password2,
-        first_name,
-        last_name,
-      });
+      console.log(JSON.stringify(response?.data));
 
-      console.log(tokens);
-
-      const mail = tokens.user.email;
-      const name = tokens.user.first_name + " " + tokens.user.last_name;
+      const name =
+        response?.data.user.first_name + " " + response?.data.user.last_name;
 
       dispatch({
         type: "LOGIN",
-        payload: { username: name, emailAddress: mail },
+        payload: { username: name, emailAddress: response?.data?.user?.email },
       });
       closeModal();
     } catch (err) {
@@ -76,41 +67,84 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </span>
         </h2>
       </div>
-      <form>
-        <div className="relative z-0 mb-6 w-full group">
-          <input
-            type="text"
-            name="donor_name"
-            id="donor_name"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-red-600 peer"
-            placeholder=" "
-            value={fullname}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-          />
-          <label
-            htmlFor="donor_name"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Full Name
-          </label>
+      <form onSubmit={handleSignUp}>
+        <div className="relative z-0 mb-6 w-full group flex gap-6">
+          <div className="basis-1/2">
+            {" "}
+            <input
+              type="text"
+              name="first_name"
+              id="first_name"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" "
+              value={regInfo.first_name}
+              onChange={handleChange}
+              required
+            />
+            <label
+              htmlFor="donor_name"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              First Name
+            </label>
+          </div>
+          <div className="basis-1/2">
+            {" "}
+            <input
+              type="text"
+              name="last_name"
+              id="donor_name"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" "
+              value={regInfo.last_name}
+              onChange={handleChange}
+              required
+            />
+            <label
+              htmlFor="last_name"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Last Name
+            </label>
+          </div>
         </div>
         <div className="relative z-0 mb-6 w-full group">
           <input
             type="email"
-            name="floating_email"
-            id="floating_email"
+            name="email"
+            id="email"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
             placeholder=" "
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={regInfo.email}
+            onChange={handleChange}
             required
           />
           <label
-            htmlFor="floating_email"
+            htmlFor="email"
             className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
             Email address
+          </label>
+        </div>
+        <div className="relative z-0 mb-6 w-full group">
+          <input
+            type="number"
+            name="phone"
+            id="phone"
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+            placeholder=" "
+            value={regInfo.phone}
+            onChange={handleChange}
+            pattern="^(?:(?:(?:\+?234(?:\h1)?|01)\h*)?(?:\(\d{3}\)|\d{3})|\d{4})(?:\W*\d{3})?\W*\d{4}$"
+            minLength="11"
+            maxLength="13"
+            required
+          />
+          <label
+            htmlFor="phone"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Phone Number
           </label>
         </div>
         <div className="relative z-0 mb-6 w-full group">
@@ -119,13 +153,17 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             id="blood_group"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
             placeholder=" Select your blood group"
-            value={bloodGroup}
-            onChange={(e) => setBloodGroup(e.target.value)}
+            value={regInfo.blood_group}
+            onChange={handleChange}
             required
           >
-            <option value="O+">O+</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
+            <option value="">Select your blood group</option>
+            <option value="O-">O-</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
           </select>
           <label
             htmlFor="blood_group"
@@ -141,8 +179,8 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             id="password1"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
             placeholder=" "
-            value={password1}
-            onChange={(e) => setPassword1(e.target.value)}
+            value={regInfo.password1}
+            onChange={handleChange}
             required
           />
           <label
@@ -159,8 +197,8 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             id="password2"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
             placeholder=" "
-            value={password2}
-            onChange={(e) => setPassword2(e.target.value)}
+            value={regInfo.password2}
+            onChange={handleChange}
             required
           />
           <label
@@ -193,11 +231,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             </label>
           </div>
         </div>
-        <button
-          type="submit"
-          className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
-          onClick={handleSignUp}
-        >
+        <button className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center">
           {loading ? (
             <>
               <div

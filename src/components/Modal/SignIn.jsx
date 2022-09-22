@@ -5,6 +5,9 @@ import { XIcon } from "@heroicons/react/outline";
 import { GoogleIcon } from "../../assets/images";
 import { useUserContext } from "../../context/user/UserContext";
 import { loginAuth } from "../../api/Login";
+import axios from "../../api/axios";
+
+const LOGIN_URL = "auth/login/";
 
 export default function SignIn({
   isModalOpen,
@@ -18,19 +21,22 @@ export default function SignIn({
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (email === "" || password === "") return;
+
     try {
       setLoading(true);
 
-      const tokens = await loginAuth({ email, password });
-      console.log(tokens);
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({ email, password })
+      );
 
-      const mail = tokens.user.email;
-      const name = tokens.user.first_name + " " + tokens.user.last_name;
+      console.log(response);
+      const name =
+        response?.data?.user.first_name + " " + response?.data?.user.last_name;
 
       dispatch({
         type: "LOGIN",
-        payload: { username: name, emailAddress: mail },
+        payload: { username: name, emailAddress: response?.data?.user?.email },
       });
 
       closeModalFunc();
@@ -101,7 +107,7 @@ export default function SignIn({
                     </h2>
                   </div>
                   <div className="mt-2">
-                    <form>
+                    <form onSubmit={handleLogin}>
                       <div className="relative z-0 mb-6 w-full group">
                         <input
                           type="email"
@@ -161,11 +167,7 @@ export default function SignIn({
                           </h3>
                         </div>
                       </div>
-                      <button
-                        type="submit"
-                        onClick={handleLogin}
-                        className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
-                      >
+                      <button className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center">
                         {loading ? (
                           <>
                             <div
