@@ -139,12 +139,23 @@ const Dashboard = () => {
     <>
       <div className="grid  grid-cols-1 lg:grid-cols-3  grid-flow-row gap-4 w-full  h-full p-4">
         {/* First Grid( Banner, 3 Cards and Pending Appointments) */}
-        <div className=" md:col-span-2 space-y-4 overflow-y-scroll">
+        <div className=" md:col-span-2 space-y-4 ">
           <span className="font-[500] h-fit hidden md:inline md:mb-4 text-xl md:text-2xl">
             Hello {firstname}
           </span>
-          <span className="font-[500] h-fit md:hidden md:mb-4 text-xl md:text-2xl">
-            Dashboard {">>"} {firstname}
+          <span className="font-[600] text-base h-fit inline-flex items-center justify-between md:hidden md:mb-4 w-full">
+            <span>
+              {" "}
+              Dashboard {">>"} {firstname}
+            </span>
+
+            <span className="ml-auto">
+              <Link to="/book-appointment">
+                <button className=" text-base text-center px-2 bg-red-500  py-1 rounded  text-white block">
+                  Book new appointment
+                </button>{" "}
+              </Link>
+            </span>
           </span>{" "}
           <div className="h-[250px] relative">
             <img
@@ -340,18 +351,17 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="">
-          <div className=" hidden md:flex items-center justify-between">
-            <span className="sm:text-sm xl:text-base">Appointments</span>
+        <div className="w-[102%]">
+          <div className=" hidden lg:flex items-center justify-center">
             <span>
               <Link to="/book-appointment">
-                <button className="outline xl:text-base sm:text-sm sm:px-1 sm:py-2 outline-offset-6 xl:px-6 xl:py-2 rounded outline-red-500 text-red-500 block">
+                <button className="outline xl:text-base text-center sm:text-sm sm:px-1 sm:py-2 outline-offset-6 xl:px-6 xl:py-2 rounded outline-red-500 text-red-500 block">
                   Book new appointment
                 </button>{" "}
               </Link>
             </span>
           </div>
-          <div className="py-2 hidden lg:block row-span-2 h-auto w-full">
+          <div className="py-2 hidden lg:block  h-auto w-full">
             <Calendar />
           </div>
 
@@ -406,11 +416,11 @@ const Dashboard = () => {
           </div>
         </div>
         {/* Performance Stats and Your Performance */}
-        <div className="bg-white rounded flex flex-col justify-between md:hidden h-full p-5 ">
+        <div className="bg-white rounded flex flex-col justify-between md:hidden h-full w-full ">
           <div className="pb-4">
             <span className="items-start text-xl">Performance Stats</span>
           </div>{" "}
-          <div className=" flex flex-col justify-center text-gray-700 px-4 py-4">
+          <div className=" flex flex-col justify-center text-gray-700 px-4 py-4 w-full">
             <GaugeChart
               id="gauge-chart2"
               nrOfLevels={2}
