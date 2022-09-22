@@ -1,11 +1,56 @@
 import React, { useState } from "react";
 import { GoogleIcon } from "../../assets/images";
 import ReCAPTCHA from "react-google-recaptcha";
+import axios from "../../api/axios";
+
+import { useUserContext } from "../../context/user/UserContext";
+
+const REGISTER_URL = "registration/";
 
 const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [captchaRef, setCaptchaRef] = useState(true);
   const onCaptchaChange = () => setCaptchaRef(false);
 
+  const [regInfo, setRegInfo] = useState({
+    email: "",
+
+    account_type: "donation_center",
+    rc_number: "",
+    center_name: "",
+    phone: "",
+    password1: "",
+    password2: "",
+  });
+
+  const [loading, setloading] = useState(false);
+  const { dispatch } = useUserContext();
+  const handleChange = (event) => {
+    setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    if (regInfo.password1 !== regInfo.password2) return;
+
+    try {
+      setloading(true);
+      const response = await axios.post(REGISTER_URL, JSON.stringify(regInfo));
+
+      console.log(JSON.stringify(response?.data));
+
+      const name =
+        response?.data.user.first_name + " " + response?.data.user.last_name;
+
+      dispatch({
+        type: "LOGIN",
+        payload: { username: name, emailAddress: response?.data?.user?.email },
+      });
+      closeModal();
+    } catch (err) {
+      console.log(err);
+    }
+    setloading(false);
+  };
   return (
     <div className={activeTabIndex === 1 ? "block mt-2" : "hidden"}>
       <div className="flex flex-col justify-between px-auto w-full mb-7 items-center">
@@ -114,34 +159,20 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </div>
         </div>
 
-        <form className="w-full">
-          {/* <div className="relative z-0 mb-6 w-full group">
-            <input
-              type="text"
-              name="recepient_name"
-              id="recepient_name"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="recepient_name"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Full Name
-            </label>
-          </div> */}
+        <form className="w-full" onSubmit={handleSignUp}>
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="text"
-              name="institute_Name"
-              id="institute_Name"
+              name="center_name"
+              id="center_name"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               required
+              value={regInfo.center_name}
+              onChange={handleChange}
             />
             <label
-              htmlFor="institute_Name"
+              htmlFor="center_name"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Name of hospital, center or blood bank
@@ -150,17 +181,38 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="email"
-              name="recipient_email"
-              id="recipient_email"
+              name="email"
+              id="email"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               required
             />
             <label
-              htmlFor="recipient_email"
+              htmlFor="email"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Email Address
+            </label>
+          </div>
+          <div className="relative z-0 mb-6 w-full group">
+            <input
+              type="number"
+              name="phone"
+              id="phone"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" "
+              value={regInfo.phone}
+              onChange={handleChange}
+              pattern="^(?:(?:(?:\+?234(?:\h1)?|01)\h*)?(?:\(\d{3}\)|\d{3})|\d{4})(?:\W*\d{3})?\W*\d{4}$"
+              minLength="11"
+              maxLength="13"
+              required
+            />
+            <label
+              htmlFor="phone"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Phone Number
             </label>
           </div>
 
@@ -172,25 +224,29 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               required
+              value={regInfo.rc_number}
+              onChange={handleChange}
             />
             <label
               htmlFor="rc_number"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              RC Number (Optional)
+              RC Number
             </label>
           </div>
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="password"
-              name="recepient_password"
-              id="recepient_password"
+              name="password1"
+              id="password2"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
+              value={regInfo.password1}
+              onChange={handleChange}
               required
             />
             <label
-              htmlFor="floating_password"
+              htmlFor="password1"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Password
@@ -199,14 +255,16 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="password"
-              name="repeatPassword"
-              id="recepient_repeat_Password"
+              name="password2"
+              id="Password2"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               required
+              value={regInfo.password2}
+              onChange={handleChange}
             />
             <label
-              htmlFor="repeatPassword"
+              htmlFor="password2"
               className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Repeat Password
@@ -248,9 +306,37 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <button
             type="submit"
             disabled={captchaRef}
-            className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
+            className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
           >
-            Create Your Account
+            {loading ? (
+              <>
+                <div
+                  role="status"
+                  className="flex justify-center gap-2 items-center"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class=" w-8 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-white"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="currentFill"
+                    />
+                  </svg>{" "}
+                  CREATING YOUR ACCOUNT
+                  <span class="sr-only">Logging in...</span>
+                </div>
+              </>
+            ) : (
+              " CREATE YOUR ACCOUNT"
+            )}
           </button>
         </form>
       </div>
