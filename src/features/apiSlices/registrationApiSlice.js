@@ -1,5 +1,11 @@
 import { apiSlice } from './apiSlice';
 
+/**
+ * This file injects all the endpoints for registration
+ * I defined all the queries and mutation endpoints and exported their hooks 
+ * at the bottom of the file.
+ */
+
 export const registrationApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
 

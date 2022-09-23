@@ -1,5 +1,11 @@
 import { apiSlice } from "../api/apiSlice";
 
+/**
+ * This file injects all the endpoints for the appointment
+ * I defined all the queries and mutation endpoints and exported their hooks 
+ * at the bottom of the file.
+ */
+
 export const appointmentApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getDonorAppointments: builder.query({

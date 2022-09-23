@@ -1,5 +1,11 @@
 import { apiSlice } from './apiSlice';
 
+/**
+ * This file injects all the endpoints for the password 
+ * I defined all the queries and mutation endpoints and exported their hooks 
+ * at the bottom of the file.
+ */
+
 export const passwordApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         changePassword: builder.mutation({
