@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import axios from "../../api/axios";
 
-const REGISTER_URL = "registration/";
+import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/user/userSlice";
+
 const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [regInfo, setRegInfo] = useState({
     email: "",
@@ -14,6 +16,8 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     password2: "",
   });
   const [loading, setloading] = useState(false);
+  const dispatch = useDispatch();
+  const [registerAuth] = useRegisterAuthMutation();
 
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
@@ -21,30 +25,26 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (regInfo.password1 !== regInfo.password2) return;
-
+    if (loading) return;
     try {
       setloading(true);
-      const response = await axios.post(REGISTER_URL, JSON.stringify(regInfo));
+      const response = await registerAuth(regInfo).unwrap();
+      console.log(response);
+      const name = response?.user?.first_name + " " + response?.user?.last_name;
 
-      console.log(JSON.stringify(response?.data));
-      //eslint-disable-next-line
-      const name =
-        response?.data.user.first_name + " " + response?.data.user.last_name;
-
-      //////////////////////TODO////////////////
-      //Fix login dispatch
-
-      // dispatch({
-      //   type: "LOGIN",
-      //   payload: { username: name, emailAddress: response?.data?.user?.email },
-      // });
+      const payload = {
+        username: name,
+        email: response?.user?.email,
+        pk: response?.user?.pk,
+        token: "",
+      };
+      dispatch(login(payload));
       closeModal();
     } catch (err) {
       console.log(err);
-    } finally {
-      setloading(false);
     }
+
+    setloading(false);
   };
 
   return (
