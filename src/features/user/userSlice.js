@@ -5,8 +5,8 @@ const initialState = {
     username: '',
     email: '',
     loginState: localStorage.getItem('loginState') ? true : false,
-    token: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : '',
-    pk: localStorage.getItem('pk') ? JSON.parse(localStorage.getItem('pk')) : '',
+    token: localStorage.getItem('token') ? JSON.parse(localStorage.getItem('token')) : null,
+    pk: localStorage.getItem('pk') ? JSON.parse(localStorage.getItem('pk')) : null,
 };
 
 
@@ -29,10 +29,14 @@ const userSlice = createSlice({
             localStorage.removeItem('token');
             localStorage.removeItem('pk');
             state = initialState;
+        },
+        tokenRefresh: (state, action) => {
+            state.token = action.payload;
+            localStorage.setItem('token', JSON.stringify(action.payload));
         }
     }
 })
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, tokenRefresh } = userSlice.actions;
 
 export default userSlice.reducer;
