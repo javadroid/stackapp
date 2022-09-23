@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "../../api/axios";
 
-
 const REGISTER_URL = "registration/";
 const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [regInfo, setRegInfo] = useState({
@@ -23,18 +22,19 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     if (regInfo.password1 !== regInfo.password2) return;
-    if(!loading) {
+
     try {
       setloading(true);
       const response = await axios.post(REGISTER_URL, JSON.stringify(regInfo));
 
       console.log(JSON.stringify(response?.data));
       //eslint-disable-next-line
-      const name = response?.data.user.first_name + " " + response?.data.user.last_name;
-      
+      const name =
+        response?.data.user.first_name + " " + response?.data.user.last_name;
+
       //////////////////////TODO////////////////
       //Fix login dispatch
-      
+
       // dispatch({
       //   type: "LOGIN",
       //   payload: { username: name, emailAddress: response?.data?.user?.email },
@@ -42,9 +42,9 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       closeModal();
     } catch (err) {
       console.log(err);
+    } finally {
+      setloading(false);
     }
-    setloading(false);
-  }
   };
 
   return (
@@ -68,25 +68,46 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </span>
         </h2>
       </div>
-      <form>
-        <div className="relative z-0 mb-6 w-full group">
-          <input
-            type="text"
-            name="donor_name"
-            id="donor_name"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-red-600 peer"
-            placeholder=" "
-            value={fullname}
-            onChange={(e) => setFullName(e.target.value)}
-            required
-          />
-          <label
-            htmlFor="donor_name"
-            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Full Name("FirstName LastName")
-          </label>
+      <form onSubmit={handleSignUp}>
+        <div className="flex w-full relative gap-8">
+          <div className="relative z-0 mb-6 w-full group">
+            <input
+              type="text"
+              name="first_name"
+              id="first_name"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" "
+              value={regInfo.first_name}
+              onChange={handleChange}
+              required
+            />
+            <label
+              htmlFor="donor_name"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              First Name
+            </label>
+          </div>
+          <div className="relative z-0 mb-6 w-full group">
+            <input
+              type="text"
+              name="last_name"
+              id="last_name"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" "
+              value={regInfo.last_name}
+              onChange={handleChange}
+              required
+            />
+            <label
+              htmlFor="donor_name"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Last Name
+            </label>
+          </div>
         </div>
+
         <div className="relative z-0 mb-6 w-full group">
           <input
             type="email"
