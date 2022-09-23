@@ -7,7 +7,6 @@ import { useLoginAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
 
-
 export default function SignIn({
   isModalOpen,
   closeModalFunc,
@@ -17,23 +16,23 @@ export default function SignIn({
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const [ loginAuth ] = useLoginAuthMutation();
+  const [loginAuth] = useLoginAuthMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if(loading) return;
+    if (loading) return;
     try {
       setLoading(true);
       const response = await loginAuth({ email, password }).unwrap();
       console.log(response);
-      const name = response?.data?.user.first_name + " " + response?.data?.user.last_name;
+      const name = response?.user?.first_name + " " + response?.user?.last_name;
       //@TODO - Fix payload
       const payload = {
         username: name,
-        email,
-        pk: '',
-        token: ''
-      }
+        email: response?.user?.email,
+        pk: response?.user?.pk,
+        token: "",
+      };
       dispatch(login(payload));
       closeModalFunc();
     } catch (err) {
