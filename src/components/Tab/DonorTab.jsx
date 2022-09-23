@@ -14,7 +14,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     password2: "",
   });
   const [loading, setloading] = useState(false);
-
+  // const [] = 
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
   };
