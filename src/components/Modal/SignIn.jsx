@@ -3,9 +3,10 @@ import { Fragment, useState } from "react";
 import { FiTwitter, FiFacebook } from "react-icons/fi";
 import { XIcon } from "@heroicons/react/outline";
 import { GoogleIcon } from "../../assets/images";
-import axios from "../../api/axios";
+import { useLoginAuthMutation } from "../../features/apiSlices/userApiSlice";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/user/userSlice";
 
-const LOGIN_URL = "auth/login/";
 
 export default function SignIn({
   isModalOpen,
@@ -15,28 +16,25 @@ export default function SignIn({
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const { loginAuth } = useLoginAuthMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    if(loading) return;
     try {
       setLoading(true);
-
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ email, password })
-      );
-
+      const response = await loginAuth(JSON.stringify({ email, password })).unwrap();
       console.log(response);
-      //eslint-disable-next-line
       const name = response?.data?.user.first_name + " " + response?.data?.user.last_name;
-         //////////////////////TODO////////////////
-      //Fix login dispatch
-      
-      // dispatch({
-      //   type: "LOGIN",
-      //   payload: { username: name, emailAddress: response?.data?.user?.email },
-      // });
+      //@TODO - Fix payload
+      const payload = {
+        username: name,
+        email,
+        pk: '',
+        token: ''
+      }
+      dispatch(login(payload));
 
       closeModalFunc();
     } catch (err) {
