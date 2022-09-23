@@ -17,14 +17,14 @@ export default function SignIn({
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { loginAuth } = useLoginAuthMutation();
+  const [ loginAuth ] = useLoginAuthMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     if(loading) return;
     try {
       setLoading(true);
-      const response = await loginAuth(JSON.stringify({ email, password })).unwrap();
+      const response = await loginAuth({ email, password }).unwrap();
       console.log(response);
       const name = response?.data?.user.first_name + " " + response?.data?.user.last_name;
       //@TODO - Fix payload
@@ -35,7 +35,6 @@ export default function SignIn({
         token: ''
       }
       dispatch(login(payload));
-
       closeModalFunc();
     } catch (err) {
       console.log(err);
@@ -173,7 +172,7 @@ export default function SignIn({
                             >
                               <svg
                                 aria-hidden="true"
-                                class=" w-8 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-white"
+                                className=" w-8 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-white"
                                 viewBox="0 0 100 101"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"

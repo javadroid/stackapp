@@ -9,6 +9,8 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
+  
+  devTools: true
 });
 
 export default store;
