@@ -31,7 +31,7 @@ export const appointmentApi = apiSlice.injectEndpoints({
     }),
 
     updateAppointment: builder.mutation({
-      query: (body, id) => ({
+      query: ({ body, id } ) => ({
         url: `appointments/${id}/`,
         method: "PUT",
         body,
