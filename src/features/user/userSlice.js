@@ -20,10 +20,14 @@ const userSlice = createSlice({
             state.loginState = true;
             state.pk = action.payload.pk;
             state.token = action.payload.token;
+            localStorage.setItem('loginState', true);
+            localStorage.setItem('token', JSON.stringify(action.payload.token));
+            localStorage.setItem('pk', JSON.stringify(action.payload.pk));
         },
         logout: (state) => {
             localStorage.removeItem('loginState');
             localStorage.removeItem('token');
+            localStorage.removeItem('pk');
             state = initialState;
         }
     }
