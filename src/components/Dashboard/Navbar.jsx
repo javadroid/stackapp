@@ -7,13 +7,17 @@ import { Popover, Transition } from "@headlessui/react";
 import SideBarMobile from "./SideBarMobile";
 import { UploadIcon } from "@heroicons/react/outline";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/user/userSlice";
 
 const Navbar = () => {
   const { username } = useSelector((state) => state.user);
 
+  const dispatch = useDispatch();
+
   const handleLogout = () => {
-    // dispatch({type: 'LOGOUT'});
-  }
+    dispatch(logout());
+  };
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -91,7 +95,7 @@ const Navbar = () => {
                             className="flex items-center gap-1 text-[12px] lg:text-base text-gray-900 cursor-pointer"
                             onClick={handleLogout}
                           >
-                            <UploadIcon className="rotate-90 h-4 w-4"/>
+                            <UploadIcon className="rotate-90 h-4 w-4" />
                             Sign out
                           </div>
                         </div>

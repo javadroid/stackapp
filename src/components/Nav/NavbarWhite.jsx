@@ -3,14 +3,15 @@ import { Fragment, useState } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { ViewListIcon, UploadIcon } from "@heroicons/react/outline";
-import {LogoDark, ProfilePhoto } from "../../assets/images";
+import { LogoDark, ProfilePhoto } from "../../assets/images";
 import { Link } from "react-router-dom";
 import SignIn from "../Modal/SignIn";
 import SignUp from "../Modal/SignUp";
 import Sidebar from "./Sidebar";
 import { solutions, resources } from "./NavbarData";
 import { useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
+import { logout } from "../../features/user/userSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -18,10 +19,11 @@ function classNames(...classes) {
 
 export default function NavBar({ bgColor, textColor }) {
   const { username, loginState } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
-    // dispatch({ type: 'LOGOUT'})
-  }
+    dispatch(logout());
+  };
   let [SignUpOpen, setSignUpOpen] = useState(false);
 
   let [isOpen, setIsOpen] = useState(false);
@@ -191,87 +193,85 @@ export default function NavBar({ bgColor, textColor }) {
                 About Us
               </Link>
             </Popover.Group>
-              {/* Display signup and sign-in button when loginState is false */}
-              {!loginState && <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-              <button
-                onClick={openSignUpModal}
-                className="whitespace-nowrap text-white-500 hover:text-white-900 text-[12px] lg:text-base"
-              >
-                Sign up
-              </button>
-              <button
-                onClick={openModal}
-                className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-8 py-2 border border-transparent rounded-sm shadow-sm text-[12px] lg:text-base font-normal text-white bg-red-600 hover:bg-red-700"
-              >
-                Login
-              </button>
-            </div>}
+            {/* Display signup and sign-in button when loginState is false */}
+            {!loginState && (
+              <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
+                <button
+                  onClick={openSignUpModal}
+                  className="whitespace-nowrap text-white-500 hover:text-white-900 text-[12px] lg:text-base"
+                >
+                  Sign up
+                </button>
+                <button
+                  onClick={openModal}
+                  className="ml-8 whitespace-nowrap inline-flex items-center justify-center px-8 py-2 border border-transparent rounded-sm shadow-sm text-[12px] lg:text-base font-normal text-white bg-red-600 hover:bg-red-700"
+                >
+                  Login
+                </button>
+              </div>
+            )}
             {/* else display user avatar and name popover when a user is not signed in */}
             {/* Profile Icon */}
-          {/* Profile Icon */}
-          {loginState && (
+            {/* Profile Icon */}
+            {loginState && (
               <Popover className="relative">
                 {({ open }) => (
                   <>
-                  <Popover.Button
-                  className={classNames(
-                    open ? "text-[#F00530]" : `tex-${textColor}`,
-                    "group bg-transparent outline-none inline-flex items-center text-base hover:text-white-900"
-                  )}
-                >
-                  <div
-                    className="hidden md:flex items-center gap-2 cursor-pointer"
-                  >
-                    <div
-                      className={`h-6 w-6 rounded-full overflow-hidden relative border border-${textColor}`}
+                    <Popover.Button
+                      className={classNames(
+                        open ? "text-[#F00530]" : `tex-${textColor}`,
+                        "group bg-transparent outline-none inline-flex items-center text-base hover:text-white-900"
+                      )}
                     >
-                      <img
-                        className="absolute h-full w-full object-center object-cover"
-                        src={ProfilePhoto}
-                        alt="menu"
-                      />
-                    </div>
-                    <div className={`hidden md:flex trans`}>
-                      {username}
-                    </div>
-                    <ChevronDownIcon
-                        className={classNames(
-                          open
-                            ? "rotate-180 transform"
-                            : " ",
-                          "h-5 w-5 transition-all duration-200 ease-in-out"
-                        )}
-                        aria-hidden="true"
-                      />
-                  </div>
-                  </Popover.Button>
-                   <Transition
-                   as={Fragment}
-                   enter="transition ease-out duration-200"
-                   enterFrom="opacity-0 translate-y-1"
-                   enterTo="opacity-100 translate-y-0"
-                   leave="transition ease-in duration-150"
-                   leaveFrom="opacity-100 translate-y-0"
-                   leaveTo="opacity-0 translate-y-1"
-                 >
-                   <Popover.Panel className="absolute z-20 left-1/2 transform -translate-x-1/2 mt-3 px-2 w-full max-w-md sm:px-0">
-                     <div className="rounded-sm shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                       <div className="relative grid gap-6 bg-white px-2 py-6 sm:gap-8">
-                          <Link to="/dashboard/main">
-                         <div className="text-[12px] lg:text-base text-gray-900">Dashboard</div>
-                          </Link>
-                          <div
-                            className="flex items-center gap-1 text-[12px] lg:text-base text-gray-900 cursor-pointer"
-                            onClick={handleLogout}
-                          >
-                            <UploadIcon className="rotate-90 h-4 w-4"/>
-                            Sign out
+                      <div className="hidden md:flex items-center gap-2 cursor-pointer">
+                        <div
+                          className={`h-6 w-6 rounded-full overflow-hidden relative border border-${textColor}`}
+                        >
+                          <img
+                            className="absolute h-full w-full object-center object-cover"
+                            src={ProfilePhoto}
+                            alt="menu"
+                          />
+                        </div>
+                        <div className={`hidden md:flex trans`}>{username}</div>
+                        <ChevronDownIcon
+                          className={classNames(
+                            open ? "rotate-180 transform" : " ",
+                            "h-5 w-5 transition-all duration-200 ease-in-out"
+                          )}
+                          aria-hidden="true"
+                        />
+                      </div>
+                    </Popover.Button>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-200"
+                      enterFrom="opacity-0 translate-y-1"
+                      enterTo="opacity-100 translate-y-0"
+                      leave="transition ease-in duration-150"
+                      leaveFrom="opacity-100 translate-y-0"
+                      leaveTo="opacity-0 translate-y-1"
+                    >
+                      <Popover.Panel className="absolute z-20 left-1/2 transform -translate-x-1/2 mt-3 px-2 w-full max-w-md sm:px-0">
+                        <div className="rounded-sm shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+                          <div className="relative grid gap-6 bg-white px-2 py-6 sm:gap-8">
+                            <Link to="/dashboard/main">
+                              <div className="text-[12px] lg:text-base text-gray-900">
+                                Dashboard
+                              </div>
+                            </Link>
+                            <div
+                              className="flex items-center gap-1 text-[12px] lg:text-base text-gray-900 cursor-pointer"
+                              onClick={handleLogout}
+                            >
+                              <UploadIcon className="rotate-90 h-4 w-4" />
+                              Sign out
+                            </div>
                           </div>
-                       </div>
-                     </div>
-                   </Popover.Panel>
-                 </Transition>
-                 </>
+                        </div>
+                      </Popover.Panel>
+                    </Transition>
+                  </>
                 )}
               </Popover>
             )}

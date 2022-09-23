@@ -14,8 +14,8 @@ export const solutions = [
 export const resources = [
   {
     name: "How to Donate",
-    link: "/",
-    href: "/",
+    link: "#",
+    href: "#",
   },
   {
     name: "Eligibilty Requirement",
