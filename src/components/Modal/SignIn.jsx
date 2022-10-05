@@ -186,7 +186,7 @@ export default function SignIn({
                                 />
                               </svg>{" "}
                               Logging in
-                              <span class="sr-only">Logging in...</span>
+                              <span className="sr-only">Logging in...</span>
                             </div>
                           </>
                         ) : (
