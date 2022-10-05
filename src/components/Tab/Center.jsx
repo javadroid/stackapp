@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { GoogleIcon } from "../../assets/images";
 import ReCAPTCHA from "react-google-recaptcha";
 import axios from "../../api/axios";
-
-
-const REGISTER_URL = "registration/";
+import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/user/userSlice";
 
 const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [captchaRef, setCaptchaRef] = useState(true);
@@ -21,42 +21,36 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   });
 
   const [loading, setloading] = useState(false);
+  const dispatch = useDispatch();
+  const [registerAuth] = useRegisterAuthMutation();
 
-  /**
-   * Function to handle form element change
-   */
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
   };
 
-  /**
-   * Sign up function handler
-   */
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (regInfo.password1 !== regInfo.password2) return;
-
+    if (loading) return;
     try {
       setloading(true);
-      const response = await axios.post(REGISTER_URL, JSON.stringify(regInfo));
+      const response = await registerAuth(regInfo).unwrap();
+      console.log(response);
+      const name = response?.user?.first_name + " " + response?.user?.last_name;
 
-      console.log(JSON.stringify(response?.data));
-      //eslint-disable-next-line
-      const name = response?.data.user.first_name + " " + response?.data.user.last_name;
-      //////////////////////TODO////////////////
-      //Fix login dispatch
-      
-      // dispatch({
-      //   type: "LOGIN",
-      //   payload: { username: name, emailAddress: response?.data?.user?.email },
-      // });
+      const payload = {
+        username: name,
+        email: response?.user?.email,
+        pk: response?.user?.pk,
+        token: "",
+      };
+      dispatch(login(payload));
       closeModal();
     } catch (err) {
       console.log(err);
     }
+
     setloading(false);
   };
-
 
   return (
     <div className={activeTabIndex === 1 ? "block mt-2" : "hidden"}>
@@ -166,23 +160,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </div>
         </div>
 
-        <form className="w-full">
-          <div className="relative z-0 mb-6 w-full group">
-            <input
-              type="text"
-              name="recepient_name"
-              id="recepient_name"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="recepient_name"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Full Name
-            </label>
-          </div>
+        <form className="w-full" onSubmit={handleSignUp}>
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="text"
@@ -208,6 +186,8 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               id="email"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
+              value={regInfo.email}
+              onChange={handleChange}
               required
             />
             <label

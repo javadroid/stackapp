@@ -9,9 +9,10 @@ import SignIn from "../Modal/SignIn";
 import SignUp from "../Modal/SignUp";
 import Sidebar from "./Sidebar";
 import { solutions, resources } from "./NavbarData";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { logout } from "../../features/user/userSlice";
+
+import { useDispatch, useSelector } from "react-redux";
+import { logout as logoutDispatch } from "../../features/user/userSlice";
+import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -20,9 +21,15 @@ function classNames(...classes) {
 export default function NavBar({ bgColor, textColor }) {
   const { loginState, username } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(logout());
+  const [logout] = useLogoutMutation();
+  const handleLogout = async () => {
+    try {
+      const response = await logout().unwrap();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      dispatch(logoutDispatch());
+    }
   };
   let [SignUpOpen, setSignUpOpen] = useState(false);
 
