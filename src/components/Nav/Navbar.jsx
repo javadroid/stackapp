@@ -25,6 +25,8 @@ export default function NavBar({ bgColor, textColor }) {
   const handleLogout = async () => {
     try {
       const response = await logout().unwrap();
+      console.log(response);
+      //check this please
       if (response.status === 200) {
         dispatch(logoutDispatch());
       }
