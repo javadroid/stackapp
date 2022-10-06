@@ -3,12 +3,12 @@ import { setToLocalStorage, clearLocalStorage } from "../../utils/localStorage";
 
 //initial user state
 const initialState = {
-  username: localStorage.getItem("username")? JSON.parse(localStorage.getItem("username")): "",
-  email: localStorage.getItem("emailAddress")? JSON.parse(localStorage.getItem("emailAdress")): "",
+  username: localStorage.getItem("username")? localStorage.getItem("username"): "",
+  email: localStorage.getItem("emailAddress")? localStorage.getItem("emailAdress"): "",
   loginState: localStorage.getItem("loginState") ? true : false,
-  access_token: localStorage.getItem("access_token")? JSON.parse(localStorage.getItem("access_token")): null,
-  refresh_token: localStorage.getItem("refresh_token")? JSON.parse(localStorage.getItem("refresh_token")): null,
-  pk: localStorage.getItem("pk")? JSON.parse(localStorage.getItem("pk")): null,
+  access_token: localStorage.getItem("access_token")? localStorage.getItem("access_token"): null,
+  refresh_token: localStorage.getItem("refresh_token")? localStorage.getItem("refresh_token"): null,
+  pk: localStorage.getItem("pk")? localStorage.getItem("pk"): null,
 };
 
 const userSlice = createSlice({
@@ -37,8 +37,10 @@ const userSlice = createSlice({
     },
     tokenRefresh: (state, action) => {
       const { access, refresh } = action.payload;
-      localStorage.setItem("access_token", JSON.stringify(access));
-      localStorage.setItem("refresh_token", JSON.stringify(refresh));
+      state.access_token = access;
+      state.refresh_token = refresh;
+      localStorage.setItem("access_token", access);
+      localStorage.setItem("refresh_token", refresh);
     },
   },
 });

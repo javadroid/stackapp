@@ -25,10 +25,12 @@ export default function NavBar({ bgColor, textColor }) {
   const handleLogout = async () => {
     try {
       const response = await logout().unwrap();
+      if (response.status === 200) {
+        dispatch(logoutDispatch());
+      }
+
     } catch (error) {
       console.log(error);
-    } finally {
-      dispatch(logoutDispatch());
     }
   };
   let [SignUpOpen, setSignUpOpen] = useState(false);
