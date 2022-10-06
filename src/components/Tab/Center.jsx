@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { GoogleIcon } from "../../assets/images";
 import ReCAPTCHA from "react-google-recaptcha";
-import axios from "../../api/axios";
 import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
@@ -9,7 +8,6 @@ import { login } from "../../features/user/userSlice";
 const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [captchaRef, setCaptchaRef] = useState(true);
   const onCaptchaChange = () => setCaptchaRef(false);
-
   const [regInfo, setRegInfo] = useState({
     email: "",
     account_type: "donation_center",
@@ -20,28 +18,24 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     password2: "",
   });
 
-  const [loading, setloading] = useState(false);
   const dispatch = useDispatch();
-  const [registerAuth] = useRegisterAuthMutation();
-
+  const [registerAuth, {isLoading}] = useRegisterAuthMutation();
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
   };
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (loading) return;
+    if (isLoading) return;
     try {
-      setloading(true);
       const response = await registerAuth(regInfo).unwrap();
-      console.log(response);
       const name = response?.user?.first_name + " " + response?.user?.last_name;
-
       const payload = {
         username: name,
         email: response?.user?.email,
         pk: response?.user?.pk,
-        token: "",
+        access_token: response?.access_token,
+        refresh_token: response?.refresh_token,
       };
       dispatch(login(payload));
       closeModal();
@@ -49,7 +43,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       console.log(err);
     }
 
-    setloading(false);
   };
 
   return (
@@ -311,7 +304,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             disabled={captchaRef}
             className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
           >
-            {loading ? (
+            {isLoading ? (
               <>
                 <div
                   role="status"

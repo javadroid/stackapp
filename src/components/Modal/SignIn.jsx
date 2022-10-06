@@ -13,33 +13,29 @@ export default function SignIn({
   openSignUpModalFunc,
 }) {
   const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const [loginAuth] = useLoginAuthMutation();
+  const [loginAuth, {isLoading}] = useLoginAuthMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (loading) return;
+    if (isLoading) return;
     try {
-      setLoading(true);
       const response = await loginAuth({ email, password }).unwrap();
-      console.log(response);
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       //@TODO - Fix payload
       const payload = {
         username: name,
         email: response?.user?.email,
         pk: response?.user?.pk,
-        token: "",
+        access_token: response?.access_token,
+        refresh_token: response?.refresh_token,
       };
       dispatch(login(payload));
       closeModalFunc();
     } catch (err) {
       console.log(err);
     }
-
-    setLoading(false);
   };
 
   return (
@@ -163,7 +159,7 @@ export default function SignIn({
                         </div>
                       </div>
                       <button className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center">
-                        {loading ? (
+                        {isLoading ? (
                           <>
                             <div
                               role="status"
