@@ -9,7 +9,6 @@ import SignIn from "../Modal/SignIn";
 import SignUp from "../Modal/SignUp";
 import Sidebar from "./Sidebar";
 import { solutions, resources } from "./NavbarData";
-
 import { useDispatch, useSelector } from "react-redux";
 import { logout as logoutDispatch } from "../../features/user/userSlice";
 import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
@@ -25,9 +24,7 @@ export default function NavBar({ bgColor, textColor }) {
   const handleLogout = async () => {
     try {
       const response = await logout().unwrap();
-      console.log(response);
-      //check this please
-      if (response.status === 200) {
+      if (response.detail === 'Successfully logged out.') {
         dispatch(logoutDispatch());
       }
 
