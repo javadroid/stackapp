@@ -26,6 +26,16 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    //perform check on regInfo
+    const { email, account_type, rc_number, center_name, phone, password1, password2 } = regInfo;
+    if(!email || !account_type || !rc_number || !center_name || !phone || !password1 || !password2){
+      alert("Please fill all fields");
+      return;
+    }
+    if (password1 !== password2) {
+      alert("Passwords do not match");
+      return;
+    }
     if (isLoading) return;
     try {
       const response = await registerAuth(regInfo).unwrap();

@@ -11,7 +11,8 @@ import Sidebar from "./Sidebar";
 import { solutions, resources } from "./NavbarData";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { logout } from "../../features/user/userSlice";
+import { logout as logoutDispatch } from "../../features/user/userSlice";
+import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -21,8 +22,17 @@ export default function NavBar({ bgColor, textColor }) {
   const { username, loginState } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const [logout] = useLogoutMutation();
+  const handleLogout = async () => {
+    try {
+      const response = await logout().unwrap();
+      if (response.detail === 'Successfully logged out.') {
+        dispatch(logoutDispatch());
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
   };
   let [SignUpOpen, setSignUpOpen] = useState(false);
 
