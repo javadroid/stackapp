@@ -26,11 +26,8 @@ export default function NavBar({ bgColor, textColor }) {
     try {
       const response = await logout().unwrap();
       console.log(response);
-      //check this please
-      if (response.status === 200) {
-        dispatch(logoutDispatch());
-      }
-
+      //logout dispatch
+      dispatch(logoutDispatch());
     } catch (error) {
       console.log(error);
     }
