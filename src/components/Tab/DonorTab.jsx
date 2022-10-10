@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
 
 const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
+  const [captchaRef, setCaptchaRef] = useState(true);
+  const onCaptchaChange = () => setCaptchaRef(false);
   const [regInfo, setRegInfo] = useState({
     email: "",
     blood_group: "",
@@ -231,7 +234,17 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             </label>
           </div>
         </div>
-        <button className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center">
+        <div className="my-8">
+          <ReCAPTCHA
+            sitekey={process.env.REACT_APP_SITE_KEY}
+            onChange={onCaptchaChange}
+          />
+        </div>
+        <button
+          type="submit"
+          className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
+          disabled={captchaRef || loading}
+        >
           {loading ? (
             <>
               <div

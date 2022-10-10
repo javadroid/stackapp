@@ -19,7 +19,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   });
 
   const dispatch = useDispatch();
-  const [registerAuth, {isLoading}] = useRegisterAuthMutation();
+  const [registerAuth, { isLoading }] = useRegisterAuthMutation();
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
   };
@@ -27,8 +27,24 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     //perform check on regInfo
-    const { email, account_type, rc_number, center_name, phone, password1, password2 } = regInfo;
-    if(!email || !account_type || !rc_number || !center_name || !phone || !password1 || !password2){
+    const {
+      email,
+      account_type,
+      rc_number,
+      center_name,
+      phone,
+      password1,
+      password2,
+    } = regInfo;
+    if (
+      !email ||
+      !account_type ||
+      !rc_number ||
+      !center_name ||
+      !phone ||
+      !password1 ||
+      !password2
+    ) {
       alert("Please fill all fields");
       return;
     }
@@ -39,7 +55,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     if (isLoading) return;
     try {
       const response = await registerAuth(regInfo).unwrap();
-    
+
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       const payload = {
         username: name,
@@ -53,7 +69,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     } catch (err) {
       console.log(err);
     }
-
   };
 
   return (
@@ -312,7 +327,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </div>
           <button
             type="submit"
-            disabled={captchaRef}
+            disabled={captchaRef || isLoading}
             className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
           >
             {isLoading ? (
