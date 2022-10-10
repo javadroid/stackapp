@@ -73,7 +73,7 @@ export default function NavBar({ bgColor, textColor }) {
                 <img className="h-10 w-auto" src={Logo} alt="Logo" />
               </Link>
             </div>
-            <div className="-mr-2 -my-2 md:hidden">
+            <div className="ml-auto md:hidden">
               <Popover.Button
                 className={`bg--${bgColor} rounded-md p-2 inline-flex items-center justify-center text--${textColor} hover:text-white-500 hover:bg-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500`}
               >
