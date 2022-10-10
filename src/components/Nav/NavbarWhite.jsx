@@ -202,6 +202,7 @@ export default function NavBar({ bgColor, textColor }) {
                 About Us
               </Link>
             </Popover.Group>
+            <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
             {/* Display signup and sign-in button when loginState is false */}
             {!loginState && (
               <div className="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
@@ -219,8 +220,7 @@ export default function NavBar({ bgColor, textColor }) {
                 </button>
               </div>
             )}
-            {/* else display user avatar and name popover when a user is not signed in */}
-            {/* Profile Icon */}
+            {/* else display user avatar and name popover when a user is signed in */}
             {/* Profile Icon */}
             {loginState && (
               <Popover className="relative">
@@ -284,6 +284,7 @@ export default function NavBar({ bgColor, textColor }) {
                 )}
               </Popover>
             )}
+            </div>
           </div>
         </div>
         <Sidebar
