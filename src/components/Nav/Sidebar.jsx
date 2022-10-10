@@ -6,13 +6,24 @@ import { LogoDark } from "../../assets/images";
 
 import { Link } from "react-router-dom";
 import { solutions, resources } from "./NavbarData";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logout as logoutDispatch } from "../../features/user/userSlice";
+import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
 
 const Sidebar = ({ openModal, openSignUpModal }) => {
   const { loginState } = useSelector((state) => state.user);
 
-  const handleLogout = () => {
-    // dispatch({ type: "LOGOUT" });
+  const dispatch = useDispatch();
+  const [logout] = useLogoutMutation();
+  const handleLogout = async () => {
+    try {
+      const response = await logout().unwrap();
+      if (response.detail === "Successfully logged out.") {
+        dispatch(logoutDispatch());
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Transition
@@ -45,46 +56,50 @@ const Sidebar = ({ openModal, openSignUpModal }) => {
 
               <div className="mt-2">
                 <nav className="flex flex-col justify-between items-left">
-                  <Disclosure
-                    as="div"
-                    className="mt-2 py-5 border-t border-solid"
-                  >
-                    {({ open }) => (
-                      <>
-                        <div className=" py-auto px-2 rounded-md ">
-                          <Disclosure.Button
-                            as="div"
-                            className={`transition duration-100 ease-in-out ${
-                              open ? "text-red-600 " : "text-black "
-                            } w-full flex justify-between px-2 items-center"
+                  {loginState && (
+                    <Disclosure
+                      as="div"
+                      className="mt-2 py-5 border-t border-solid"
+                    >
+                      {({ open }) => (
+                        <>
+                          <div className=" py-auto px-2 rounded-md ">
+                            <Disclosure.Button
+                              as="div"
+                              className={`transition duration-100 ease-in-out ${
+                                open ? "text-red-600 " : "text-black "
+                              } w-full flex justify-between px-2 items-center"
                             } `}
-                          >
-                            <span className="float-left text-base font-medium ">
-                              <h4>Make an Appointment</h4>
-                            </span>
-                            <ChevronUpIcon
-                              className={`transition duration-300 ease-in-out text-gray-500 ${
-                                open ? "rotate-180 transform text-red-600" : ""
-                              } h-6 w-6  shrink float-right right-0`}
-                            />
-                          </Disclosure.Button>
-                        </div>
-                        {solutions.map((item, index) => {
-                          return (
-                            <Disclosure.Panel
-                              className="text-left px-7 pt-6 text-base text-black"
-                              key={index}
                             >
-                              <Link to={item.href}>
-                                {" "}
-                                <Popover.Button>{item.name}</Popover.Button>
-                              </Link>
-                            </Disclosure.Panel>
-                          );
-                        })}
-                      </>
-                    )}
-                  </Disclosure>
+                              <span className="float-left text-base font-medium ">
+                                <h4>Make an Appointment</h4>
+                              </span>
+                              <ChevronUpIcon
+                                className={`transition duration-300 ease-in-out text-gray-500 ${
+                                  open
+                                    ? "rotate-180 transform text-red-600"
+                                    : ""
+                                } h-6 w-6  shrink float-right right-0`}
+                              />
+                            </Disclosure.Button>
+                          </div>
+                          {solutions.map((item, index) => {
+                            return (
+                              <Disclosure.Panel
+                                className="text-left px-7 pt-6 text-base text-black"
+                                key={index}
+                              >
+                                <Link to={item.href}>
+                                  {" "}
+                                  <Popover.Button>{item.name}</Popover.Button>
+                                </Link>
+                              </Disclosure.Panel>
+                            );
+                          })}
+                        </>
+                      )}
+                    </Disclosure>
+                  )}
                   <Disclosure
                     as="div"
                     className="mt-2 py-4 border-t border-solid"

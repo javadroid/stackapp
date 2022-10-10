@@ -39,6 +39,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     if (isLoading) return;
     try {
       const response = await registerAuth(regInfo).unwrap();
+    
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       const payload = {
         username: name,

@@ -15,7 +15,7 @@ export default function SignIn({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const [loginAuth, {isLoading}] = useLoginAuthMutation();
+  const [loginAuth, { isLoading }] = useLoginAuthMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,6 +23,11 @@ export default function SignIn({
     try {
       const response = await loginAuth({ email, password }).unwrap();
       const name = response?.user?.first_name + " " + response?.user?.last_name;
+      const getuser = await fetch(
+        "https://bloodfuse.pythonanywhere.com/api/user/"
+      );
+      console.log(getuser);
+      console.log("working");
       //@TODO - Fix payload
       const payload = {
         username: name,

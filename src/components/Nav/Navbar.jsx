@@ -85,61 +85,63 @@ export default function NavBar({ bgColor, textColor }) {
               as="nav"
               className="hidden md:flex md:items-center space-x-10"
             >
-              <Popover className="hiden md:relative">
-                {({ open }) => (
-                  <>
-                    <Popover.Button
-                      className={classNames(
-                        open ? "text-[#F00530]" : "text-white-500",
-                        "group bg-transparent outline-none inline-flex items-center text-base hover:text-white-900"
-                      )}
-                    >
-                      <span className="text-[12px] lg:text-base font-[400]">
-                        Make an appointment
-                      </span>
-                      <ChevronDownIcon
+              {loginState && (
+                <Popover className="hiden md:relative">
+                  {({ open }) => (
+                    <>
+                      <Popover.Button
                         className={classNames(
-                          open
-                            ? "text-white-600 rotate-180 transform"
-                            : "text-white-400",
-                          "ml-1 lg:ml-2 h-5 w-5 group-hover:text-white-500 transition-all duration-200 ease-in-out"
+                          open ? "text-[#F00530]" : "text-white-500",
+                          "group bg-transparent outline-none inline-flex items-center text-base hover:text-white-900"
                         )}
-                        aria-hidden="true"
-                      />
-                    </Popover.Button>
+                      >
+                        <span className="text-[12px] lg:text-base font-[400]">
+                          Make an appointment
+                        </span>
+                        <ChevronDownIcon
+                          className={classNames(
+                            open
+                              ? "text-white-600 rotate-180 transform"
+                              : "text-white-400",
+                            "ml-1 lg:ml-2 h-5 w-5 group-hover:text-white-500 transition-all duration-200 ease-in-out"
+                          )}
+                          aria-hidden="true"
+                        />
+                      </Popover.Button>
 
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-200"
-                      enterFrom="opacity-0 translate-y-1"
-                      enterTo="opacity-100 translate-y-0"
-                      leave="transition ease-in duration-150"
-                      leaveFrom="opacity-100 translate-y-0"
-                      leaveTo="opacity-0 translate-y-1"
-                    >
-                      <Popover.Panel className="absolute z-20 -ml-4 mt-3 transform px-2 w-full max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
-                        <div className="rounded-sm shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
-                          <div className="relative grid gap-6 bg-white px-2 py-6 sm:gap-8">
-                            {solutions.map((item) => (
-                              <Link
-                                key={item.name}
-                                to={item.href}
-                                className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-200"
-                              >
-                                <div className="">
-                                  <p className="text-[12px] lg:text-base text-gray-900">
-                                    {item.name}
-                                  </p>
-                                </div>
-                              </Link>
-                            ))}
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-200"
+                        enterFrom="opacity-0 translate-y-1"
+                        enterTo="opacity-100 translate-y-0"
+                        leave="transition ease-in duration-150"
+                        leaveFrom="opacity-100 translate-y-0"
+                        leaveTo="opacity-0 translate-y-1"
+                      >
+                        <Popover.Panel className="absolute z-20 -ml-4 mt-3 transform px-2 w-full max-w-md sm:px-0 lg:ml-0 lg:left-1/2 lg:-translate-x-1/2">
+                          <div className="rounded-sm shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
+                            <div className="relative grid gap-6 bg-white px-2 py-6 sm:gap-8">
+                              {solutions.map((item) => (
+                                <Link
+                                  key={item.name}
+                                  to={item.href}
+                                  className="-m-3 p-3 flex items-start rounded-lg hover:bg-gray-200"
+                                >
+                                  <div className="">
+                                    <p className="text-[12px] lg:text-base text-gray-900">
+                                      {item.name}
+                                    </p>
+                                  </div>
+                                </Link>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      </Popover.Panel>
-                    </Transition>
-                  </>
-                )}
-              </Popover>
+                        </Popover.Panel>
+                      </Transition>
+                    </>
+                  )}
+                </Popover>
+              )}
 
               <Popover className="relative">
                 {({ open }) => (
