@@ -1,15 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setToLocalStorage, clearLocalStorage } from "../../utils/localStorage";
+import { setToLocalStorage, clearLocalStorage, getUserStateFromLocalStorage } from "../../utils/localStorage";
 
 //initial user state
-const initialState = {
-  username: localStorage.getItem("username")? localStorage.getItem("username"): "",
-  email: localStorage.getItem("emailAddress")? localStorage.getItem("emailAdress"): "",
-  loginState: localStorage.getItem("loginState") ? true : false,
-  access_token: localStorage.getItem("access_token")? localStorage.getItem("access_token"): null,
-  refresh_token: localStorage.getItem("refresh_token")? localStorage.getItem("refresh_token"): null,
-  pk: localStorage.getItem("pk")? localStorage.getItem("pk"): null,
-};
+const initialState = getUserStateFromLocalStorage();
 
 const userSlice = createSlice({
   name: "user",
