@@ -3,12 +3,26 @@ import { Popover, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import { LogoDark } from "../../assets/images";
 import { Link, NavLink } from "react-router-dom";
-import { RiHistoryLine } from "react-icons/ri";
+import { RiHistoryLine, RiLogoutCircleLine } from "react-icons/ri";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { BsWallet } from "react-icons/bs";
 import { TbHeartbeat } from "react-icons/tb";
-
+import { useDispatch } from "react-redux";
+import { logout as logoutDispatch } from "../../features/user/userSlice";
+import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
 const SideBarMobile = () => {
+  const dispatch = useDispatch();
+  const [logout] = useLogoutMutation();
+  const handleLogout = async () => {
+    try {
+      const response = await logout().unwrap();
+      if (response.detail === "Successfully logged out.") {
+        dispatch(logoutDispatch());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Transition
       as={Fragment}
@@ -105,6 +119,18 @@ const SideBarMobile = () => {
                 </div>
               </Popover.Button>
             </NavLink>
+
+            <div
+              className="flex items-center gap-x-3 w-full trans"
+              onClick={handleLogout}
+            >
+              <Popover.Button>
+                <div className="flex items-center gap-2 w-full py-3 px-2">
+                  <RiLogoutCircleLine className="h-6 w-6 ml-2" />
+                  <p>Logout</p>
+                </div>
+              </Popover.Button>
+            </div>
           </div>
         </div>
       </Popover.Panel>
