@@ -185,7 +185,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               type="text"
               name="center_name"
               id="center_name"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               required
               value={regInfo.center_name}
@@ -193,7 +193,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             />
             <label
               htmlFor="center_name"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Name of hospital, center or blood bank
             </label>
@@ -203,7 +203,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               type="email"
               name="email"
               id="email"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               value={regInfo.email}
               onChange={handleChange}
@@ -211,7 +211,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             />
             <label
               htmlFor="email"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Email Address
             </label>
@@ -221,7 +221,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               type="number"
               name="phone"
               id="phone"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               value={regInfo.phone}
               onChange={handleChange}
@@ -232,7 +232,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             />
             <label
               htmlFor="phone"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Phone Number
             </label>
@@ -243,7 +243,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               type="number"
               name="rc_number"
               id="rc_number"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               required
               value={regInfo.rc_number}
@@ -251,7 +251,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             />
             <label
               htmlFor="rc_number"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               RC Number
             </label>
@@ -261,7 +261,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               type="password"
               name="password1"
               id="password2"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               value={regInfo.password1}
               onChange={handleChange}
@@ -269,7 +269,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             />
             <label
               htmlFor="password1"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Password
             </label>
@@ -279,7 +279,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               type="password"
               name="password2"
               id="Password2"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-red-500 focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               required
               value={regInfo.password2}
@@ -287,7 +287,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             />
             <label
               htmlFor="password2"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600 peer-focus:dark:text-red-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Repeat Password
             </label>
@@ -303,7 +303,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               />
               <label
                 htmlFor="recepient"
-                className="ml-2 text-sm font-medium text-black dark:text-black-300"
+                className="ml-2 text-sm font-medium text-black"
               >
                 <span className=" text-bold">
                   I have read and accepted the{" "}
@@ -338,7 +338,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
                 >
                   <svg
                     aria-hidden="true"
-                    class=" w-8 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-white"
+                    class=" w-8 h-6 text-gray-200 animate-spin  fill-white"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"

@@ -1,9 +1,6 @@
 import React from "react";
-import {
-  ChevronRightIcon,
-  ChevronDoubleRightIcon,
-} from "@heroicons/react/outline";
-import {HealthyMan} from "../../assets/images";
+import { ChevronRightIcon } from "@heroicons/react/outline";
+import { HealthyMan } from "../../assets/images";
 import { Link } from "react-router-dom";
 
 const MainBody = () => {
@@ -64,11 +61,6 @@ const MainBody = () => {
                 <ChevronRightIcon className="w-3 h-3 md:w-4 md:h-4 ml-2" />
               </button>
             </Link>
-            <button type="button" className=" bttn bttn-extra mb-2 ">
-              <span className="text-base py-1 items-center">Learn More</span>
-              {/* <ChevronRightIcon className="w-3 h-3 md:w-4 md:h-4 ml-2" /> */}
-              <ChevronDoubleRightIcon className="w-3 h-3 md:w-4 md:h-4 mt-1 ml-2" />
-            </button>
           </div>
         </div>
       </div>
