@@ -23,9 +23,10 @@ export default function NavBar({ bgColor, textColor }) {
   const [logout] = useLogoutMutation();
   const handleLogout = async () => {
     try {
+      dispatch(logoutDispatch());
+
       const response = await logout().unwrap();
       if (response.detail === "Successfully logged out.") {
-        dispatch(logoutDispatch());
       }
     } catch (error) {
       console.log(error);
@@ -85,7 +86,6 @@ export default function NavBar({ bgColor, textColor }) {
               as="nav"
               className="hidden md:flex md:items-center space-x-10"
             >
-
               <Popover className="hiden md:relative">
                 {({ open }) => (
                   <>

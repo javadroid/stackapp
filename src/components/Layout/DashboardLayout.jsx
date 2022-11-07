@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 import { Navbar, SideBar } from "../Dashboard";
 import { Navigate } from "react-router-dom";
@@ -16,7 +16,6 @@ const DashboardLayout = () => {
       mode: "cors",
     }
   );
-  console.log(response);
 
   if (!loginState) {
     customToast(
