@@ -2,7 +2,6 @@ import React from "react";
 import { Lab } from "../../assets/images";
 
 import { ChevronRightIcon } from "@heroicons/react/outline";
-import { Link } from "react-router-dom";
 
 const WhoWeAre = ({ toAppointmentPage, toRequestPage }) => {
   return (
@@ -39,13 +38,11 @@ const WhoWeAre = ({ toAppointmentPage, toRequestPage }) => {
               </li>
             </ul>
             <div className="lg:mr-auto hidden lg:flex mt-4 sm:mt-8 flex-col gap-4 sm:flex-row items-center justify-center lg:justify-start w-[70%] sm:w-auto">
-              <button onClick={toAppointmentPage}>
-                <button type="button" className="bttn bttn-primary">
-                  <span className="text-[12px] md:[14px] lg:text-base py-1 items-center">
-                    Donate Now
-                  </span>
-                  <ChevronRightIcon className="w-3 h-3 md:w-4 md:h-4 ml-2" />
-                </button>
+              <button onClick={toAppointmentPage} className="bttn bttn-primary">
+                <span className="text-[12px] md:[14px] lg:text-base py-1 items-center">
+                  Donate Now
+                </span>
+                <ChevronRightIcon className="w-3 h-3 md:w-4 md:h-4 ml-2" />
               </button>
               <button onClick={toRequestPage} className="bttn bttn-tertiary">
                 <span className="text-[12px] md:[14px] lg:text-base py-1 items-center">

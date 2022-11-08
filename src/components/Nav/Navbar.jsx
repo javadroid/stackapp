@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Popover, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { ViewListIcon, UploadIcon } from "@heroicons/react/outline";
 import { Logo, ProfilePhoto } from "../../assets/images";
 import { Link } from "react-router-dom";
-import SignIn from "../Modal/SignIn";
-import SignUp from "../Modal/SignUp";
+
 import Sidebar from "./Sidebar";
 import { solutions, resources } from "./NavbarData";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +16,16 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function NavBar({ bgColor, textColor }) {
+export default function NavBar({ bgColor, textColor, modalState }) {
   const { loginState, username } = useSelector((state) => state.user);
+  const [
+    SignUpModal,
+    SignInModal,
+    openModal,
+    openSignUpModal,
+    closeModal,
+    closeSignUpModal,
+  ] = modalState;
   const dispatch = useDispatch();
   const [logout] = useLogoutMutation();
   const handleLogout = async () => {
@@ -32,38 +39,11 @@ export default function NavBar({ bgColor, textColor }) {
       console.log(error);
     }
   };
-  let [SignUpOpen, setSignUpOpen] = useState(false);
-
-  let [isOpen, setIsOpen] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-  function closeSignUpModal() {
-    setSignUpOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-  function openSignUpModal() {
-    setSignUpOpen(true);
-  }
 
   return (
     <>
-      <SignIn
-        isModalOpen={isOpen}
-        closeModalFunc={closeModal}
-        openSignUpModalFunc={openSignUpModal}
-        closeSignUpModalFunc={closeSignUpModal}
-      />
-      <SignUp
-        isModalOpen={SignUpOpen}
-        closeModalFunc={closeSignUpModal}
-        openLoginModalFunc={openModal}
-        closeLoginModalFunc={closeModal}
-      />
+      <SignInModal />
+      <SignUpModal />
       <Popover
         className={`relative bg-${bgColor} h-full md:overflow-visible overflow-x-clip text-${textColor} text-[14px]`}
       >

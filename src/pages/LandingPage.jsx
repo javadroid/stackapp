@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 
 import {
   Hero,
@@ -9,61 +7,18 @@ import {
   KnowOurPatients,
   MakeADiff,
 } from "../components/LandingPage";
-import SignIn from "../components/Modal/SignIn";
-import SignUp from "../components/Modal/SignUp";
+import useModal from "../features/hooks/useModal";
 
 const LandingPage = () => {
-  const { loginState } = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  const { SignInModal, SignUpModal, toAppointmentPage, toRequestPage } =
+    useModal();
 
-  let [SignUpOpen, setSignUpOpen] = useState(false);
-
-  let [isOpen, setIsOpen] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-  function closeSignUpModal() {
-    setSignUpOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-  function openSignUpModal() {
-    setSignUpOpen(true);
-  }
-
-  const toAppointmentPage = () => {
-    if (!loginState) {
-      openModal();
-      return;
-    }
-
-    navigate("/book-appointment");
-  };
-  const toRequestPage = () => {
-    if (!loginState) {
-      openModal();
-      return;
-    }
-
-    navigate("/request-blood");
-  };
+  // const [toAppointmentPage, toRequestPage, SignInModal, SignUpModal] =
+  //   useOutletContext();
   return (
     <>
-      <SignIn
-        isModalOpen={isOpen}
-        closeModalFunc={closeModal}
-        openSignUpModalFunc={openSignUpModal}
-        closeSignUpModalFunc={closeSignUpModal}
-      />
-      <SignUp
-        isModalOpen={SignUpOpen}
-        closeModalFunc={closeSignUpModal}
-        openLoginModalFunc={openModal}
-        closeLoginModalFunc={closeModal}
-      />
+      <SignInModal />
+      <SignUpModal />
       <Hero
         toAppointmentPage={toAppointmentPage}
         toRequestPage={toRequestPage}
