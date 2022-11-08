@@ -1,63 +1,11 @@
 import React, { useState } from "react";
 import { GroupHero } from "../../assets/images";
-import { useSelector } from "react-redux";
+
 import { ChevronRightIcon } from "@heroicons/react/outline";
-import { useNavigate } from "react-router-dom";
-import SignIn from "../Modal/SignIn";
-import SignUp from "../Modal/SignUp";
 
-const Hero = () => {
-  const { loginState } = useSelector((state) => state.user);
-  const navigate = useNavigate();
-
-  let [SignUpOpen, setSignUpOpen] = useState(false);
-
-  let [isOpen, setIsOpen] = useState(false);
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-  function closeSignUpModal() {
-    setSignUpOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
-  }
-  function openSignUpModal() {
-    setSignUpOpen(true);
-  }
-
-  const toAppointmentPage = () => {
-    if (!loginState) {
-      openModal();
-      return;
-    }
-
-    navigate("/book-appointment");
-  };
-  const toRequestPage = () => {
-    if (!loginState) {
-      openModal();
-      return;
-    }
-
-    navigate("/request-blood");
-  };
+const Hero = ({ toAppointmentPage, toRequestPage }) => {
   return (
     <>
-      <SignIn
-        isModalOpen={isOpen}
-        closeModalFunc={closeModal}
-        openSignUpModalFunc={openSignUpModal}
-        closeSignUpModalFunc={closeSignUpModal}
-      />
-      <SignUp
-        isModalOpen={SignUpOpen}
-        closeModalFunc={closeSignUpModal}
-        openLoginModalFunc={openModal}
-        closeLoginModalFunc={closeModal}
-      />
       <div className="bg-primarybg relative h-auto text-white">
         <div className="max-w-7xl mx-auto px-4 flex flex-col items-center justify-start slg:justify-center gap-6 md:flex-row sm:px-6 md:px-8 min-h-[90vh] sm:h-auto">
           <div className="py-8 sm:py-10 md:py-0 flex flex-col items-center justify-center gap-4 w-full lg:w-1/2">

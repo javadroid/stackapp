@@ -1,9 +1,9 @@
 import React from "react";
 
-import {DonateNow, CanIDonate,BloodBank} from "../../assets/images"
+import { DonateNow, CanIDonate, BloodBank } from "../../assets/images";
 import { Link } from "react-router-dom";
 
-const Details = () => {
+const Details = ({ toAppointmentPage, toRequestPage }) => {
   return (
     <div className="h-auto relative ">
       <div className="flex flex-col mt-20 max-w-7xl mx-auto px-4 sm:px-6 justify-center">
@@ -24,9 +24,9 @@ const Details = () => {
               Schedule your appointment now.
             </span>
 
-            <Link to="/book-appointment" className="bttn bttn-primary">
+            <button onClick={toAppointmentPage} className="bttn bttn-primary">
               <span className="px-10">Donate</span>
-            </Link>
+            </button>
           </div>
           <div className="flex-1 flex flex-col items-center gap-6">
             <img className="w-14 h-14" src={CanIDonate} alt="Can I donate" />
@@ -41,11 +41,7 @@ const Details = () => {
             </Link>
           </div>
           <div className="flex-1 flex flex-col items-center gap-6">
-            <img
-              className="w-14 h-14"
-              src={BloodBank}
-              alt="Where to donate"
-            />
+            <img className="w-14 h-14" src={BloodBank} alt="Where to donate" />
             <h5 className="text-xl font-medium text-gray-900">
               Where To Donate
             </h5>
@@ -53,9 +49,9 @@ const Details = () => {
               Find a location convenient to you.
             </span>
 
-            <Link to="/book-appointment" className="bttn bttn-primary">
+            <button onClick={toRequestPage} className="bttn bttn-primary">
               <span className="px-6">Find Center</span>
-            </Link>
+            </button>
           </div>
         </div>
       </div>

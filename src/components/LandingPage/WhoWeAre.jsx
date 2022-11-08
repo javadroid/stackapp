@@ -4,7 +4,7 @@ import { Lab } from "../../assets/images";
 import { ChevronRightIcon } from "@heroicons/react/outline";
 import { Link } from "react-router-dom";
 
-const WhoWeAre = () => {
+const WhoWeAre = ({ toAppointmentPage, toRequestPage }) => {
   return (
     <div className=" relative my-10 md:my-20 " id="about">
       <div className="flex flex-row max-w-7xl mx-auto px-4 sm:px-6 md:px-10 justify-between gap-4">
@@ -39,15 +39,15 @@ const WhoWeAre = () => {
               </li>
             </ul>
             <div className="lg:mr-auto hidden lg:flex mt-4 sm:mt-8 flex-col gap-4 sm:flex-row items-center justify-center lg:justify-start w-[70%] sm:w-auto">
-              <Link to="/book-appointment">
+              <button onClick={toAppointmentPage}>
                 <button type="button" className="bttn bttn-primary">
                   <span className="text-[12px] md:[14px] lg:text-base py-1 items-center">
                     Donate Now
                   </span>
                   <ChevronRightIcon className="w-3 h-3 md:w-4 md:h-4 ml-2" />
                 </button>
-              </Link>
-              <button type="button" className="bttn bttn-tertiary">
+              </button>
+              <button onClick={toRequestPage} className="bttn bttn-tertiary">
                 <span className="text-[12px] md:[14px] lg:text-base py-1 items-center">
                   Request Blood
                 </span>
