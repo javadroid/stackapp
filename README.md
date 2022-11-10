@@ -35,7 +35,7 @@ getTransactionStatus response: get from `const [response, setResponse] = useStat
 
 `failed`
         
-`pending` **Note: transaction may take up to 4mins to be before being processed in the blockchain.**
+`pending` **Note: transaction may take up to 5mins to be processed in the blockchain.**
 
 
 
