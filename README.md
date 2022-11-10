@@ -32,6 +32,7 @@ then `getTransactionStatus` takes the id returned from `handleTokenTransfer` and
 getTransactionStatus response: get from `const [response, setResponse] = useState(null);`
 
 `success`
+
 `failed`
         
 `pending` **Note: transaction may take up to 4mins to be before being processed in the blockchain.**
