@@ -14,7 +14,7 @@ Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
-**Note: this is  app requires a STX wallet. `Hiro` web wallet recommended**
+**Note: this  app requires  STX wallet. `Hiro` web wallet recommended**
 
 after successful wallet connection proceed in providing the neccessary fields:
 
