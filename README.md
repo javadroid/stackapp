@@ -39,7 +39,7 @@ getTransactionStatus response: get from `const [response, setResponse] = useStat
 
 
 
-**Note: this is app is on testnet.**
+**Note: this app is currently on testnet.**
 to go mainnet:
 
 1. in App.js ==> MicroStacks.ClientProvider ==> network: 
