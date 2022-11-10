@@ -86,7 +86,7 @@ export default function PayContract() {
       amount: parseInt(stxinput + "n"),
       memo: memo,
     }).then(async (e) => {
-     await sleep(20000)
+    //  await sleep(50000)
       getTransactionStatus(e.txId);
     });
   };
