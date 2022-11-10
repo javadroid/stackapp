@@ -26,11 +26,15 @@ after successful wallet connection proceed in providing the neccessary fields:
 The async function `getBalances` get user stx balance
 
 The async function `handleTokenTransfer` takes the above fields and returns a transaction id as string
-    then `getTransactionStatus` takes the id returned from `handleTokenTransfer` and returns the transaction status 
-        getTransactionStatus response: get from `const [response, setResponse] = useState(null);`
-        `success`
-        `failed`
-        `pending` **Note: transaction may take up to 4mins to be before being processed in the blockchain.**
+
+then `getTransactionStatus` takes the id returned from `handleTokenTransfer` and returns the transaction status 
+
+getTransactionStatus response: get from `const [response, setResponse] = useState(null);`
+
+`success`
+`failed`
+        
+`pending` **Note: transaction may take up to 4mins to be before being processed in the blockchain.**
 
 
 
