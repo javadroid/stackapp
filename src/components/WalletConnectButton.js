@@ -26,7 +26,7 @@ export const WalletConnectButton = () => {
     ? "Sign out"
     : "Connect Stacks wallet";
 
-    const url= res ? <p>no Stacks wallet available please download 👉 <a style={{color:'red'}} href="https://wallet.hiro.so/">Hiro Wallet</a> </p> : <a href="">asasd</a>
+    const url= res ? <p>no Stacks wallet available please download 👉 <a style={{color:'red'}} href="https://wallet.hiro.so/">Hiro Wallet</a> </p> : <></>
   return (
     <>
       <button
