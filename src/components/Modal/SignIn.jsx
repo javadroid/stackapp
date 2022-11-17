@@ -17,18 +17,13 @@ export default function SignIn({
   const dispatch = useDispatch();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
 
+
   const handleLogin = async (e) => {
     e.preventDefault();
     if (isLoading) return;
     try {
       const response = await loginAuth({ email, password }).unwrap();
       const name = response?.user?.first_name + " " + response?.user?.last_name;
-      const getuser = await fetch(
-        "https://bloodfuse.pythonanywhere.com/api/user/"
-      );
-      console.log(getuser);
-      console.log("working");
-      //@TODO - Fix payload
       const payload = {
         username: name,
         email: response?.user?.email,
@@ -37,7 +32,19 @@ export default function SignIn({
         refresh_token: response?.refresh_token,
       };
       dispatch(login(payload));
+      //Get user account details like account type, rc number, etc
+      const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${response?.access_token}`,
+        },
+      });
+      const user = await getUser.json();
+      console.log(user);
       closeModalFunc();
+      setEmail("");
+      setPassword("");
     } catch (err) {
       console.log(err);
     }
