@@ -4,7 +4,6 @@ import { FiTwitter, FiFacebook } from "react-icons/fi";
 import { XIcon } from "@heroicons/react/outline";
 import { GoogleIcon } from "../../assets/images";
 import { useLoginAuthMutation } from "../../features/apiSlices/userApiSlice";
-import { useBloodCentersMutation } from "../../features/apiSlices/appointmentApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
 
@@ -17,8 +16,6 @@ export default function SignIn({
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
-  const [bloodCenters] = useBloodCentersMutation();
-
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -138,7 +135,7 @@ export default function SignIn({
                           type="password"
                           name="floating_password"
                           id="floating_password"
-                          className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none   focus:outline-none focus:ring-0 focus:border-red-600 peer"
+                          className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-red-600 peer"
                           placeholder=" "
                           required
                           value={password}
