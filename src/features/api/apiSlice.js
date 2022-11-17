@@ -8,10 +8,12 @@ const baseQuery = fetchBaseQuery({
   // credentials: "include",
 
   prepareHeaders: (headers, { getState }) => {
-    const token = getState().user.token;
-    // console.log(token);
+    const token = getState().user.access_token;
+    console.log(token);
 
     if (token) {
+      headers.set("Content-Type", "application/json");
+
       headers.set("Authorization", `Bearer ${token}`);
     }
     return headers;

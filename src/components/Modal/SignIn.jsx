@@ -4,6 +4,7 @@ import { FiTwitter, FiFacebook } from "react-icons/fi";
 import { XIcon } from "@heroicons/react/outline";
 import { GoogleIcon } from "../../assets/images";
 import { useLoginAuthMutation } from "../../features/apiSlices/userApiSlice";
+import { useCentersListMutation } from "../../features/apiSlices/bloodCentersApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
 
@@ -16,6 +17,7 @@ export default function SignIn({
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
+  const [centersList] = useCentersListMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -34,27 +36,17 @@ export default function SignIn({
       };
       dispatch(login(payload));
       //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${process.env.REACT_APP_API_URL}user/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${response?.access_token}`,
-        },
-      });
-      const user = await getUser.json();
-      console.log(user);
-      //Get user account details like account type, rc number, etc
-      const getCenters = await fetch(
-        `${process.env.REACT_APP_API_URL}users/blood-centers/`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${response?.access_token}`,
-          },
-        }
-      );
-      const center = await getCenters.json();
+      // const getUser = await fetch(`${process.env.REACT_APP_API_URL}user/`, {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${response?.access_token}`,
+      //   },
+      // });
+      // const user = await getUser.json();
+      // console.log(user);
+      const center = await centersList().unwrap();
+
       console.log(center);
       closeModalFunc();
       setEmail("");

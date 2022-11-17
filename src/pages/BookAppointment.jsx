@@ -9,6 +9,9 @@ const location = {
 };
 
 const BookAppointment = () => {
+
+
+
   const [Centers, setCenters] = useState(CenterList);
   return (
     <div className="w-full">
