@@ -31,7 +31,7 @@ export const appointmentApi = apiSlice.injectEndpoints({
     }),
 
     updateAppointment: builder.mutation({
-      query: ({ body, id } ) => ({
+      query: ({ body, id }) => ({
         url: `appointments/${id}/`,
         method: "PUT",
         body,
@@ -44,6 +44,12 @@ export const appointmentApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    bloodCenters: builder.mutation({
+      query: () => ({
+        url: "users/blood-centers/",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -53,4 +59,5 @@ export const {
   useCreateAppointmentMutation,
   useUpdateAppointmentMutation,
   useDeleteAppointmentMutation,
+  useBloodCentersMutation,
 } = appointmentApi;

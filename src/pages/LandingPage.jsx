@@ -7,13 +7,30 @@ import {
   KnowOurPatients,
   MakeADiff,
 } from "../components/LandingPage";
+import useModal from "../features/hooks/useModal";
 
 const LandingPage = () => {
+  const { SignInModal, SignUpModal, toAppointmentPage, toRequestPage } =
+    useModal();
+
+  // const [toAppointmentPage, toRequestPage, SignInModal, SignUpModal] =
+  //   useOutletContext();
   return (
     <>
-      <Hero />
-      <Details />
-      <WhoWeAre />
+      <SignInModal />
+      <SignUpModal />
+      <Hero
+        toAppointmentPage={toAppointmentPage}
+        toRequestPage={toRequestPage}
+      />
+      <Details
+        toAppointmentPage={toAppointmentPage}
+        toRequestPage={toRequestPage}
+      />
+      <WhoWeAre
+        toAppointmentPage={toAppointmentPage}
+        toRequestPage={toRequestPage}
+      />
       <KnowOurPatients />
       <MakeADiff />
     </>

@@ -7,11 +7,23 @@ import { customToast } from "../../utils/customToast";
 
 const DashboardLayout = () => {
   const { loginState } = useSelector((state) => state.user);
-  if(!loginState) {
-    customToast("You are not logged in. Please login to continue or sign-up if you don't have an account");
-    return <Navigate to="/" replace/>;
+
+  const response = fetch(
+    "https://bloodfuse.pythonanywhere.com/api/users/blood-centers/",
+    {
+      withCredentials: true,
+      credentials: "include",
+      mode: "cors",
+    }
+  );
+
+  if (!loginState) {
+    customToast(
+      "You are not logged in. Please login to continue or sign-up if you don't have an account"
+    );
+    return <Navigate to="/" replace />;
   }
-  
+
   return (
     <div className="flex items-center h-auto md:h-screen">
       <div className="w-[0%] lg:w-[15%] h-full">

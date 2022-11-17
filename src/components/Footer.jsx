@@ -4,7 +4,7 @@ import { ChevronRightIcon } from "@heroicons/react/outline";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+const Footer = ({ toAppointmentPage, toRequestPage }) => {
   return (
     <footer className="bg-[#141414] w-full">
       <div className="flex flex-col items-center justify-center gap-8 w-full h-full py-8 px-4 lg:px-8">
@@ -37,9 +37,9 @@ const Footer = () => {
           <div className="lg:col-span-5 w-full grid grid-cols-1 sm:grid-cols-3 gap-8 content-center md:grid-cols-3">
             <div className="flex flex-col items-center md:items-start text-[#FCFCFC] text-[14px] lg:text-base space-y-2 md:space-y-3">
               <h1 className="text-xl text-white font-semibold">Donate Blood</h1>
-              <Link to="#">Make an appointment</Link>
+              <button onClick={toAppointmentPage}>Make an appointment</button>
               <Link to="#">Why Donate?</Link>
-              <Link to="#">Where can I Donate?</Link>
+              <button onClick={toAppointmentPage}>Where can I Donate?</button>
               <Link to="/who-can-donate">Eligibity</Link>
               <Link to="#">Donate Financially</Link>
               <Link to="#">Frequently Asked Questions</Link>
