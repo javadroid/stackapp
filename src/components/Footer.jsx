@@ -22,7 +22,7 @@ const Footer = ({ toAppointmentPage, toRequestPage }) => {
                 </p>
                 <div className="flex items-center w-full sm:w-[60%] lg:w-full">
                   <input
-                    className="w-full mx-auto py-2 text-white text-center"
+                    className="w-full mx-auto py-2 text-center focus:ring-0 focus:border-none"
                     type="text"
                     placeholder="example@gmail.com"
                   />
