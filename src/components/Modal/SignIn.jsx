@@ -34,7 +34,7 @@ export default function SignIn({
       };
       dispatch(login(payload));
       //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {
+      const getUser = await fetch(`${process.env.REACT_APP_API_URL}user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -43,6 +43,19 @@ export default function SignIn({
       });
       const user = await getUser.json();
       console.log(user);
+      //Get user account details like account type, rc number, etc
+      const getCenters = await fetch(
+        `${process.env.REACT_APP_API_URL}users/blood-centers/`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${response?.access_token}`,
+          },
+        }
+      );
+      const center = await getCenters.json();
+      console.log(center);
       closeModalFunc();
       setEmail("");
       setPassword("");
