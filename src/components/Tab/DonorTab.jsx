@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-
 import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
+import toast from "react-hot-toast";
 
 const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [captchaRef, setCaptchaRef] = useState(true);
@@ -18,9 +18,8 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     password1: "",
     password2: "",
   });
-  const [loading, setloading] = useState(false);
   const dispatch = useDispatch();
-  const [registerAuth] = useRegisterAuthMutation();
+  const [registerAuth, { isLoading }] = useRegisterAuthMutation();
 
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
@@ -28,26 +27,66 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    if (loading) return;
+     //perform check on regInfo
+     const {
+      email,
+      blood_group,
+      account_type,
+      first_name,
+      last_name,
+      phone,
+      password1,
+      password2,
+    } = regInfo;
+    if (
+      email === "" ||
+      blood_group === "" ||
+      account_type === "" ||
+      first_name === "" ||
+      last_name === "" ||
+      phone === "" ||
+      password1 === "" ||
+      password2 === ""
+    ) {
+      toast.error("Please fill all the fields");
+      return;
+    }
+    if (password1 !== password2) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    if (isLoading) return;
     try {
-      setloading(true);
       const response = await registerAuth(regInfo).unwrap();
       console.log(response);
       const name = response?.user?.first_name + " " + response?.user?.last_name;
-
+      //Get user account details like account type, rc number, etc
+      const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${response?.access_token}`,
+        },
+      });
+      const user = await getUser.json();
       const payload = {
-        username: name,
-        email: response?.user?.email,
+        emailAddress: response?.user?.email,
         pk: response?.user?.pk,
-        token: "",
+        username: name,
+        access_token: response?.access_token,
+        refresh_token: response?.refresh_token,
+        account_type: user?.data.account_type,
+        blood_group: user?.data.blood_group,
+        center_name: user?.data?.center_name,
+        phone: user?.data?.phone,
+        rc_number: user?.data?.rc_number,
+        id: user?.data?.id,
       };
       dispatch(login(payload));
       closeModal();
     } catch (err) {
-      console.log(err);
+      toast.error(err.message);
     }
-
-    setloading(false);
   };
 
   return (
@@ -243,9 +282,9 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         <button
           type="submit"
           className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
-          disabled={captchaRef || loading}
+          disabled={captchaRef || isLoading}
         >
-          {loading ? (
+          {isLoading ? (
             <>
               <div
                 role="status"

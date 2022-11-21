@@ -127,7 +127,7 @@ const PerformanceData = [
   },
 ];
 const Dashboard = () => {
-  const { username } = useSelector((state) => state.user);
+  const { username, center_name } = useSelector((state) => state.user);
   const names = username.split(" ");
   const firstname = names[0];
 
@@ -139,12 +139,12 @@ const Dashboard = () => {
         {/* First Grid( Banner, 3 Cards and Pending Appointments) */}
         <div className=" md:col-span-2 space-y-4 ">
           <span className="font-[500] h-fit hidden md:inline md:mb-4 text-xl md:text-2xl">
-            Hello {firstname}
+            Hello, {firstname.length > 0 ? firstname : center_name + ", Welcome to your Dashboard"}
           </span>
           <span className="font-[600] text-base h-fit inline-flex items-center justify-between md:hidden md:mb-4 w-full">
             <span>
               {" "}
-              Dashboard {">>"} {firstname}
+              Dashboard {">>"} {firstname.length > 0 ? firstname : center_name}
             </span>
 
             <span className="ml-auto">

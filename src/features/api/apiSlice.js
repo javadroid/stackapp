@@ -8,7 +8,6 @@ const baseQuery = fetchBaseQuery({
 
   prepareHeaders: (headers, { getState }) => {
     const token = getState().user.access_token;
-    console.log(token);
 
     if (token) {
       headers.set("Content-Type", "application/json");

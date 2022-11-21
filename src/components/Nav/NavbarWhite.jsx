@@ -19,16 +19,15 @@ function classNames(...classes) {
 }
 
 export default function NavBar({ bgColor, textColor }) {
-  const { username, loginState } = useSelector((state) => state.user);
+  const { username, loginState, center_name, account_type } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-
   const [logout] = useLogoutMutation();
+
   const handleLogout = async () => {
     try {
-      dispatch(logoutDispatch());
-
       const response = await logout().unwrap();
       if (response.detail === "Successfully logged out.") {
+        dispatch(logoutDispatch());
       }
     } catch (error) {
       console.log(error);
@@ -243,9 +242,16 @@ export default function NavBar({ bgColor, textColor }) {
                               alt="menu"
                             />
                           </div>
-                          <div className={`hidden md:flex trans`}>
-                            {username}
-                          </div>
+                          {/* If account type is donor, render username, else if account type is donation_center, render center_name */}
+                          {account_type === "donor" ? (
+                            <div className="text-[12px] lg:text-base font-[400] hidden md:flex trans">
+                              {username}
+                            </div>
+                          ) : (
+                            <div className="text-[12px] lg:text-base font-[400] hidden md:flex trans">
+                              {center_name}
+                            </div>
+                          )}
                           <ChevronDownIcon
                             className={classNames(
                               open ? "rotate-180 transform" : " ",

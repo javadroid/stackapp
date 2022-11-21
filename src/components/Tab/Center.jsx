@@ -4,6 +4,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
+import { toast } from "react-hot-toast";
 
 const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [captchaRef, setCaptchaRef] = useState(true);
@@ -16,6 +17,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     phone: "",
     password1: "",
     password2: "",
+    center_address: ""
   });
 
   const dispatch = useDispatch();
@@ -25,6 +27,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   };
 
   const handleSignUp = async (e) => {
+    console.log("Submitted");
     e.preventDefault();
     //perform check on regInfo
     const {
@@ -47,29 +50,43 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       !password1 ||
       !password2
     ) {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
     if (password1 !== password2) {
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
     if (isLoading) return;
     try {
       const response = await registerAuth(regInfo).unwrap();
-
       const name = response?.user?.first_name + " " + response?.user?.last_name;
+      //Get user account details like account type, rc number, etc
+      const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${response?.access_token}`,
+        },
+      });
+      const user = await getUser.json();
       const payload = {
-        username: name,
-        email: response?.user?.email,
+        emailAddress: response?.user?.email,
         pk: response?.user?.pk,
+        username: name,
         access_token: response?.access_token,
         refresh_token: response?.refresh_token,
+        account_type: user?.data.account_type,
+        blood_group: user?.data.blood_group,
+        center_name: user?.data?.center_name,
+        phone: user?.data?.phone,
+        rc_number: user?.data?.rc_number,
+        id: user?.data?.id,
       };
       dispatch(login(payload));
       closeModal();
     } catch (err) {
-      console.log(err);
+      toast.error(err.message);
     }
   };
 
@@ -358,7 +375,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
                 >
                   <svg
                     aria-hidden="true"
-                    class=" w-8 h-6 text-gray-200 animate-spin  fill-white"
+                    className=" w-8 h-6 text-gray-200 animate-spin  fill-white"
                     viewBox="0 0 100 101"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
