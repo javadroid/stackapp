@@ -71,7 +71,7 @@ const Footer = ({ toAppointmentPage, toRequestPage }) => {
           </div>
         </div>
         <div className="text-white text-center text-[12px] pb-6 md:pb-10 lg:text-base font-light">
-          Copyright © 2022 BloodFuse. All rights reserved.
+          Copyright © {new Date().getFullYear()} BloodFuse. All rights reserved.
         </div>
       </div>
     </footer>

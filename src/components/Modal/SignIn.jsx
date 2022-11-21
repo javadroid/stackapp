@@ -6,6 +6,7 @@ import { GoogleIcon } from "../../assets/images";
 import { useLoginAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
+import { data } from "autoprefixer";
 
 export default function SignIn({
   isModalOpen,
@@ -23,16 +24,7 @@ export default function SignIn({
     if (isLoading) return;
     try {
       const response = await loginAuth({ email, password }).unwrap();
-
       const name = response?.user?.first_name + " " + response?.user?.last_name;
-      const payload = {
-        username: name,
-        email: response?.user?.email,
-        pk: response?.user?.pk,
-        access_token: response?.access_token,
-        refresh_token: response?.refresh_token,
-      };
-      dispatch(login(payload));
       //Get user account details like account type, rc number, etc
       const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {
         method: "GET",
@@ -42,12 +34,27 @@ export default function SignIn({
         },
       });
       const user = await getUser.json();
-      console.log(user);
+      const payload = {
+        emailAddress: response?.user?.email,
+        pk: response?.user?.pk,
+        username: name,
+        access_token: response?.access_token,
+        refresh_token: response?.refresh_token,
+        account_type: user?.data.account_type,
+        blood_group: user?.data.blood_group,
+        center_name: user?.data?.center_name,
+        phone: user?.data?.phone,
+        rc_number: user?.data?.rc_number,
+        id: user?.data?.id,
+      };
+      console.log(payload);
       closeModalFunc();
+      dispatch(login(payload));
       setEmail("");
       setPassword("");
     } catch (err) {
       console.log(err);
+
     }
   };
 

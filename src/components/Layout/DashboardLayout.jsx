@@ -8,18 +8,9 @@ import { customToast } from "../../utils/customToast";
 const DashboardLayout = () => {
   const { loginState } = useSelector((state) => state.user);
 
-  const response = fetch(
-    "https://bloodfuse.pythonanywhere.com/api/users/blood-centers/",
-    {
-      withCredentials: true,
-      credentials: "include",
-      mode: "cors",
-    }
-  );
-
   if (!loginState) {
     customToast(
-      "You are not logged in. Please login to continue or sign-up if you don't have an account"
+      "You are logged out. Please login to continue or sign-up if you don't have an account"
     );
     return <Navigate to="/" replace />;
   }
