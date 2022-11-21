@@ -4,6 +4,7 @@ import { FiTwitter, FiFacebook } from "react-icons/fi";
 import { XIcon } from "@heroicons/react/outline";
 import { GoogleIcon } from "../../assets/images";
 import { useLoginAuthMutation } from "../../features/apiSlices/userApiSlice";
+import { useCentersListMutation } from "../../features/apiSlices/bloodCentersApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import { data } from "autoprefixer";
@@ -17,6 +18,7 @@ export default function SignIn({
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
+  const [centersList] = useCentersListMutation();
 
   const handleLogin = async (e) => {
     e.preventDefault();
