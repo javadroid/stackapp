@@ -8,7 +8,7 @@ import { apiSlice } from "../api/apiSlice";
 
 export const bloodCentersApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    centersList: builder.mutation({
+    centersList: builder.query({
       query: () => ({
         url: "users/blood-centers/",
         method: "GET",
@@ -17,4 +17,4 @@ export const bloodCentersApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useCentersListMutation } = bloodCentersApi;
+export const { useCentersListQuery } = bloodCentersApi;
