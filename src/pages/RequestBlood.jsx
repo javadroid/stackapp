@@ -1,6 +1,9 @@
 import React from 'react'
+import { useCentersListQuery } from '../features/apiSlices/bloodCentersApiSlice'
 
 const RequestBlood = () => {
+    //get centers list
+    const { data: centersList, error, isLoading } = useCentersListQuery()
     return (
         <div className='flex flex-col items-center justify-start md:justify-center w-full min-h-[90vh]'>
             <div className='w-full md:max-w-2xl h-full md:h-auto md:shadow-xl md:rounded-[6px]'>
@@ -25,9 +28,10 @@ const RequestBlood = () => {
                             <option value='Male'>Female</option>
                         </select>
                         <select className='w-full h-full p-4 bg-[#F2F2F2] rounded-[3px] focus:outline-none focus:shadow-outline border-none focus:ring-0'>
-                            <option value="" className='text-[#BFBFBF]'>Center and Hospitals</option>
-                            <option value='Male'>Male</option>
-                            <option value='Male'>Female</option>
+                            {isLoading && <option value="" className='text-[#BFBFBF]'>Center and Hospitals</option>}
+                            {centersList && centersList.map((center, index) => (
+                                <option key={index} value={center.center_name} className='text-[#BFBFBF]'>{center.center_name}</option>
+                            ))}
                         </select>
                         <input
                             className="appearance-none rounded w-full p-4 bg-[#F2F2F2] placeholder-[#BFBFBF] mb-3 leading-tight focus:outline-none focus:shadow-outline border-none focus:ring-0"
