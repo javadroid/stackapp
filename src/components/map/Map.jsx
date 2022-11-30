@@ -79,7 +79,7 @@ const Map = ({ location, zoomLevel, CenterList }) => {
             {show ? (
               <Center
                 handleClick={handleClick}
-                setIndex={setCenterId}
+                setCenterId={setCenterId}
                 CenterList={CenterList}
               />
             ) : (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SearchBar, Map } from "../components/map";
 import { useCentersListQuery } from "../features/apiSlices/bloodCentersApiSlice";
 
@@ -10,12 +10,24 @@ const location = {
 };
 
 const BookAppointment = () => {
-  const { data: centersList, error, isLoading } = useCentersListQuery();
+  const { data: centersList = [] } = useCentersListQuery();
+
   const [Centers, setCenters] = useState(centersList);
+
+  console.log(centersList);
+
+  // useEffect(() => {
+  //   const fetchCenter = async () => {
+  //     const response = await centersList().unwrap();
+  //     console.log(response);
+  //   };
+
+  //   fetchCenter();
+  // }, []);
 
   return (
     <div className="w-full">
-      <SearchBar CenterList={centersList} setCenters={setCenters} />
+      <SearchBar CenterList={Centers} setCenters={setCenters} />
 
       <Map location={location} zoomLevel={17} CenterList={Centers} />
     </div>

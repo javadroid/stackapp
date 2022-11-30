@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Gradient, Patient } from "../../assets/images";
 import { Link } from "react-router-dom";
 import GaugeChart from "react-gauge-chart";
@@ -17,6 +17,7 @@ import Calendar from "react-calendar";
 import "./Calendar.css";
 import { ArrowUpIcon, TrashIcon } from "@heroicons/react/outline";
 import { useSelector } from "react-redux";
+import { useGetDonorAppointmentsQuery } from "../../features/apiSlices/appointmentApiSlice";
 
 const data = [
   {
@@ -62,36 +63,6 @@ const data = [
     amt: 2100,
   },
 ];
-const appointmentData = [
-  {
-    centerName: "Abuja Blood Donation Center",
-    date: "12/04/2022",
-    time: "1:30-2:30pm",
-    status: "Accepted",
-    donorId: "aa234-678",
-  },
-  {
-    centerName: "Abuja Blood Donation Center",
-    date: "12/04/2022",
-    time: "1:30-2:30pm",
-    status: "Accepted",
-    donorId: "aa234-678",
-  },
-  {
-    centerName: "Abuja Blood Donation Center",
-    date: "12/04/2022",
-    time: "1:30-2:30pm",
-    status: "Declined",
-    donorId: "aa234-678",
-  },
-  {
-    centerName: "Abuja Blood Donation Center",
-    date: "12/04/2022",
-    time: "1:30-2:30pm",
-    status: "Accepted",
-    donorId: "aa234-678",
-  },
-];
 
 const PerformanceData = [
   {
@@ -127,19 +98,28 @@ const PerformanceData = [
   },
 ];
 const Dashboard = () => {
-  const { username, center_name } = useSelector((state) => state.user);
+  const { username, center_name, id, account_type } = useSelector(
+    (state) => state.user
+  );
   const names = username.split(" ");
   const firstname = names[0];
+  const { data: getDonorAppointments = [] } = useGetDonorAppointmentsQuery(id);
 
-  // eslint-disable-next-line
-  const [appointment, setAppointment] = useState(appointmentData);
+  console.log(getDonorAppointments);
+
+  // eslint - disable - next - line;
+  const [appointment, setAppointment] = useState(getDonorAppointments);
+
   return (
     <>
       <div className="grid  grid-cols-1 lg:grid-cols-3  grid-flow-row gap-4 w-full  h-full p-4">
         {/* First Grid( Banner, 3 Cards and Pending Appointments) */}
         <div className=" md:col-span-2 space-y-4 ">
           <span className="font-[500] h-fit hidden md:inline md:mb-4 text-xl md:text-2xl">
-            Hello, {firstname.length > 0 ? firstname : center_name + ", Welcome to your Dashboard"}
+            Hello,{" "}
+            {firstname.length > 0
+              ? firstname
+              : center_name + ", Welcome to your Dashboard"}
           </span>
           <span className="font-[600] text-base h-fit inline-flex items-center justify-between md:hidden md:mb-4 w-full">
             <span>
@@ -310,7 +290,7 @@ const Dashboard = () => {
                       Status
                     </th>
                     <th scope="col" className="py-3 px-4">
-                      Donor id
+                      Appointment id
                     </th>
                     <th scope="col" className="py-3 pl-2 pr-6"></th>
                   </tr>
@@ -336,7 +316,7 @@ const Dashboard = () => {
                         >
                           {data.status}
                         </td>
-                        <td className="py-3 px-6">{data.donorId}</td>
+                        <td className="py-3 px-6">{data.id}</td>
                         <td className="py-3 pl-2 pr-6 text-red-500">
                           <TrashIcon className="h-6 w-6" />
                         </td>
