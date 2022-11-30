@@ -17,7 +17,11 @@ import Calendar from "react-calendar";
 import "./Calendar.css";
 import { ArrowUpIcon, TrashIcon } from "@heroicons/react/outline";
 import { useSelector } from "react-redux";
-import { useGetDonorAppointmentsQuery } from "../../features/apiSlices/appointmentApiSlice";
+import {
+  useGetDonorAppointmentsQuery,
+  useDeleteAppointmentMutation,
+} from "../../features/apiSlices/appointmentApiSlice";
+import DeleteModal from "./DeleteModal";
 
 const data = [
   {
@@ -98,20 +102,47 @@ const PerformanceData = [
   },
 ];
 const Dashboard = () => {
-  const { username, center_name, id, account_type } = useSelector(
-    (state) => state.user
-  );
+  const { username, center_name, id } = useSelector((state) => state.user);
   const names = username.split(" ");
   const firstname = names[0];
-  const { data: getDonorAppointments = [] } = useGetDonorAppointmentsQuery(id);
+  const [show, setShow] = useState(false);
+  const [deleteInfo, setDeleteInfo] = useState({
+    id: "",
+    elIndex: "",
+  });
 
-  console.log(getDonorAppointments);
+  const { data: getDonorAppointments = [], refetch } =
+    useGetDonorAppointmentsQuery(id);
 
-  // eslint - disable - next - line;
+  const [deleteAppointment, isLoading] = useDeleteAppointmentMutation();
+
   const [appointment, setAppointment] = useState(getDonorAppointments);
+
+  const deleteAppointmentFunc = async () => {
+    try {
+      await deleteAppointment(deleteInfo.id).unwrap();
+      setAppointment((prev) => {
+        return prev.filter((data) => data.id !== deleteInfo.id);
+      });
+
+      setShow(false);
+      refetch();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    setAppointment(getDonorAppointments);
+  }, [getDonorAppointments]);
 
   return (
     <>
+      <DeleteModal
+        show={show}
+        setShow={setShow}
+        isLoading={isLoading}
+        deleteAppointmentFunc={deleteAppointmentFunc}
+      />
       <div className="grid  grid-cols-1 lg:grid-cols-3  grid-flow-row gap-4 w-full  h-full p-4">
         {/* First Grid( Banner, 3 Cards and Pending Appointments) */}
         <div className=" md:col-span-2 space-y-4 ">
@@ -152,9 +183,11 @@ const Dashboard = () => {
                     STX for every donation you make.
                   </span>
                 </div>
-                <button className="rounded bg-white text-red-500 w-fit px-8 py-2">
-                  Learn More
-                </button>
+                <Link to="/book-appointment">
+                  <button className="rounded bg-white text-red-500 w-fit px-8 py-2">
+                    Learn More
+                  </button>
+                </Link>
               </div>
               <div className="-py-10 w-[40%] sm:w-[30%] ">
                 <img src={Patient} alt="" className="h-36 xl:h-44 mr-auto" />
@@ -298,7 +331,7 @@ const Dashboard = () => {
                 <tbody>
                   {appointment.map((data, index) => {
                     return (
-                      <tr className="bg-white border-b " key={index}>
+                      <tr className="bg-white border-b " key={data.id}>
                         <th
                           scope="row"
                           className="py-4 px-4 font-medium text-gray-900 whitespace-nowrap  sticky left-0 z-10 bg-white"
@@ -317,7 +350,13 @@ const Dashboard = () => {
                           {data.status}
                         </td>
                         <td className="py-3 px-6">{data.id}</td>
-                        <td className="py-3 pl-2 pr-6 text-red-500">
+                        <td
+                          className="py-3 pl-2 pr-6 text-red-500 cursor-pointer"
+                          onClick={() => {
+                            setShow(true);
+                            setDeleteInfo({ id: data.id, elIndex: index });
+                          }}
+                        >
                           <TrashIcon className="h-6 w-6" />
                         </td>
                       </tr>

@@ -13,17 +13,9 @@ const BookAppointment = () => {
   const { data: centersList = [] } = useCentersListQuery();
 
   const [Centers, setCenters] = useState(centersList);
-
-  console.log(centersList);
-
-  // useEffect(() => {
-  //   const fetchCenter = async () => {
-  //     const response = await centersList().unwrap();
-  //     console.log(response);
-  //   };
-
-  //   fetchCenter();
-  // }, []);
+  useEffect(() => {
+    setCenters(centersList);
+  }, [centersList]);
 
   return (
     <div className="w-full">

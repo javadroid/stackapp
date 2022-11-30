@@ -3,7 +3,7 @@ import { useCentersListQuery } from "../features/apiSlices/bloodCentersApiSlice"
 
 const RequestBlood = () => {
   //get centers list
-  const { data: centersList, error, isLoading } = useCentersListQuery();
+  const { data: centersList, isLoading } = useCentersListQuery();
 
   return (
     <div className="flex flex-col items-center justify-start md:justify-center w-full min-h-[90vh]">

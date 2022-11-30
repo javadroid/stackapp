@@ -5,7 +5,7 @@ const Center = ({ handleClick, setCenterId, CenterList }) => {
     setCenterId(e);
     handleClick();
   };
-  if (CenterList.length <= 0) return <>No centers found</>;
+  if (CenterList.length <= 0) return <>Loading ...</>;
   return (
     <div className="w-full">
       {CenterList.map((center) => {

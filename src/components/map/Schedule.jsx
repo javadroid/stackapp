@@ -70,17 +70,21 @@ const Schedule = ({ CenterList, centerId }) => {
                     value={phone}
                   />
                 </div>
-                <div className="mb-6 flex justify-between gap-2">
+                <div className="mb-6 grid grid-cols-2 justify-between gap-2">
+                  <label htmlFor="date">Pick Date</label>
+                  <label htmlFor="date">Pick Time</label>
                   <input
                     className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     id="date"
                     type="date"
                     placeholder="date"
                     name="date"
+                    min={new Date().toISOString().split("T")[0]}
                     value={bookingInfo.date}
                     onChange={handleChange}
                     required
                   />
+
                   <input
                     className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     id="time"
