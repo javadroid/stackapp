@@ -25,7 +25,7 @@ export default function SignIn({
       const response = await loginAuth({ email, password }).unwrap();
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {
+      const getUser = await fetch(`${process.env.REACT_APP_API_URL}user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +52,6 @@ export default function SignIn({
       setPassword("");
     } catch (err) {
       console.log(err);
-
     }
   };
 
