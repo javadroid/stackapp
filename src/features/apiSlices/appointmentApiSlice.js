@@ -44,12 +44,6 @@ export const appointmentApi = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-    bloodCenters: builder.mutation({
-      query: () => ({
-        url: "users/blood-centers/",
-        method: "GET",
-      }),
-    }),
   }),
 });
 

@@ -1,39 +1,41 @@
 import React from "react";
 
-
 const Center = ({ handleClick, setIndex, CenterList }) => {
   const clickHandler = (e) => {
     setIndex(e);
     handleClick();
   };
-  if(CenterList.length <= 0 ) return <>No centers found</>
+  if (CenterList.length <= 0) return <>No centers found</>;
   return (
     <div className="w-full">
-      {CenterList?.map((center, index) => {
+      {CenterList?.map((center) => {
         return (
           <div
             className="mb-6 flex flex-col md:border-0 border border-x-0 border-b-0 border-t-gray-500 "
-            key={index}
+            key={center.id}
           >
             <div className=" py-4 md:pb-2">
-              <span>{center.name}</span>
+              <span>{center.center_name}</span>
             </div>
             <div className="text-sm pb-2">
-              <span>{center.address}</span>
+              <span>
+                43 mambolo street wuse zone 2 zone 2 Mambolo St, Wuse 904101,
+                Abuja, Nigeria,
+              </span>
             </div>
             <div className="text-sm pb-2">
-              <span>{center.date}</span>
+              <span>Friday, April 1, 2022</span>
             </div>
             <div className="text-sm pb-2">
-              <span>{center.time}</span>
+              <span>08:30am - 04:00pm</span>
             </div>
             <div className="text-sm pb-2">
-              <span>{center.appointment} Appointment Remaining</span>
+              <span>5 Appointment Remaining</span>
             </div>
             <div className="pt-2 text-sm lg:text-base">
               <button
                 className="rounded bg-red-500 text-white px-8 py-2"
-                onClick={() => clickHandler(index)}
+                onClick={() => clickHandler(center.id)}
               >
                 Schedule Appointment
               </button>

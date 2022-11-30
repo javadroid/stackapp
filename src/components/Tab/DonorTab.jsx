@@ -27,8 +27,8 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-     //perform check on regInfo
-     const {
+    //perform check on regInfo
+    const {
       email,
       blood_group,
       account_type,
@@ -58,7 +58,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     if (isLoading) return;
     try {
       const response = await registerAuth(regInfo).unwrap();
-      console.log(response);
+
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       //Get user account details like account type, rc number, etc
       const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {

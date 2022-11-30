@@ -4,7 +4,7 @@ import { useCentersListQuery } from "../features/apiSlices/bloodCentersApiSlice"
 const RequestBlood = () => {
   //get centers list
   const { data: centersList, error, isLoading } = useCentersListQuery();
-  console.log(centersList);
+
   return (
     <div className="flex flex-col items-center justify-start md:justify-center w-full min-h-[90vh]">
       <div className="w-full md:max-w-2xl h-full md:h-auto md:shadow-xl md:rounded-[6px]">

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { CenterList, SearchBar, Map } from "../components/map";
+import { SearchBar, Map } from "../components/map";
+import { useCentersListQuery } from "../features/apiSlices/bloodCentersApiSlice";
 
 const location = {
   address:
@@ -9,13 +10,12 @@ const location = {
 };
 
 const BookAppointment = () => {
+  const { data: centersList, error, isLoading } = useCentersListQuery();
+  const [Centers, setCenters] = useState(centersList);
 
-
-
-  const [Centers, setCenters] = useState(CenterList);
   return (
     <div className="w-full">
-      <SearchBar CenterList={CenterList} setCenters={setCenters} />
+      <SearchBar CenterList={centersList} setCenters={setCenters} />
 
       <Map location={location} zoomLevel={17} CenterList={Centers} />
     </div>

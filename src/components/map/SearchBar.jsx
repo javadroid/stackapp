@@ -6,7 +6,7 @@ const SearchBar = ({ CenterList, setCenters }) => {
     if (e.target.value.trim() === "") return setCenters(CenterList);
     const centerListTemp = CenterList.filter(
       (Centers) =>
-        Centers.name
+        Centers.center_name
           .toLowerCase()
           .indexOf(e.target.value.trim().toLowerCase()) !== -1
     );
