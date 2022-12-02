@@ -31,7 +31,7 @@ export default function MedicalInfo({ isModalOpen, closeModalFunc }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full sm:w-[80%] sm:mx-auto h-full sm:h-auto px-5 md:px-16 max-w-2xl transform overflow-hidden sm:rounded-[4px] py-2 bg-[#FCFCFC]  text-left align-middle shadow-xl">
+                <Dialog.Panel className="w-full sm:w-[80%] sm:mx-auto h-screen sm:h-auto px-5 md:px-16 max-w-2xl transform overflow-hidden sm:rounded-[4px] py-2 bg-[#FCFCFC]  text-left align-middle shadow-xl">
                   <Dialog.Title
                     as="h2"
                     className=" w-full my-5  flex md:text-3xl text-xl justify-between font-extrabold text-gray-900"
@@ -58,13 +58,13 @@ export default function MedicalInfo({ isModalOpen, closeModalFunc }) {
                         <label>First Name</label>
                         <label>Last Name</label>
                         <input
-                          className="appearance-none bg-transparent rounded w-full p-4  placeholder-[#BFBFBF]  mb-3 leading-tight focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
+                          className="appearance-none bg-transparent rounded w-full px-4 py-2  placeholder-[#BFBFBF]  mb-3 leading-tight focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
                           type="text"
                           placeholder="First Name"
                           required
                         />
                         <input
-                          className="appearance-none bg-transparent rounded w-full p-4  placeholder-[#BFBFBF] mb-3 leading-tight  focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
+                          className="appearance-none bg-transparent rounded w-full px-4 py-2  placeholder-[#BFBFBF] mb-3 leading-tight  focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
                           type="text"
                           placeholder="Last Name"
                           required
@@ -75,7 +75,7 @@ export default function MedicalInfo({ isModalOpen, closeModalFunc }) {
                         <label>State</label>
                         <select
                           placeholder="Blood Type"
-                          className=" p-4 bg-transparent  text-[#BFBFBF]  rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
+                          className=" px-4 py-2 bg-transparent rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
                         >
                           <option value="A+">A+</option>
                           <option value="A-">A-</option>
@@ -87,7 +87,7 @@ export default function MedicalInfo({ isModalOpen, closeModalFunc }) {
                           <option value="O-">O-</option>
                         </select>
 
-                        <select className=" p-4 bg-transparent text-[#BFBFBF]  rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0">
+                        <select className=" px-4 py-2 bg-transparentrounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0">
                           <option value="Lagos">Lagos</option>
                           <option value="Ogun">Ogun</option>
                           <option value="Kaduna">Kaduna</option>
@@ -99,14 +99,14 @@ export default function MedicalInfo({ isModalOpen, closeModalFunc }) {
                         <label>Blood Sugar</label>
                         <select
                           placeholder="Blood Type"
-                          className=" p-4 bg-transparent  text-[#BFBFBF]  rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
+                          className=" px-4 py-2 bg-transparent rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
                         >
                           <option value="125mmHg">125mmHg</option>
                           <option value="135mmHg">135mmHg</option>
                           <option value="155mmHg">155mmHg</option>
                         </select>
 
-                        <select className=" p-4 bg-transparent text-[#BFBFBF]  rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0">
+                        <select className=" px-4 py-2 bg-transparentrounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0">
                           <option value="Pre-pandial">Pre-pandial</option>
                           <option value="Post-pandial">Post-prandial</option>
                         </select>
@@ -115,23 +115,24 @@ export default function MedicalInfo({ isModalOpen, closeModalFunc }) {
                         <label>Age</label>
                         <label>Weight (kg) </label>
                         <label>Height (cm)</label>
-                        <select
-                          placeholder="Blood Type"
-                          className=" p-4 bg-transparent  text-[#BFBFBF]  rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
-                        >
-                          <option value="">Age</option>
-                          <option value="60">60</option>
-                          <option value="">90</option>
-                        </select>
-
-                        <select className=" p-4 bg-transparent text-[#BFBFBF]  rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0">
-                          <option value="Pre-pandial">Weight</option>
-                          <option value="Post-pandial">200</option>
-                        </select>
-                        <select className=" p-4  bg-transparent text-[#BFBFBF]  rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0">
-                          <option value="">176</option>
-                          <option value="">200</option>
-                        </select>
+                        <input
+                          className=" px-4 py-2 bg-transparent rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
+                          type="number"
+                          placeholder="Age"
+                          required
+                        />
+                        <input
+                          className=" px-4 py-2 bg-transparent rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
+                          type="number"
+                          placeholder="Weight"
+                          required
+                        />
+                        <input
+                          className=" px-4 py-2 bg-transparent rounded focus:outline-none focus:shadow-outline border-1 border-[#BFBFBF] focus:ring-0"
+                          type="number"
+                          placeholder="Height"
+                          required
+                        />
                       </div>
 
                       <button
