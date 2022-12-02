@@ -113,7 +113,6 @@ const Dashboard = () => {
 
   const { data: getDonorAppointments = [], refetch } =
     useGetDonorAppointmentsQuery(id);
-    console.log(getDonorAppointments);
 
   const [deleteAppointment, isLoading] = useDeleteAppointmentMutation();
 

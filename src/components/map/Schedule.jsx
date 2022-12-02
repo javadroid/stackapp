@@ -26,6 +26,7 @@ const Schedule = ({ CenterList, centerId }) => {
 
   const book = async (e) => {
     e.preventDefault();
+    console.log(bookingInfo);
     if(isLoading) return;
     try {
       const response = await createAppointment(bookingInfo).unwrap();
@@ -69,6 +70,7 @@ const Schedule = ({ CenterList, centerId }) => {
                     // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     placeholder="phone"
                     value={phone}
+                    readOnly
                   />
                 </div>
                 <div className="mb-6 grid grid-cols-2 justify-between gap-2">
