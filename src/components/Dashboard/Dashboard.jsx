@@ -364,6 +364,10 @@ const Dashboard = () => {
                   })}
                 </tbody>
               </table>
+              {appointment.length === 0 && (
+                <div className="flex justify-center items-center h-20 md:h-40">
+                  <span className="text-gray-500">You don't have any appointments</span>
+                </div>)}
             </div>
           </div>
         </div>
