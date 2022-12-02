@@ -8,7 +8,7 @@ const Schedule = ({ CenterList, centerId }) => {
   const [show, setShow] = useState(false);
   const { username, phone, id } = useSelector((state) => state.user);
 
-  const [createAppointment] = useCreateAppointmentMutation();
+  const [createAppointment, isLoading ] = useCreateAppointmentMutation();
 
   const [bookingInfo, setBookingInfo] = useState({
     donor: id,
@@ -26,6 +26,7 @@ const Schedule = ({ CenterList, centerId }) => {
 
   const book = async (e) => {
     e.preventDefault();
+    if(isLoading) return;
     try {
       const response = await createAppointment(bookingInfo).unwrap();
       console.log(response);
