@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { useCentersListQuery } from "../features/apiSlices/bloodCentersApiSlice";
+import axios from 'axios'
 
 const RequestBlood = () => {
   const [isSending, setIsSending] = useState(!1);
+  const [requested, setRequested] = useState(!1);
   const onSubmit = async (e) => {
     e.preventDefault();
     setIsSending(!0);
-    setTimeout(() => {
-      setIsSending(!1);
-    }, 5000);
+    const res = await axios.post(
+      `${(rpocess, env.REACT_APP_API_URL)}/api/appointments/requestblood/`
+    );
+    res.status===200&&setRequested(!0);
+    res.status===200&&setIsSending(!1);
   };
   //get centers list
   const { data: centersList, error, isLoading } = useCentersListQuery();
@@ -18,11 +22,15 @@ const RequestBlood = () => {
         <div className="flex flex-col gap-2 items-center h-full py-8 px-6 md:px-8">
           <h1 className="my-4 text-2xl md:text-[32px]">Request Blood</h1>
           {/* Create a form to get user's blood type, gender, center or hospital and phone number */}
+          {requested&&(<span className="m-2 text-lg text-green-700 italic ">Your request has been sent successfully</span>)
           <form
             className="flex flex-col gap-4 items-center w-full"
             onSubmit={onSubmit()}
           >
-            <select className="w-full h-full p-4 bg-[#F2F2F2] rounded-[3px] focus:outline-none focus:shadow-outline border-none focus:ring-0">
+            <select
+              className="w-full h-full p-4 bg-[#F2F2F2] rounded-[3px] focus:outline-none focus:shadow-outline border-none focus:ring-0"
+              required
+            >
               <option value="">Blood Type</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
@@ -33,14 +41,20 @@ const RequestBlood = () => {
               <option value="O+">O+</option>
               <option value="O-">O-</option>
             </select>
-            <select className="w-full h-full p-4 bg-[#F2F2F2] rounded-[3px] focus:outline-none focus:shadow-outline border-none focus:ring-0">
+            <select
+              className="w-full h-full p-4 bg-[#F2F2F2] rounded-[3px] focus:outline-none focus:shadow-outline border-none focus:ring-0"
+              required
+            >
               <option value="" className="text-[#BFBFBF]">
                 Gender
               </option>
               <option value="Male">Male</option>
               <option value="Male">Female</option>
             </select>
-            <select className="w-full h-full p-4 bg-[#F2F2F2] rounded-[3px] focus:outline-none focus:shadow-outline border-none focus:ring-0">
+            <select
+              className="w-full h-full p-4 bg-[#F2F2F2] rounded-[3px] focus:outline-none focus:shadow-outline border-none focus:ring-0"
+              required
+            >
               {isLoading && (
                 <option value="" className="text-[#BFBFBF]">
                   Center and Hospitals
@@ -90,8 +104,8 @@ const RequestBlood = () => {
                         fill="currentFill"
                       />
                     </svg>{" "}
-                    Logging in
-                    <span className="sr-only">Logging in...</span>
+                    Sending Request
+                    <span className="sr-only">Sending Request ...</span>
                   </div>
                 </>
               ) : (
