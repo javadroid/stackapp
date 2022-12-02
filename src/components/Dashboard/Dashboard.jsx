@@ -113,6 +113,7 @@ const Dashboard = () => {
 
   const { data: getDonorAppointments = [], refetch } =
     useGetDonorAppointmentsQuery(id);
+    console.log(getDonorAppointments);
 
   const [deleteAppointment, isLoading] = useDeleteAppointmentMutation();
 
@@ -334,9 +335,9 @@ const Dashboard = () => {
                       <tr className="bg-white border-b " key={data.id}>
                         <th
                           scope="row"
-                          className="py-4 px-4 font-medium text-gray-900 whitespace-nowrap  sticky left-0 z-10 bg-white"
+                          className="py-4 px-4 font-medium text-gray-700 whitespace-nowrap  sticky left-0 z-10 bg-white"
                         >
-                          {data.centerName}
+                          {data.center_name || "Donation Center"}
                         </th>
                         <td className="py-3 px-4">{data.date}</td>
                         <td className="py-3 px-4">{data.time}</td>
@@ -349,7 +350,7 @@ const Dashboard = () => {
                         >
                           {data.status}
                         </td>
-                        <td className="py-3 px-6">{data.id}</td>
+                        <td className="py-3 px-6">{data.id.substring(0, 6)}</td>
                         <td
                           className="py-3 pl-2 pr-6 text-red-500 cursor-pointer"
                           onClick={() => {
