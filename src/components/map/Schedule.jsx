@@ -35,7 +35,6 @@ const Schedule = ({ CenterList, centerId }) => {
     try {
       setLoading(true);
       const response = await createAppointment(bookingInfo).unwrap();
-      console.log(response);
       setShow(!show);
     } catch (err) {
       console.log(err.message);
