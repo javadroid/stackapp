@@ -357,7 +357,7 @@ const Dashboard = () => {
                             setDeleteInfo({ id: data.id, elIndex: index });
                           }}
                         >
-                          <TrashIcon className="h-6 w-6" />
+                          <TrashIcon className="h-4 w-4" />
                         </td>
                       </tr>
                     );
