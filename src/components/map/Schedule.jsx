@@ -6,7 +6,8 @@ import Link2Dashboard from "./Link2Dashboard";
 
 const Schedule = ({ CenterList, centerId }) => {
   const [show, setShow] = useState(false);
-  const { username, phone, id } = useSelector((state) => state.user);
+  const [ Loading, setLoading ] = useState(false);
+  const { username, phone, id, center_name: HospitalName } = useSelector((state) => state.user);
 
   const [createAppointment, isLoading ] = useCreateAppointmentMutation();
 
@@ -26,15 +27,20 @@ const Schedule = ({ CenterList, centerId }) => {
 
   const book = async (e) => {
     e.preventDefault();
-    console.log(bookingInfo);
-    if(isLoading) return;
+    if(bookingInfo.date === "" || bookingInfo.time === ""){
+      alert("Please fill in all fields");
+      return;
+    }
+    if(Loading) return;
     try {
+      setLoading(true);
       const response = await createAppointment(bookingInfo).unwrap();
       console.log(response);
       setShow(!show);
     } catch (err) {
       console.log(err.message);
     }
+    setLoading(false);
   };
   return (
     <>
@@ -54,13 +60,25 @@ const Schedule = ({ CenterList, centerId }) => {
                   <span>Appointment Schedule</span>
                 </div>
                 <div className="mb-4">
-                  <input
+                  {username.length > 2 ? (
+                    <input
                     className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     id="Fullname"
                     type="text"
                     value={username}
                     readOnly
                   />
+                  ) : (
+                    <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="Fullname"
+                    type="text"
+                    value={HospitalName}
+                    readOnly
+                  />
+                  )
+                    }
+                  
                 </div>
                 <div className="mb-6">
                   <input
