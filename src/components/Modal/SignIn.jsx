@@ -6,6 +6,7 @@ import { GoogleIcon } from "../../assets/images";
 import { useLoginAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
+import { toast } from "react-hot-toast";
 
 export default function SignIn({
   isModalOpen,
@@ -51,7 +52,7 @@ export default function SignIn({
       setEmail("");
       setPassword("");
     } catch (err) {
-      console.log(err);
+      toast.error(err.data.non_field_errors[0]);
     }
   };
 
