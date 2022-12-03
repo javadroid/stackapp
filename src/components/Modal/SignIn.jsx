@@ -52,7 +52,11 @@ export default function SignIn({
       setEmail("");
       setPassword("");
     } catch (err) {
+      if(err.data.non_field_errors){
       toast.error(err.data.non_field_errors[0]);
+      }else{
+        toast.error("Something went wrong");
+      }
     }
   };
 
