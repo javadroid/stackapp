@@ -176,7 +176,7 @@ export default function NavBar({ bgColor, textColor, modalState }) {
                 )}
               </Popover>
               <Link
-                to="/aboutus"
+                to="/about-us"
                 className="text-[12px] lg:text-base text-white-500 hover:text-white-900"
               >
                 About Us
