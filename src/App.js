@@ -49,7 +49,7 @@ function App() {
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<SuspenseWrapper><Dashboard /></SuspenseWrapper>} />
               <Route path="/dashboard/main" element={<SuspenseWrapper><Dashboard /></SuspenseWrapper>} />
-              <Route path="medicals" element={<SuspenseWrapper><MedicalsPage /></SuspenseWrapper>} />
+              <Route path="medical" element={<SuspenseWrapper><MedicalsPage /></SuspenseWrapper>} />
               <Route path="history" element={<SuspenseWrapper><History /></SuspenseWrapper>} />
               <Route path="wallet" element={<SuspenseWrapper><Wallet /></SuspenseWrapper>} />
             </Route>
