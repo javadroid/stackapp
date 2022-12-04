@@ -11,6 +11,7 @@ const VideoCard = ({ person }) => {
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+          loading='lazy'
         ></iframe>
       </div>
       <p className="text-center font-medium py-4 text-2xl lg:text-3xl">
