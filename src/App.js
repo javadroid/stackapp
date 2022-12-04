@@ -1,17 +1,9 @@
-import {
-  LandingPage,
-} from "./pages";
+import { LandingPage } from "./pages";
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import {
-  LandingLayout,
-  AppointmentLayout,
-  RequestLayout,
-  DashboardLayout,
-} from "./components/Layout";
+import { LandingLayout, AppointmentLayout, RequestLayout, DashboardLayout } from "./components/Layout";
 import "./index.css";
 import { Toaster } from 'react-hot-toast';
-
 
 const AboutUs = lazy(() => import('./components/LandingPage/AboutUs'));
 const WhoCanDonate = lazy(() => import('./pages/WhoCanDonate'));
