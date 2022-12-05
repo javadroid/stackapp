@@ -112,9 +112,9 @@ const Schedule = ({ CenterList, centerId }) => {
                     className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     id="time"
                     type="time"
-                    placeholder="00:00"
+                    placeholder="08:00"
                     name="time"
-                    min={new Date().toLocaleTimeString()}
+                    min="08:00" max="16:00"
                     value={bookingInfo.time}
                     onChange={handleChange}
                     required
