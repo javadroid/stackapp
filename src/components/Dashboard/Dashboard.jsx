@@ -196,7 +196,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className="py-2 lg:hidden h-full w-full">
+          <div className="py-2 lg:hidden h-auto w-full">
             <Calendar />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 mt-2 gap-2 items-start md:col-span-2">
