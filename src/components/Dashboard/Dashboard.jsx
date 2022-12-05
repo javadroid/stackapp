@@ -185,7 +185,7 @@ const Dashboard = () => {
                     STX for every donation you make.
                   </span>
                 </div>
-                <Link to="/book-appointment">
+                <Link to="/who-can-donate">
                   <button className="rounded bg-white text-red-500 w-fit px-8 py-2">
                     Learn More
                   </button>
