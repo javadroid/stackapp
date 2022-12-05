@@ -24,7 +24,7 @@ const Center = ({ handleClick, setCenterId, CenterList }) => {
               </span>
             </div>
             <div className="text-sm pb-2">
-              <span>Friday, April 1, 2022</span>
+              <span>Monday - Friday</span>
             </div>
             <div className="text-sm pb-2">
               <span>08:30am - 04:00pm</span>

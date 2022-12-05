@@ -46,7 +46,9 @@ export default function DeleteModal({
                     as="h2"
                     className=" w-full mt-5 mb-6 md:mb-12 py-8 flex md:text-2xl text-xl justify-center font-bold text-gray-600"
                   >
-                    <span className="text-center">Do you want to delete this appointment?</span>
+                    <span className="text-center">
+                      Do you want to delete this appointment?
+                    </span>
                     <button
                       type="button"
                       className="justify-center"
@@ -71,7 +73,9 @@ export default function DeleteModal({
                       className="text-white px-4 transform sm:uppercase text-base bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px] w-full py-2 lg:py-4 text-center"
                       onClick={deleteAppointmentFunc}
                     >
-                      {!isLoading ? (
+                      {isLoading ? (
+                        "Yes"
+                      ) : (
                         <>
                           <div
                             role="status"
@@ -97,8 +101,6 @@ export default function DeleteModal({
                             <span className="sr-only">Deleting...</span>
                           </div>
                         </>
-                      ) : (
-                        "Delete"
                       )}
                     </button>
                   </div>
