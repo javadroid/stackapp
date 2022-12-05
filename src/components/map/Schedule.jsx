@@ -114,7 +114,7 @@ const Schedule = ({ CenterList, centerId }) => {
                     type="time"
                     placeholder="08:00"
                     name="time"
-                    min="08:00" max="16:00"
+                    min="08:00:00" max="16:00:00"
                     value={bookingInfo.time}
                     onChange={handleChange}
                     required
