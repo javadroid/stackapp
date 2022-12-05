@@ -66,7 +66,7 @@ const Map = ({ location, zoomLevel, CenterList }) => {
             </div>
           </div>
         </div>
-        <div className="md:w-[25%] w-full md:h-full  flex  flex-col pr-6 md:overflow-scroll float-left">
+        <div className="md:w-[25%] w-full md:h-full  flex  flex-col pr-6 md:overflow-y-scroll float-left">
           <div className=" pt-6 pb-0 md:py-3">
             {show ? (
               <span className="text-black">Donation Center Near You</span>

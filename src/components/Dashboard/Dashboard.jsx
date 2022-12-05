@@ -132,8 +132,10 @@ const Dashboard = () => {
     }
   };
   useEffect(() => {
+    refetch();
+
     setAppointment(getDonorAppointments);
-  }, [getDonorAppointments]);
+  }, [getDonorAppointments, refetch]);
 
   return (
     <>
@@ -166,7 +168,7 @@ const Dashboard = () => {
               </Link>
             </span>
           </span>{" "}
-          <div className="h-[250px] relative">
+          <div className="h-[250px] relative rounded">
             <img
               src={Gradient}
               alt=""
@@ -194,7 +196,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className="py-2 lg:hidden h-auto w-full">
+          <div className="py-2 lg:hidden h-full w-full">
             <Calendar />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 mt-2 gap-2 items-start md:col-span-2">
@@ -366,8 +368,11 @@ const Dashboard = () => {
               </table>
               {appointment.length === 0 && (
                 <div className="flex justify-center items-center h-20 md:h-40">
-                  <span className="text-gray-500">You don't have any appointments</span>
-                </div>)}
+                  <span className="text-gray-500">
+                    You don't have any appointments
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -376,13 +381,13 @@ const Dashboard = () => {
           <div className=" hidden lg:flex items-center justify-center">
             <span>
               <Link to="/book-appointment">
-                <button className="outline xl:text-base text-center sm:text-sm sm:px-1 sm:py-2 outline-offset-6 xl:px-6 xl:py-2 rounded outline-red-500 text-red-500 block">
+                <button className=" text-base text-center px-2 bg-red-500  py-1 rounded  text-white block">
                   Book new appointment
                 </button>{" "}
               </Link>
             </span>
           </div>
-          <div className="py-2 hidden lg:block  h-auto w-full">
+          <div className="py-2 hidden lg:block  h-auto w-full mt-[7px] mb-[9px]">
             <Calendar />
           </div>
 
