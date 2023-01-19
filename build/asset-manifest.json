@@ -1,10 +1,13 @@
 {
   "files": {
-    "main.css": "/static/css/main.e30406f8.css",
-    "main.js": "/static/js/main.228f9046.js",
+    "main.css": "/static/css/main.c9cf4141.css",
+    "main.js": "/static/js/main.087db8c5.js",
+    "static/media/profile-photo.jpg": "/static/media/profile-photo.d661e81d1a7ea3dc740c.jpg",
     "static/media/Outreach.png": "/static/media/Outreach.011c1881a795c4183dfb.png",
     "static/media/Lab.png": "/static/media/Lab.06db54ae5b014a0fa691.png",
+    "static/media/Scientist.png": "/static/media/Scientist.36e4af98393e47f459ef.png",
     "static/media/GroupHero.png": "/static/media/GroupHero.5b88cdd86ad8eb0895ea.png",
+    "static/media/Hero.png": "/static/media/Hero.24cec14bfef9dfe7e19c.png",
     "static/media/make-a-diff-1.png": "/static/media/make-a-diff-1.898199a29844b8e7ae18.png",
     "static/media/HealthyMan.png": "/static/media/HealthyMan.b7d40be19ac2bf922f4d.png",
     "static/media/about-woman.png": "/static/media/about-woman.b873cafc519913be1880.png",
@@ -12,14 +15,16 @@
     "static/media/Moderat-Light.ttf": "/static/media/Moderat-Light.709f6992ddf52332a7c0.ttf",
     "static/media/Moderat-Regular.ttf": "/static/media/Moderat-Regular.9d34c3c0dbe4313590aa.ttf",
     "static/media/Moderat-Bold.ttf": "/static/media/Moderat-Bold.bbdad4dc4aa3871fdf3e.ttf",
+    "static/media/gradient.png": "/static/media/gradient.2ae9638ad6dbf5f02cd4.png",
     "static/media/codeup-icon.png": "/static/media/codeup-icon.4963a9375fb5a4bd3aa9.png",
     "static/media/wittyhub-icon.png": "/static/media/wittyhub-icon.befa687798d1cd33feba.png",
+    "static/media/patient.png": "/static/media/patient.14f54c145579bb324275.png",
     "index.html": "/index.html",
-    "main.e30406f8.css.map": "/static/css/main.e30406f8.css.map",
-    "main.228f9046.js.map": "/static/js/main.228f9046.js.map"
+    "main.c9cf4141.css.map": "/static/css/main.c9cf4141.css.map",
+    "main.087db8c5.js.map": "/static/js/main.087db8c5.js.map"
   },
   "entrypoints": [
-    "static/css/main.e30406f8.css",
-    "static/js/main.228f9046.js"
+    "static/css/main.c9cf4141.css",
+    "static/js/main.087db8c5.js"
   ]
 }

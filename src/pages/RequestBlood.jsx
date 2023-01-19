@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useCentersListQuery } from "../features/apiSlices/bloodCentersApiSlice";
 import axios from 'axios'
+import { API_URL } from "../config";
 
 const RequestBlood = () => {
   const [isSending, setIsSending] = useState(!1);
@@ -9,7 +10,7 @@ const RequestBlood = () => {
     e.preventDefault();
     setIsSending(!0);
     const res = await axios.post(
-      `${(rpocess, env.REACT_APP_API_URL)}/api/appointments/requestblood/`
+      `${(API_URL)}api/appointments/requestblood/`
     );
     res.status===200&&setRequested(!0);
     res.status===200&&setIsSending(!1);
@@ -22,7 +23,7 @@ const RequestBlood = () => {
         <div className="flex flex-col gap-2 items-center h-full py-8 px-6 md:px-8">
           <h1 className="my-4 text-2xl md:text-[32px]">Request Blood</h1>
           {/* Create a form to get user's blood type, gender, center or hospital and phone number */}
-          {requested&&(<span className="m-2 text-lg text-green-700 italic ">Your request has been sent successfully</span>)
+          {requested&&(<span className="m-2 text-lg text-green-700 italic ">Your request has been sent successfully</span>)}
           <form
             className="flex flex-col gap-4 items-center w-full"
             onSubmit={onSubmit()}

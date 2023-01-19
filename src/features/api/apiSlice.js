@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_URL } from "../../config";
 import { tokenRefresh, logout } from "../user/userSlice";
 
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL = API_URL;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseURL,

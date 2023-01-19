@@ -11,7 +11,6 @@ const SearchBar = ({ CenterList, setCenters }) => {
           .indexOf(e.target.value.trim().toLowerCase()) !== -1
     );
     setCenters(centerListTemp);
-    console.log("Okay");
   };
   return (
     <div className="my-5 mx-10">

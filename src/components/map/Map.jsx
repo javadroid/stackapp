@@ -7,6 +7,7 @@ import { DonationCenter, Hospital, BloodBag } from "../../assets/images";
 
 import Center from "./Center";
 import Schedule from "./Schedule";
+import { GOOGLE_KEY } from "../../config";
 
 const LocationPin = ({ text }) => (
   <div className="pin">
@@ -29,7 +30,7 @@ const Map = ({ location, zoomLevel, CenterList }) => {
         <div className="md:w-[75%] flex flex-col justify-between md:-ml-0 border-b-red-500 border-4 border-x-0 -ml-10">
           <div className=" flex flex-col justify-between w-full h-[50vh]  md:h-[75%]">
             <GoogleMapReact
-              bootstrapURLKeys={{ key: "" }}
+              bootstrapURLKeys={{ key: GOOGLE_KEY }}
               defaultCenter={location}
               defaultZoom={zoomLevel}
             >
