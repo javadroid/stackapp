@@ -17,7 +17,7 @@ const SearchBar = ({ CenterList, setCenters }) => {
       <form>
         <label
           htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
         >
           Search
         </label>

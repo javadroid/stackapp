@@ -31,7 +31,7 @@ export default function DeleteModal({
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center md:p-4 text-center">
+            <div className="flex h-screen sm:min-h-full items-center justify-center md:p-4 text-center ">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -41,14 +41,12 @@ export default function DeleteModal({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="relative w-[90%] sm:w-[80%] sm:mx-auto h-full sm:h-auto px-5 md:px-28 max-w-3xl transform overflow-hidden sm:rounded-[4px] py-9 bg-white p-6 text-left align-middle shadow-xl">
+                <Dialog.Panel className="w-full sm:w-[80%] sm:mx-auto h-full sm:h-auto px-5 md:px-28 max-w-3xl transform overflow-hidden sm:rounded-[4px] py-9 bg-white p-6 text-left align-middle shadow-xl">
                   <Dialog.Title
                     as="h2"
-                    className=" w-full mt-5 mb-6 md:mb-12 py-8 flex md:text-2xl text-xl justify-center font-bold text-gray-600"
+                    className=" w-full my-5 flex md:text-3xl text-xl justify-between font-extrabold text-gray-900"
                   >
-                    <span className="text-center">
-                      Do you want to delete this appointment?
-                    </span>
+                    <span>Do you want to delete this appointment?</span>
                     <button
                       type="button"
                       className="justify-center"
@@ -57,25 +55,23 @@ export default function DeleteModal({
                       }}
                     >
                       <XIcon
-                        className="absolute top-4 md:top-6 right-4 md:right-6 h-6 md:h-8 w-6 md:w-8 border-none focus:outline-none ring-0"
+                        className="h-6 w-6 border-none"
                         aria-hidden="true"
                       />
                     </button>
                   </Dialog.Title>
                   <div className="flex-col flex justify-between items-center w-full sm:flex-row gap-5">
                     <button
-                      className="bg-white px-4 transform sm:uppercase text-base text-[#F00530] border border-red-500 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px] w-full py-2 lg:py-4 text-center"
+                      className="bg-white px-7 transform sm:uppercase text-lg text-[#F00530] border focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
                       onClick={() => setShow(false)}
                     >
                       No
                     </button>
                     <button
-                      className="text-white px-4 transform sm:uppercase text-base bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px] w-full py-2 lg:py-4 text-center"
+                      className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] hover:bg-red-800 focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
                       onClick={deleteAppointmentFunc}
                     >
-                      {isLoading ? (
-                        "Yes"
-                      ) : (
+                      {!isLoading ? (
                         <>
                           <div
                             role="status"
@@ -101,6 +97,8 @@ export default function DeleteModal({
                             <span className="sr-only">Deleting...</span>
                           </div>
                         </>
+                      ) : (
+                        "Delete"
                       )}
                     </button>
                   </div>
