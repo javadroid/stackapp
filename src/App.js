@@ -22,6 +22,11 @@ const History = lazy(() => import("./components/Dashboard/History"));
 const Wallet = lazy(() => import("./components/Dashboard/Wallet/Wallet"));
 
 function App() {
+
+  const session = sessionStorage.getItem('INIT')
+  if (session!==null) {
+    
+  }
   return (
     <>
       <Toaster position="top-center" reverseOrder={false} />

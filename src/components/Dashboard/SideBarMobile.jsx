@@ -20,7 +20,6 @@ const SideBarMobile = () => {
         dispatch(logoutDispatch());
       }
     } catch (error) {
-      console.log(error);
     }
   };
   return (

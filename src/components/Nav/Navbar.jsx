@@ -17,7 +17,9 @@ function classNames(...classes) {
 }
 
 export default function NavBar({ bgColor, textColor, modalState }) {
-  const { loginState, username, center_name, account_type } = useSelector((state) => state.user);
+  const { loginState, username, center_name, account_type } = useSelector(
+    (state) => state.user
+  );
   const [
     SignUpModal,
     SignInModal,
@@ -35,7 +37,6 @@ export default function NavBar({ bgColor, textColor, modalState }) {
       if (response.detail === "Successfully logged out.") {
       }
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -50,7 +51,11 @@ export default function NavBar({ bgColor, textColor, modalState }) {
           <div className="flex justify-between items-center py-6  md:space-x-10">
             <div className="flex justify-start ">
               <Link to="/">
-                <img className="h-10 w-auto" src={Logo} alt="Logo" />
+                <img
+                  className="h-[75px] w-[120px] w-auto"
+                  src={Logo}
+                  alt="Logo"
+                />
               </Link>
             </div>
             <div className="ml-auto md:hidden">

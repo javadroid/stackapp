@@ -4,9 +4,11 @@ import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import toast from "react-hot-toast";
+import { API_URL, SITE_KEY } from "../../config";
 
 const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [captchaRef, setCaptchaRef] = useState(true);
+  const [isFocus, setIsFocus] = useState(!1);
   const onCaptchaChange = () => setCaptchaRef(false);
   const [regInfo, setRegInfo] = useState({
     email: "",
@@ -14,9 +16,11 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     account_type: "donor",
     first_name: "",
     last_name: "",
+    gender: "",
     phone: "",
     password1: "",
     password2: "",
+    location: "",
   });
   const dispatch = useDispatch();
   const [registerAuth, { isLoading }] = useRegisterAuthMutation();
@@ -34,16 +38,20 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       account_type,
       first_name,
       last_name,
+      gender,
       phone,
       password1,
       password2,
+      location,
     } = regInfo;
     if (
       email === "" ||
       blood_group === "" ||
+      gender === "" ||
       account_type === "" ||
       first_name === "" ||
       last_name === "" ||
+      location === "" ||
       phone === "" ||
       password1 === "" ||
       password2 === ""
@@ -61,7 +69,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
 
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {
+      const getUser = await fetch(`${API_URL}user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -77,6 +85,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         refresh_token: response?.refresh_token,
         account_type: user?.data.account_type,
         blood_group: user?.data.blood_group,
+        gender: user?.data.gender,
         center_name: user?.data?.center_name,
         phone: user?.data?.phone,
         rc_number: user?.data?.rc_number,
@@ -154,7 +163,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <input
             type="email"
             name="email"
-            id="email"
+            id="donor_email"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
             placeholder=" "
             value={regInfo.email}
@@ -162,7 +171,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             required
           />
           <label
-            htmlFor="email"
+            htmlFor="donor_email"
             className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
           >
             Email address
@@ -172,7 +181,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <input
             type="number"
             name="phone"
-            id="phone"
+            id="donor_phone"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
             placeholder=" "
             value={regInfo.phone}
@@ -189,68 +198,118 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             Phone Number
           </label>
         </div>
-        <div className="relative z-0 mb-6 w-full group">
-          <select
-            name="blood_group"
-            id="blood_group"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
-            placeholder=" Select your blood group"
-            value={regInfo.blood_group}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select your blood group</option>
-            <option value="O-">O-</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-          </select>
-          <label
-            htmlFor="blood_group"
-            className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Blood Group
-          </label>
+        <div className="flex w-full relative gap-8">
+          <div className="relative z-0 mb-6 w-full group">
+            <select
+              name="blood_group"
+              id="blood_group"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" Select your blood group"
+              value={regInfo.blood_group}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select your blood group</option>
+              <option value="O-">O-</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+            </select>
+            <label
+              htmlFor="blood_group"
+              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Blood Group
+            </label>
+          </div>
+          <div className="relative z-0 mb-6 w-full group">
+            <select
+              name="gender"
+              id="gender"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" Select your gender"
+              value={regInfo.gender}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select your gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <label
+              htmlFor="gender"
+              className="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Gender
+            </label>
+          </div>
         </div>
-        <div className="relative z-0 mb-6 w-full group">
-          <input
-            type="password"
-            name="password1"
-            id="password1"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
-            placeholder=" "
-            value={regInfo.password1}
-            onChange={handleChange}
-            required
-          />
-          <label
-            htmlFor="password1"
-            className="peer-focus:font-medium absolute text-sm text-gray-500    duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Password
-          </label>
+        <div className="flex relative z-0 mb-6 w-full group">
+          <div className="w-[90%]">
+            <input
+              type="text"
+              name="location"
+              id="location"
+              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" "
+              value={regInfo.location}
+              onChange={handleChange}
+              onFocus={() => setIsFocus(!0)}
+              onBlur={() => setIsFocus(!1)}
+              required
+            />
+            <label
+              htmlFor="location"
+              className="peer-focus:font-medium absolute text-sm text-gray-500    duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Your Location
+            </label>
+          </div>
+          <div className={`w-[15%] text-sm text-gray-800 bg-transparent flex items-center justify-center cursor-pointer border-0 border-b-2 ${isFocus?'border-red-600':'border-gray-300'}`}>
+            Auto Add
+          </div>
         </div>
-        <div className="relative z-0 mb-6 w-full group">
-          <input
-            type="password"
-            name="password2"
-            id="password2"
-            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
-            placeholder=" "
-            value={regInfo.password2}
-            onChange={handleChange}
-            required
-          />
-          <label
-            htmlFor="password2"
-            className="peer-focus:font-medium absolute text-sm text-gray-500    duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >
-            Repeat Password
-          </label>
+        <div className="flex w-full relative gap-8">
+          <div className="relative z-0 mb-6 w-full group">
+            <input
+              type="password"
+              name="password1"
+              id="password1"
+              className="block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" "
+              value={regInfo.password1}
+              onChange={handleChange}
+              required
+            />
+            <label
+              htmlFor="password1"
+              className="peer-focus:font-medium absolute text-sm text-gray-500    duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Password
+            </label>
+          </div>
+          <div className="relative z-0 mb-6 w-full group">
+            <input
+              type="password"
+              name="password2"
+              id="donor_password2"
+              className="block py-2.5 px-0 w-full text-md text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              placeholder=" "
+              value={regInfo.password2}
+              onChange={handleChange}
+              required
+            />
+            <label
+              htmlFor="donor_password2"
+              className="peer-focus:font-medium absolute text-sm text-gray-500    duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+            >
+              Repeat Password
+            </label>
+          </div>
         </div>
-        <div className="flex items-center justify-between my-10">
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center ">
             <input
               id="donor_checkbox"
@@ -273,11 +332,8 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             </label>
           </div>
         </div>
-        <div className="my-8">
-          <ReCAPTCHA
-            sitekey={process.env.REACT_APP_SITE_KEY}
-            onChange={onCaptchaChange}
-          />
+        <div className="my-5">
+          <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
         </div>
         <button
           type="submit"
@@ -307,14 +363,14 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
                   />
                 </svg>{" "}
                 CREATING YOUR ACCOUNT
-                <span class="sr-only">Logging in...</span>
+                <span class="sr-only">creating account...</span>
               </div>
             </>
           ) : (
             " CREATE YOUR ACCOUNT"
           )}
         </button>
-        <div className="relative my-12">
+        <div className="relative my-10">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-b border-gray-300"></div>
           </div>
@@ -325,7 +381,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </div>
         </div>
       </form>
-      <div className="flex justify-center gap-2 px-auto w-full mb-7 items-center">
+      <div className="flex justify-center gap-2 px-auto w-full mb-1 items-center">
         <div>
           <button className="text-white sm:px-12 px-4 text-sm sm:text-md  bg-black hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-300 font-medium rounded-md  py-5 text-center">
             <div className="flex items-center space-between">

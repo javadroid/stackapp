@@ -32,7 +32,6 @@ export default function NavBar({ bgColor, textColor }) {
         dispatch(logoutDispatch());
       }
     } catch (error) {
-      console.log(error);
     }
   };
   let [SignUpOpen, setSignUpOpen] = useState(false);

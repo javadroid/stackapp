@@ -128,7 +128,6 @@ const Dashboard = () => {
       setShow(false);
       refetch();
     } catch (err) {
-      console.log(err);
     }
   };
   useEffect(() => {

@@ -42,7 +42,6 @@ const Schedule = ({ CenterList, centerId }) => {
       const response = await createAppointment(bookingInfo).unwrap();
       setShow(!show);
     } catch (err) {
-      console.log(err.message);
     }
     setLoading(false);
   };
@@ -94,8 +93,7 @@ const Schedule = ({ CenterList, centerId }) => {
                   />
                 </div>
                 <div className="mb-6 grid grid-cols-2 justify-between gap-2">
-                  <label htmlFor="date">Pick Date</label>
-                  <label htmlFor="date">Pick Time</label>
+                  <label htmlFor="date">Pick Date | Time</label>
                   <input
                     className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     id="date"

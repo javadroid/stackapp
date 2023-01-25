@@ -22,7 +22,6 @@ const Sidebar = ({ openModal, openSignUpModal }) => {
         dispatch(logoutDispatch());
       }
     } catch (error) {
-      console.log(error);
     }
   };
   return (
