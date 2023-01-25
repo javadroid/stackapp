@@ -116,10 +116,6 @@ const MedicalsPage = () => {
             <div className="flex items-center justify-between px-6 pb-6 border-b-2 border-[#EBEBEB]">
               {/* First Flex */}
               <div className="flex gap-4 items-center">
-                {/* <div className="flex items-center gap-1 cursor-pointer">
-                  <span>View Medical Report</span>
-                  <ChevronDownIcon className="w-6 h-6 text-[#445665]" />
-                </div> */}
                 <Popover className="relative ">
                   {({ open }) => (
                     <>
@@ -165,12 +161,12 @@ const MedicalsPage = () => {
                   )}
                 </Popover>
                 <div className="hidden lg:block cursor-pointer">
-                  <button className="bttn bttn-black">
-                    <PlusIcon className="w-4 h-4" />
-                    <span className="font-mod-light" onClick={openModal}>
+                  <div className="bttn bttn-black" onClick={openModal}>
+                    <PlusIcon className="w-6 h-6" />
+                    <span className="font-mod-light">
                       Create Medical Report
                     </span>
-                  </button>
+                  </div>
                 </div>
               </div>
               {/* Second Flex */}
@@ -203,7 +199,7 @@ const MedicalsPage = () => {
                     >
                       <Popover.Panel className="absolute z-20 left-1/2 transform -translate-x-1/2 mt-3 pr-36 w-max ">
                         <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 ">
-                          <div className="relative grid text-[14px] gap-4 bg-white p-2 text-gray-200  ">
+                          <div className="relative grid text-[14px] gap-4 bg-white p-2 text-gray-700">
                             <div className=" px-4 py-2 flex items-center justify-start gap-1 hover:bg-gray-300 rounded cursor-pointer hover:text-red-400 whitespace-nowrap ">
                               <PlusIcon className="w-4 h-4" />{" "}
                               <span

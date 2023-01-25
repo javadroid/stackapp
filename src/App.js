@@ -1,10 +1,5 @@
-import {
-  LandingPage,
-  AboutUs,
-  WhoCanDonate,
-  BookAppointment,
-  RequestBlood,
-} from "./pages";
+import { LandingPage } from "./pages";
+import { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   LandingLayout,
@@ -13,8 +8,18 @@ import {
   DashboardLayout,
 } from "./components/Layout";
 import "./index.css";
-import { MedicalsPage, Dashboard, History, Wallet } from "./components/Dashboard";
-import { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
+import { Bars } from "react-loader-spinner";
+// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+const AboutUs = lazy(() => import("./components/LandingPage/AboutUs"));
+const WhoCanDonate = lazy(() => import("./pages/WhoCanDonate"));
+const BookAppointment = lazy(() => import("./pages/BookAppointment"));
+const RequestBlood = lazy(() => import("./pages/RequestBlood"));
+
+const MedicalsPage = lazy(() => import("./components/Dashboard/MedicalsPage"));
+const Dashboard = lazy(() => import("./components/Dashboard/Dashboard"));
+const History = lazy(() => import("./components/Dashboard/History"));
+const Wallet = lazy(() => import("./components/Dashboard/Wallet/Wallet"));
 
 function App() {
 
@@ -24,31 +29,95 @@ function App() {
   }
   return (
     <>
-    <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
       <Router>
         <>
           <Routes>
             {/* Landing Page Routes */}
             <Route path="/" element={<LandingLayout />}>
               <Route index element={<LandingPage />} />
-              <Route path="aboutus" element={<AboutUs />} />
-              <Route path="who-can-donate" element={<WhoCanDonate />} />
+              <Route
+                path="about-us"
+                element={
+                  <SuspenseWrapper>
+                    <AboutUs />
+                  </SuspenseWrapper>
+                }
+              />
+              <Route
+                path="who-can-donate"
+                element={
+                  <SuspenseWrapper>
+                    <WhoCanDonate />
+                  </SuspenseWrapper>
+                }
+              />
             </Route>
+
             {/* Appointment Page Routes */}
             <Route path="/book-appointment" element={<AppointmentLayout />}>
-              <Route index element={<BookAppointment />} />
+              <Route
+                index
+                element={
+                  <SuspenseWrapper>
+                    <BookAppointment />
+                  </SuspenseWrapper>
+                }
+              />
             </Route>
             {/* RequestBlood Page Routes */}
             <Route path="/request-blood" element={<RequestLayout />}>
-              <Route index element={<RequestBlood />} />
+              <Route
+                index
+                element={
+                  <SuspenseWrapper>
+                    <RequestBlood />
+                  </SuspenseWrapper>
+                }
+              />
             </Route>
             {/* Dashboard Page Routes */}
             <Route path="/dashboard" element={<DashboardLayout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="/dashboard/main" element={<Dashboard />} />
-              <Route path="medical" element={<MedicalsPage />} />
-              <Route path="wallet" element={<Wallet />} />
-              <Route path="history" element={<History />} />
+              <Route
+                index
+                element={
+                  <SuspenseWrapper>
+                    <Dashboard />
+                  </SuspenseWrapper>
+                }
+              />
+              <Route
+                path="/dashboard/main"
+                element={
+                  <SuspenseWrapper>
+                    <Dashboard />
+                  </SuspenseWrapper>
+                }
+              />
+              <Route
+                path="medical"
+                element={
+                  <SuspenseWrapper>
+                    <MedicalsPage />
+                  </SuspenseWrapper>
+                }
+              />
+              <Route
+                path="history"
+                element={
+                  <SuspenseWrapper>
+                    <History />
+                  </SuspenseWrapper>
+                }
+              />
+              <Route
+                path="wallet"
+                element={
+                  <SuspenseWrapper>
+                    <Wallet />
+                  </SuspenseWrapper>
+                }
+              />
             </Route>
           </Routes>
         </>
@@ -58,3 +127,24 @@ function App() {
 }
 
 export default App;
+
+const SuspenseWrapper = ({ children }) => {
+  return (
+    <Suspense
+      fallback={
+        <Bars
+          height={100}
+          width={100}
+          radius={9}
+          color="#F00530"
+          ariaLabel="ball-triangle-loading"
+          wrapperClass="h-[50vw] w-[80%] flex justify-center items-center m-auto"
+          wrapperStyle=""
+          visible={true}
+        />
+      }
+    >
+      {children}
+    </Suspense>
+  );
+};
