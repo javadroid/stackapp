@@ -1,16 +1,17 @@
-import { ChevronRightIcon } from '@heroicons/react/solid'
+import { ChevronRightIcon } from "@heroicons/react/solid";
 
 const VideoCard = ({ person }) => {
   return (
-    <div className='px-8 flex flex-col'>
-        <div className='w-[80%] mx-auto'>
+    <div className="px-8 flex flex-col">
+      <div className="w-[80%] mx-auto">
         <iframe
           className="w-full md:aspect-[20/9] aspect-[16/10] mx-auto px-auto md:px-20"
-          src={person.youtubeLink}
+          src={`https://www.youtube.com/embed/${person.youtubeLink}`}
           title="YouTube video player"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+          loading="lazy"
         ></iframe>
       </div>
       <p className="text-center font-medium py-4 text-2xl lg:text-3xl">
@@ -21,8 +22,9 @@ const VideoCard = ({ person }) => {
       </p>
       <div className="w-full py-2 mx-auto md:w-[60%] flex justify-center">
         <a
-          href={person.youtubeLink}
+          href={`https://www.youtube.com/watch?v=${person.youtubeLink}`}
           className="bttn bttn-primary flex items-center gap-2"
+          target="blank"
         >
           <span className="text-[14px] lg:text-base">
             {person.btnDescription}
