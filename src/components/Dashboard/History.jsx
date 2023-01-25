@@ -182,7 +182,7 @@ const History = () => {
                     <tr className="bg-white py-4 " key={index}>
                       <th
                         scope="row"
-                        className="py-3 px-6 font-medium text-gray-900 whitespace-nowrap sticky left-0 z-10 bg-white"
+                        className="py-3 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white sticky left-0 z-10 bg-white"
                       >
                         {history.location}
                       </th>

@@ -19,9 +19,7 @@ function classNames(...classes) {
 }
 
 export default function NavBar({ bgColor, textColor }) {
-  const { username, loginState, center_name, account_type } = useSelector(
-    (state) => state.user
-  );
+  const { username, loginState, center_name, account_type } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [logout] = useLogoutMutation();
 
@@ -197,7 +195,7 @@ export default function NavBar({ bgColor, textColor }) {
                 )}
               </Popover>
               <Link
-                to="/about-us"
+                to="/aboutus"
                 className="text-[12px] lg:text-base text-white-500 hover:text-white-900"
               >
                 About Us

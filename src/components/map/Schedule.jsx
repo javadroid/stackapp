@@ -6,15 +6,9 @@ import Link2Dashboard from "./Link2Dashboard";
 
 const Schedule = ({ CenterList, centerId }) => {
   const [show, setShow] = useState(false);
-  const [Loading, setLoading] = useState(false);
-  const {
-    username,
-    phone,
-    id,
-    center_name: HospitalName,
-  } = useSelector((state) => state.user);
+  const { username, phone, id } = useSelector((state) => state.user);
 
-  const [createAppointment, isLoading] = useCreateAppointmentMutation();
+  const [createAppointment] = useCreateAppointmentMutation();
 
   const [bookingInfo, setBookingInfo] = useState({
     donor: id,
@@ -32,18 +26,11 @@ const Schedule = ({ CenterList, centerId }) => {
 
   const book = async (e) => {
     e.preventDefault();
-    if (bookingInfo.date === "" || bookingInfo.time === "") {
-      alert("Please fill in all fields");
-      return;
-    }
-    if (Loading) return;
     try {
-      setLoading(true);
       const response = await createAppointment(bookingInfo).unwrap();
       setShow(!show);
     } catch (err) {
     }
-    setLoading(false);
   };
   return (
     <>
@@ -63,23 +50,13 @@ const Schedule = ({ CenterList, centerId }) => {
                   <span>Appointment Schedule</span>
                 </div>
                 <div className="mb-4">
-                  {username.length > 2 ? (
-                    <input
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="Fullname"
-                      type="text"
-                      value={username}
-                      readOnly
-                    />
-                  ) : (
-                    <input
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                      id="Fullname"
-                      type="text"
-                      value={HospitalName}
-                      readOnly
-                    />
-                  )}
+                  <input
+                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    id="Fullname"
+                    type="text"
+                    value={username}
+                    readOnly
+                  />
                 </div>
                 <div className="mb-6">
                   <input
@@ -89,7 +66,6 @@ const Schedule = ({ CenterList, centerId }) => {
                     // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     placeholder="phone"
                     value={phone}
-                    readOnly
                   />
                 </div>
                 <div className="mb-6 grid grid-cols-2 justify-between gap-2">
@@ -110,9 +86,8 @@ const Schedule = ({ CenterList, centerId }) => {
                     className="shadow appearance-none border  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                     id="time"
                     type="time"
-                    placeholder="08:00"
+                    placeholder="00:00"
                     name="time"
-                    min="08:00:00" max="16:00:00"
                     value={bookingInfo.time}
                     onChange={handleChange}
                     required

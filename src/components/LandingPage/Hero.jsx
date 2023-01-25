@@ -40,7 +40,6 @@ const Hero = ({ toAppointmentPage, toRequestPage }) => {
               className=" w-full max-w-2xl h-auto"
               src={GroupHero}
               alt="Doctor"
-              loading="eager"
             />
           </div>
         </div>

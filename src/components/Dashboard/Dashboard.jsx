@@ -131,10 +131,8 @@ const Dashboard = () => {
     }
   };
   useEffect(() => {
-    refetch();
-
     setAppointment(getDonorAppointments);
-  }, [getDonorAppointments, refetch]);
+  }, [getDonorAppointments]);
 
   return (
     <>
@@ -167,7 +165,7 @@ const Dashboard = () => {
               </Link>
             </span>
           </span>{" "}
-          <div className="h-[250px] relative rounded">
+          <div className="h-[250px] relative">
             <img
               src={Gradient}
               alt=""
@@ -184,7 +182,7 @@ const Dashboard = () => {
                     STX for every donation you make.
                   </span>
                 </div>
-                <Link to="/who-can-donate">
+                <Link to="/book-appointment">
                   <button className="rounded bg-white text-red-500 w-fit px-8 py-2">
                     Learn More
                   </button>
@@ -335,9 +333,9 @@ const Dashboard = () => {
                       <tr className="bg-white border-b " key={data.id}>
                         <th
                           scope="row"
-                          className="py-4 px-4 font-medium text-gray-700 whitespace-nowrap  sticky left-0 z-10 bg-white"
+                          className="py-4 px-4 font-medium text-gray-900 whitespace-nowrap  sticky left-0 z-10 bg-white"
                         >
-                          {data.center_name || "Donation Center"}
+                          {data.centerName}
                         </th>
                         <td className="py-3 px-4">{data.date}</td>
                         <td className="py-3 px-4">{data.time}</td>
@@ -350,7 +348,7 @@ const Dashboard = () => {
                         >
                           {data.status}
                         </td>
-                        <td className="py-3 px-6">{data.id.substring(0, 6)}</td>
+                        <td className="py-3 px-6">{data.id}</td>
                         <td
                           className="py-3 pl-2 pr-6 text-red-500 cursor-pointer"
                           onClick={() => {
@@ -358,20 +356,13 @@ const Dashboard = () => {
                             setDeleteInfo({ id: data.id, elIndex: index });
                           }}
                         >
-                          <TrashIcon className="h-4 w-4" />
+                          <TrashIcon className="h-6 w-6" />
                         </td>
                       </tr>
                     );
                   })}
                 </tbody>
               </table>
-              {appointment.length === 0 && (
-                <div className="flex justify-center items-center h-20 md:h-40">
-                  <span className="text-gray-500">
-                    You don't have any appointments
-                  </span>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -380,13 +371,13 @@ const Dashboard = () => {
           <div className=" hidden lg:flex items-center justify-center">
             <span>
               <Link to="/book-appointment">
-                <button className=" text-base text-center px-2 bg-red-500  py-1 rounded  text-white block">
+                <button className="outline xl:text-base text-center sm:text-sm sm:px-1 sm:py-2 outline-offset-6 xl:px-6 xl:py-2 rounded outline-red-500 text-red-500 block">
                   Book new appointment
                 </button>{" "}
               </Link>
             </span>
           </div>
-          <div className="py-2 hidden lg:block  h-auto w-full mt-[7px] mb-[9px]">
+          <div className="py-2 hidden lg:block  h-auto w-full">
             <Calendar />
           </div>
 
