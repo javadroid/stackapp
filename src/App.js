@@ -17,6 +17,11 @@ import { MedicalsPage, Dashboard, History, Wallet } from "./components/Dashboard
 import { Toaster } from 'react-hot-toast';
 
 function App() {
+
+  const session = sessionStorage.getItem('INIT')
+  if (session!==null) {
+    
+  }
   return (
     <>
     <Toaster position="top-center" reverseOrder={false} />

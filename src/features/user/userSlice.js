@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { setToLocalStorage, clearLocalStorage, getUserStateFromLocalStorage } from "../../utils/localStorage";
+import {
+  setToLocalStorage,
+  clearLocalStorage,
+  getUserStateFromLocalStorage,
+} from "../../utils/localStorage";
 
 //initial user state
 const initialState = getUserStateFromLocalStorage();

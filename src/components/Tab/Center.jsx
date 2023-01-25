@@ -5,6 +5,7 @@ import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import { toast } from "react-hot-toast";
+import { SITE_KEY } from "../../config";
 
 const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const [captchaRef, setCaptchaRef] = useState(true);
@@ -17,7 +18,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     phone: "",
     password1: "",
     password2: "",
-    center_address: ""
+    center_address: "",
   });
 
   const dispatch = useDispatch();
@@ -27,7 +28,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   };
 
   const handleSignUp = async (e) => {
-    console.log("Submitted");
     e.preventDefault();
     //perform check on regInfo
     const {
@@ -62,7 +62,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       const response = await registerAuth(regInfo).unwrap();
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${process.env.REACT_APP_API_URL}/user/`, {
+      const getUser = await fetch(`${process.env.REACT_APP_API_URL}user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -221,7 +221,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             <input
               type="email"
               name="email"
-              id="email"
+              id="center_email"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               value={regInfo.email}
@@ -229,7 +229,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               required
             />
             <label
-              htmlFor="email"
+              htmlFor="center_email"
               className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Email Address
@@ -239,7 +239,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             <input
               type="number"
               name="phone"
-              id="phone"
+              id="center_phone"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               value={regInfo.phone}
@@ -315,7 +315,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             <input
               type="password"
               name="password2"
-              id="Password2"
+              id="center_Password2"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               required
@@ -323,7 +323,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               onChange={handleChange}
             />
             <label
-              htmlFor="password2"
+              htmlFor="center_password2"
               className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Repeat Password
@@ -357,10 +357,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             </div>
           </div>
           <div className="my-8">
-            <ReCAPTCHA
-              sitekey={process.env.REACT_APP_SITE_KEY}
-              onChange={onCaptchaChange}
-            />
+            <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
           </div>
           <button
             type="submit"
