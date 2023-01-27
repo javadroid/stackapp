@@ -58,7 +58,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       password1 === "" ||
       password2 === ""
     ) {
-      toast.error("All fields are required to register");
       return;
     }
     const checkBox = document.getElementById("donor_checkbox");
@@ -177,7 +176,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               placeholder=" "
               value={regInfo.first_name}
               onChange={handleChange}
-              required
             />
             <label
               htmlFor="donor_name"
@@ -195,7 +193,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               placeholder=" "
               value={regInfo.last_name}
               onChange={handleChange}
-              required
             />
             <label
               htmlFor="donor_name"
@@ -215,7 +212,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             placeholder=" "
             value={regInfo.email}
             onChange={handleChange}
-            required
           />
           <label
             htmlFor="donor_email"
@@ -236,7 +232,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             pattern="^(?:(?:(?:\+?234(?:\h1)?|01)\h*)?(?:\(\d{3}\)|\d{3})|\d{4})(?:\W*\d{3})?\W*\d{4}$"
             minLength="11"
             maxLength="13"
-            required
           />
           <label
             htmlFor="phone"
@@ -254,7 +249,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               placeholder="Select your blood group"
               value={regInfo.blood_group}
               onChange={handleChange}
-              required
             >
               <option value="">Select your blood group</option>
               <option value="A+">A+</option>
@@ -281,7 +275,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               placeholder=" Select your gender"
               value={regInfo.gender}
               onChange={handleChange}
-              required
             >
               <option value="">Select your gender</option>
               <option value="male">Male</option>
@@ -307,7 +300,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               onChange={handleChange}
               onFocus={() => setIsFocus(!0)}
               onBlur={() => setIsFocus(!1)}
-              required
             />
             <label
               htmlFor="location"
@@ -334,7 +326,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               placeholder=" "
               value={regInfo.password1}
               onChange={handleChange}
-              required
             />
             <label
               htmlFor="password1"
@@ -352,7 +343,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               placeholder=" "
               value={regInfo.password2}
               onChange={handleChange}
-              required
             />
             <label
               htmlFor="donor_password2"
@@ -388,8 +378,8 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         <div className="my-5">
           <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
         </div>
-        {/* disabled={captchaRef || isLoading} */}
         <button
+          disabled={captchaRef || isLoading}
           type="submit"
           className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
         >
