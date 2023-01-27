@@ -398,8 +398,8 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <div className="my-8">
             <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
           </div>
-          {/* disabled={captchaRef || isLoading} */}
           <button
+          disabled={captchaRef || isLoading}
             type="submit"
             className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
           >
