@@ -6,13 +6,13 @@ import { ChevronRightIcon } from "@heroicons/react/outline";
 const WhoWeAre = ({ toAppointmentPage, toRequestPage }) => {
   return (
     <div className=" relative my-10 md:my-20 " id="about">
-      <div className="flex flex-row max-w-7xl mx-auto px-4 sm:px-6 md:px-10 justify-between gap-4">
-        <div className="text-left mt-20 basis-full lg:basis-1/2">
+      <div className="flex max-w-7xl mx-auto lg:px-4 px-6 md:px-10 justify-between gap-4">
+        <div className="text-left lg:mt-20 basis-full lg:basis-1/2">
           <h1 className="text-2xl md:text-3xl font-[700] text-semibold my-5 text-center lg:text-left">
             WHO WE ARE
           </h1>
           <div className="">
-            <h4 className="text-semibold font-mod-light text-[#333333] mb-4">
+            <h4 className="text-semibold text-center lg:text-start font-mod-light text-[#333333] mb-4">
               At BloodFuse, we know how important blood is for life and we
               believe every Individual should be given an opportunity to stay
               alive, which is why we:
@@ -53,7 +53,7 @@ const WhoWeAre = ({ toAppointmentPage, toRequestPage }) => {
             </div>
           </div>
         </div>
-        <div className="my-20 hidden lg:block basis-1/2">
+        <div className="my-20 hidden mx-5 lg:block basis-1/2">
           <img src={Lab} alt="" className="" />
         </div>
       </div>

@@ -58,13 +58,59 @@ body {
   @apply transition-all duration-300 ease-in-out;
 }
 .shadow-me {
-  box-shadow: 0 1px 1px hsl(0deg 0% 0% / 8%), 0 2px 2px hsl(0deg 0% 0% / 8%), 0 4px 4px hsl(0deg 0% 0% / 8%), 0 8px 8px hsl(0deg 0% 0% / 8%), 0 16px 16px hsl(0deg 0% 0% / 8%);
+  box-shadow: 0 1px 1px hsl(0deg 0% 0% / 8%), 0 2px 2px hsl(0deg 0% 0% / 8%),
+    0 4px 4px hsl(0deg 0% 0% / 8%), 0 8px 8px hsl(0deg 0% 0% / 8%),
+    0 16px 16px hsl(0deg 0% 0% / 8%);
 }
 
 .swiper-button-next,
 .swiper-button-prev {
   color: #f00530 !important;
 }
+
+@media (min-width: 640px) {
+  .swiper-button-next:after {
+    margin-right: 22px;
+    margin-bottom: 214px;
+  }
+  .swiper-button-prev:after {
+    margin-left: 22px;
+    margin-bottom: 214px;
+  }
+}
+@media (max-width: 640px) {
+  .swiper-button-next:after {
+    margin-right: 4px;
+    margin-bottom: 214px;
+  }
+  .swiper-button-prev:after {
+    margin-left: 4px;
+    margin-bottom: 214px;
+  }
+}
+
+@media (min-width: 768px) {
+  .swiper-button-next:after {
+    margin-right: 20px;
+    margin-bottom: 214px;
+  }
+  .swiper-button-prev:after {
+    margin-left: 17px;
+    margin-bottom: 214px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .swiper-button-next:after {
+    margin-right: 250px;
+    margin-bottom: 214px;
+  }
+  .swiper-button-prev:after {
+    margin-left: 244px;
+    margin-bottom: 214px;
+  }
+}
+
 
 .main-wrapper {
   height: 60vh;
@@ -93,6 +139,6 @@ body {
 }
 
 input:-webkit-autofill,
-  input:-webkit-autofill:focus {
-    transition: background-color 600000s 0s, color 600000s 0s;
-  }
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s;
+}

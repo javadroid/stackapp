@@ -42,28 +42,28 @@ export default function NavBar({ bgColor, textColor, modalState }) {
 
   return (
     <>
-      <SignInModal />
-      <SignUpModal />
+      {!loginState&&(<SignInModal />)}
+      {!loginState&&(<SignUpModal />)}
       <Popover
         className={`relative bg-${bgColor} h-full md:overflow-visible overflow-x-clip text-${textColor} text-[14px]`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex justify-between items-center py-6  md:space-x-10">
-            <div className="flex justify-start ">
+            <div className="flex justify-start pl-5">
               <Link to="/">
                 <img
-                  className="h-[75px] w-[120px] w-auto"
+                  className="h-[75px] w-[120px]"
                   src={Logo}
                   alt="Logo"
                 />
               </Link>
             </div>
-            <div className="ml-auto md:hidden">
+            <div className="pt-4 ml-auto md:hidden">
               <Popover.Button
-                className={`bg--${bgColor} rounded-md p-2 inline-flex items-center justify-center text--${textColor} hover:text-white-500 hover:bg-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500`}
+                className={`bg--${bgColor}  rounded-md p-2 inline-flex items-center justify-center text--${textColor} hover:text-white-500 hover:bg-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500`}
               >
                 <span className="sr-only">Open menu</span>
-                <ViewListIcon className="h-6 w-6" aria-hidden="true" />
+                <ViewListIcon className="h-10 w-10" aria-hidden="true" />
               </Popover.Button>
             </div>
             <Popover.Group

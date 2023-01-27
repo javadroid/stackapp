@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { GoogleIcon } from "../../assets/images";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import { toast } from "react-hot-toast";
-import { SITE_KEY } from "../../config";
+import { API_URL, SITE_KEY } from "../../config";
+import { Link, Navigate } from "react-router-dom";
 
 const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
+  const { loginState } = useSelector((state) => state.user);
   const [captchaRef, setCaptchaRef] = useState(true);
   const onCaptchaChange = () => setCaptchaRef(false);
   const [regInfo, setRegInfo] = useState({
@@ -18,7 +20,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     phone: "",
     password1: "",
     password2: "",
-    center_address: "",
+    location: "",
   });
 
   const dispatch = useDispatch();
@@ -36,7 +38,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       rc_number,
       center_name,
       phone,
-      center_address,
+      location,
       password1,
       password2,
     } = regInfo;
@@ -45,24 +47,37 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       !account_type ||
       !rc_number ||
       !center_name ||
-      !center_address ||
+      !location ||
       !phone ||
       !password1 ||
       !password2
     ) {
-      toast.error("Please fill all fields");
+      toast.error("All fields are required to register");
       return;
     }
+    const checkBox = document.getElementById("agreeTerms");
+
     if (password1 !== password2) {
-      toast.error("Passwords do not match");
+      toast.error("Both passwords don't match");
+      return;
+    }
+
+    if (!checkBox.checked) {
+      toast.error(
+        <p>
+          You have to agree to the <b>Terms and Conditions</b> to process.
+        </p>
+      );
       return;
     }
     if (isLoading) return;
+    let loadingToast;
     try {
+      loadingToast = toast.loading("Creating account...");
       const response = await registerAuth(regInfo).unwrap();
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${process.env.REACT_APP_API_URL}user/`, {
+      const getUser = await fetch(`${API_URL}user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -80,21 +95,53 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         blood_group: user?.data.blood_group,
         center_name: user?.data?.center_name,
         phone: user?.data?.phone,
+        location: user?.data?.location,
         rc_number: user?.data?.rc_number,
         id: user?.data?.id,
       };
-      dispatch(login(payload));
-      closeModal();
+      let r = !1;
+      try {
+        await dispatch(login(payload));
+        r = !0;
+      } catch (e) {}
+      if (r) {
+        toast.success(
+          <span>
+            Your account has been successfully created.{" "}
+            <Link to="/dashboard/main">View Dashboard</Link>
+          </span>,
+          {
+            id: loadingToast,
+            duration: 7500,
+          }
+        );
+      }
     } catch (err) {
-      toast.error(err.message);
+      toast.dismiss(loadingToast);
+      if (err.status === 400) {
+        for (const key in err?.data) {
+          setTimeout(() => {
+            toast.error(err.data[key][0], { duration: 6000 });
+          }, 1000);
+        }
+      } else {
+        toast.error(
+          <p>
+            BloodFuse is unable to process your request,{" "}
+            <b>Try Again, Shortly</b>
+          </p>,
+          { duration: 6000 }
+        );
+      }
     }
   };
+  // if (loginState) return <Navigate to="/dashboard/main" />;
 
   return (
     <div className={activeTabIndex === 1 ? "block mt-2" : "hidden"}>
       <div className="flex flex-col justify-between px-auto w-full mb-7 items-center">
-        <div className="flex justify-between px-auto w-full mb-7">
-          <div>Sign up with</div>
+        <div className="flex justify-center px-auto w-full">
+          {/* <div>Sign up with</div> */}
           <div className="hidden sm:flex gap-1">
             Already a member? {"  "}
             <span
@@ -111,12 +158,12 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </div>
         </div>
 
-        <div className="flex justify-center gap-2 px-auto w-full mb-7 items-center">
+        {/* <div className="flex justify-center gap-2 px-auto w-full mb-7 items-center">
           <div>
-            <button className="text-white sm:px-12 px-4 text-sm sm:text-md  bg-black hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-300 font-medium rounded-md    py-5 text-center">
+            <button className="text-white px-12 text-sm   bg-black hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-300 font-medium rounded-md    py-5 text-center">
               <div className="flex items-center space-between">
                 <img
-                  className="mr-2 -ml-1 w-4 h-4"
+                  className="mr-2 -ml-1 w-5 h-5"
                   aria-hidden="true"
                   src={GoogleIcon}
                   alt="google"
@@ -128,11 +175,11 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <div>
             <button
               type="submit"
-              className="text-white sm:px-12 px-4 text-sm sm:text-md bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none  focus:ring-red-300 font-medium rounded-md    py-5 text-center"
+              className="text-white px-12 text-sm  bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none  focus:ring-red-300 font-medium rounded-md    py-5 text-center"
             >
               <div className="flex items-center space-between">
                 <svg
-                  className="mr-2 -ml-1 w-4 h-4"
+                  className="mr-2 -ml-1 w-5 h-5"
                   aria-hidden="true"
                   focusable="false"
                   data-prefix="fab"
@@ -151,10 +198,10 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             </button>
           </div>
           <div>
-            <button className="text-white sm:px-12 px-4 text-sm sm:text-md bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none  focus:ring-red-300 font-medium rounded-md    py-5 text-center">
+            <button className="text-white px-12 text-sm  bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none  focus:ring-red-300 font-medium rounded-md    py-5 text-center">
               <div className="flex items-center space-between">
                 <svg
-                  className="mr-2 -ml-1 w-4 h-4"
+                  className="mr-2 -ml-1 w-5 h-5"
                   aria-hidden="true"
                   focusable="false"
                   data-prefix="fab"
@@ -172,11 +219,11 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               </div>
             </button>
           </div>
-        </div>
-        <div className="block sm:hidden pb-4">
+        </div> */}
+        <div className="sm:hidden pb-4 flex items-center">
           Already a member?{"  "}
           <span
-            className="text-red-600 cursor-pointer"
+            className="text-red-600 cursor-pointer px-2"
             onClick={() => {
               closeModal();
               setTimeout(() => {
@@ -191,11 +238,11 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <div className="absolute  inset-0 flex items-center">
             <div className="w-full border-b border-gray-300"></div>
           </div>
-          <div className="relative flex justify-center">
+          {/* <div className="relative flex justify-center">
             <span className="bg-white px-4 text-sm text-black">
               Or sign up with your email
             </span>
-          </div>
+          </div> */}
         </div>
 
         <form className="w-full" onSubmit={handleSignUp}>
@@ -206,7 +253,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               id="center_name"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
-              required
               value={regInfo.center_name}
               onChange={handleChange}
             />
@@ -226,7 +272,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               placeholder=" "
               value={regInfo.email}
               onChange={handleChange}
-              required
             />
             <label
               htmlFor="center_email"
@@ -247,7 +292,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               pattern="^(?:(?:(?:\+?234(?:\h1)?|01)\h*)?(?:\(\d{3}\)|\d{3})|\d{4})(?:\W*\d{3})?\W*\d{4}$"
               minLength="11"
               maxLength="13"
-              required
             />
             <label
               htmlFor="phone"
@@ -264,7 +308,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               id="rc_number"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
-              required
               value={regInfo.rc_number}
               onChange={handleChange}
             />
@@ -278,16 +321,15 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="text"
-              name="center_address"
-              id="center_address"
+              name="location"
+              id="center_location"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
-              required
-              value={regInfo.center_address}
+              value={regInfo.location}
               onChange={handleChange}
             />
             <label
-              htmlFor="center_address"
+              htmlFor="center_location"
               className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Center Address
@@ -297,15 +339,14 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             <input
               type="password"
               name="password1"
-              id="password2"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              id="center_password"
+              className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
               value={regInfo.password1}
               onChange={handleChange}
-              required
             />
             <label
-              htmlFor="password1"
+              htmlFor="center_password"
               className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Password
@@ -315,31 +356,29 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             <input
               type="password"
               name="password2"
-              id="center_Password2"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
+              id="password2"
+              className="block py-2.5 px-0 w-full text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none       focus:outline-none focus:ring-0 focus:border-red-600 peer"
               placeholder=" "
-              required
               value={regInfo.password2}
               onChange={handleChange}
             />
             <label
-              htmlFor="center_password2"
+              htmlFor="password2"
               className="peer-focus:font-medium absolute text-sm text-gray-500   duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Repeat Password
+              Confirm Password
             </label>
           </div>
           <div className="flex items-center justify-between my-10">
             <div className="flex items-center ">
               <input
-                id="recepient"
+                id="agreeTerms"
                 type="checkbox"
                 value=""
                 className="w-4 h-4 text-red-600 accent-red-500 bg-gray-100 rounded border-gray-300 focus:ring-black-500"
-                required
               />
               <label
-                htmlFor="recepient"
+                htmlFor="agreeTerms"
                 className="ml-2 text-sm font-medium text-black"
               >
                 <span className=" text-bold">
@@ -359,9 +398,9 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <div className="my-8">
             <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
           </div>
+          {/* disabled={captchaRef || isLoading} */}
           <button
             type="submit"
-            disabled={captchaRef || isLoading}
             className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
           >
             {isLoading ? (
@@ -387,7 +426,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
                     />
                   </svg>{" "}
                   CREATING YOUR ACCOUNT
-                  <span class="sr-only">Logging in...</span>
+                  <span className="sr-only">Logging in...</span>
                 </div>
               </>
             ) : (

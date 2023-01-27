@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
-import Tabs from "./Tab.jsx";
+import Tabs from "./Tab";
 
 export default function SignUp({
   isModalOpen,
@@ -42,7 +42,7 @@ export default function SignUp({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full px-4 sm:px-10 md:px-28 max-w-3xl transform overflow-hidden rounded-[4px] py-9 bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full px-10 md:px-28 max-w-3xl transform overflow-hidden rounded-[4px] py-9 bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <div className="mt-5">
                     <Tabs
                       closeModal={closeModalFunc}
