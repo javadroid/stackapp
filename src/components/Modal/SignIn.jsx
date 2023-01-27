@@ -4,14 +4,18 @@ import { FiTwitter, FiFacebook } from "react-icons/fi";
 import { XIcon } from "@heroicons/react/outline";
 import { GoogleIcon } from "../../assets/images";
 import { useLoginAuthMutation } from "../../features/apiSlices/userApiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/user/userSlice";
+import { API_URL } from "../../config";
+import toast from "react-hot-toast";
+import { Navigate, Link } from "react-router-dom";
 
 export default function SignIn({
   isModalOpen,
   closeModalFunc,
   openSignUpModalFunc,
 }) {
+  const { loginState, account_type } = useSelector((state) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -20,12 +24,19 @@ export default function SignIn({
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    if (!email || !password) {
+      toast.error(<b>Your Email and Password are required to log you in</b>);
+      return;
+    }
+
     if (isLoading) return;
+    let loadingToast;
     try {
+      loadingToast = toast.loading("Logging you in...");
       const response = await loginAuth({ email, password }).unwrap();
       const name = response?.user?.first_name + " " + response?.user?.last_name;
       //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${process.env.REACT_APP_API_URL}user/`, {
+      const getUser = await fetch(`${API_URL}user/`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -46,13 +57,57 @@ export default function SignIn({
         rc_number: user?.data?.rc_number,
         id: user?.data?.id,
       };
-      closeModalFunc();
-      dispatch(login(payload));
-      setEmail("");
-      setPassword("");
+      let r = !1;
+      try {
+        await dispatch(login(payload));
+        r = !0;
+      } catch (e) {}
+      if (r) {
+        closeModalFunc();
+        setEmail("");
+        setPassword("");
+        account_type === "donor"
+          ? toast.success(
+              <b>
+                Hello! {response?.user?.first_name}, Glad to have you back.
+                <Link to="/dashboard/main">View Dashboard</Link>
+              </b>,
+              {
+                id: loadingToast,
+                duration: 5000,
+              }
+            )
+          : toast.success(
+              <b>
+                Hello! {email}, Glad to have you back.{" "}
+                <Link to="/dashboard/main">View Dashboard</Link>
+              </b>,
+              {
+                id: loadingToast,
+                duration: 5000,
+              }
+            );
+      }
     } catch (err) {
+      toast.dismiss(loadingToast);
+      if (err.status === 400) {
+        for (const key in err?.data) {
+          setTimeout(() => {
+            toast.error(err.data[key][0], { duration: 6000 });
+          }, 1000);
+        }
+      } else {
+        toast.error(
+          <p>
+            BloodFuse is unable to process your request,{" "}
+            <b>Try Again, Shortly</b>
+          </p>,
+          { duration: 6000 }
+        );
+      }
     }
   };
+  // if (loginState) return <Navigate to="/dashboard/main" />;
 
   return (
     <>
@@ -122,7 +177,6 @@ export default function SignIn({
                           id="floating_email"
                           className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none    focus:outline-none focus:ring-0 focus:border-red-600 peer"
                           placeholder=" "
-                          required
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                         />
@@ -140,7 +194,6 @@ export default function SignIn({
                           id="floating_password"
                           className="block py-2.5 px-0 w-full text-xl text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-red-600 peer"
                           placeholder=" "
-                          required
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                         />

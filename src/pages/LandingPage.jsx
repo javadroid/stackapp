@@ -1,5 +1,3 @@
-import React from "react";
-
 import {
   Hero,
   Details,
@@ -17,8 +15,8 @@ const LandingPage = () => {
   //   useOutletContext();
   return (
     <>
-      <SignInModal />
-      <SignUpModal />
+      {/* <SignInModal />
+      <SignUpModal /> */}
       <Hero
         toAppointmentPage={toAppointmentPage}
         toRequestPage={toRequestPage}

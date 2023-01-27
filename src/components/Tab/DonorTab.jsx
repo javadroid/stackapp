@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import toast from "react-hot-toast";
 import { API_URL, SITE_KEY } from "../../config";
+import { Link, Navigate } from "react-router-dom";
 
 const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
+  const { loginState } = useSelector((state) => state.user);
   const [captchaRef, setCaptchaRef] = useState(true);
   const [isFocus, setIsFocus] = useState(!1);
   const onCaptchaChange = () => setCaptchaRef(false);
@@ -56,15 +58,28 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       password1 === "" ||
       password2 === ""
     ) {
-      toast.error("Please fill all the fields");
+      toast.error("All fields are required to register");
       return;
     }
+    const checkBox = document.getElementById("donor_checkbox");
+
     if (password1 !== password2) {
-      toast.error("Passwords do not match");
+      toast.error("Both passwords don't match");
+      return;
+    }
+
+    if (!checkBox.checked) {
+      toast.error(
+        <p>
+          You have to agree to the <b>Terms and Conditions</b> to process.
+        </p>
+      );
       return;
     }
     if (isLoading) return;
+    let loadingToast;
     try {
+      loadingToast = toast.loading("Creating account...");
       const response = await registerAuth(regInfo).unwrap();
 
       const name = response?.user?.first_name + " " + response?.user?.last_name;
@@ -86,17 +101,49 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         account_type: user?.data.account_type,
         blood_group: user?.data.blood_group,
         gender: user?.data.gender,
+        location: user?.data.location,
         center_name: user?.data?.center_name,
         phone: user?.data?.phone,
         rc_number: user?.data?.rc_number,
         id: user?.data?.id,
       };
-      dispatch(login(payload));
-      closeModal();
+      let r = !1;
+      try {
+        await dispatch(login(payload));
+        r = !0;
+      } catch (e) {}
+      if (r) {
+        toast.success(
+          <span>
+            Your donor account has been successfully created.{" "}
+            <Link to="/dashboard/main">View Dashboard</Link>
+          </span>,
+          {
+            id: loadingToast,
+            duration: 5000,
+          }
+        );
+      }
     } catch (err) {
-      toast.error(err.message);
+      toast.dismiss(loadingToast);
+      if (err.status === 400) {
+        for (const key in err?.data) {
+          setTimeout(() => {
+            toast.error(err.data[key][0], { duration: 6000 });
+          }, 1000);
+        }
+      } else {
+        toast.error(
+          <p>
+            BloodFuse is unable to process your request,{" "}
+            <b>Try Again, Shortly</b>
+          </p>,
+          { duration: 6000 }
+        );
+      }
     }
   };
+  if (loginState) return <Navigate to="/dashboard/main" />;
 
   return (
     <div className={activeTabIndex === 0 ? "block mt-2" : "hidden"}>
@@ -120,7 +167,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         </h2>
       </div>
       <form onSubmit={handleSignUp}>
-        <div className="flex w-full relative gap-8">
+        <div className="flex flex-col md:flex-row w-full relative md:gap-8">
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="text"
@@ -198,22 +245,24 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             Phone Number
           </label>
         </div>
-        <div className="flex w-full relative gap-8">
+        <div className="flex flex-col md:flex-row w-full relative md:gap-8">
           <div className="relative z-0 mb-6 w-full group">
             <select
               name="blood_group"
               id="blood_group"
               className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none      focus:outline-none focus:ring-0 focus:border-red-600 peer"
-              placeholder=" Select your blood group"
+              placeholder="Select your blood group"
               value={regInfo.blood_group}
               onChange={handleChange}
               required
             >
               <option value="">Select your blood group</option>
-              <option value="O-">O-</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
               <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
               <option value="AB+">AB+</option>
               <option value="AB-">AB-</option>
             </select>
@@ -267,11 +316,15 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               Your Location
             </label>
           </div>
-          <div className={`w-[15%] text-sm text-gray-800 bg-transparent flex items-center justify-center cursor-pointer border-0 border-b-2 ${isFocus?'border-red-600':'border-gray-300'}`}>
+          <div
+            className={`w-[15%] text-sm text-gray-800 bg-transparent flex items-center justify-center cursor-pointer border-0 border-b-2 ${
+              isFocus ? "border-red-600" : "border-gray-300"
+            }`}
+          >
             Auto Add
           </div>
         </div>
-        <div className="flex w-full relative gap-8">
+        <div className="flex flex-col md:flex-row w-full relative md:gap-8">
           <div className="relative z-0 mb-6 w-full group">
             <input
               type="password"
@@ -305,7 +358,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               htmlFor="donor_password2"
               className="peer-focus:font-medium absolute text-sm text-gray-500    duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-red-600    peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
-              Repeat Password
+              Confirm Password
             </label>
           </div>
         </div>
@@ -335,10 +388,10 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         <div className="my-5">
           <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
         </div>
+        {/* disabled={captchaRef || isLoading} */}
         <button
           type="submit"
           className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
-          disabled={captchaRef || isLoading}
         >
           {isLoading ? (
             <>
@@ -348,7 +401,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
               >
                 <svg
                   aria-hidden="true"
-                  class=" w-8 h-6 text-gray-200 animate-spin  fill-white"
+                  className=" w-8 h-6 text-gray-200 animate-spin  fill-white"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -363,7 +416,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
                   />
                 </svg>{" "}
                 CREATING YOUR ACCOUNT
-                <span class="sr-only">creating account...</span>
+                <span className="sr-only">creating account...</span>
               </div>
             </>
           ) : (
@@ -383,10 +436,10 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       </form>
       <div className="flex justify-center gap-2 px-auto w-full mb-1 items-center">
         <div>
-          <button className="text-white sm:px-12 px-4 text-sm sm:text-md  bg-black hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-300 font-medium rounded-md  py-5 text-center">
+          <button className="text-white px-12 text-sm  bg-black hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-300 font-medium rounded-md  py-5 text-center">
             <div className="flex items-center space-between">
               <svg
-                className="mr-2 -ml-1 w-4 h-4"
+                className="mr-2 -ml-1 w-5 h-5"
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"
@@ -407,11 +460,11 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         <div>
           <button
             type="submit"
-            className="text-white sm:px-12 px-4 text-sm sm:text-md bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none  focus:ring-red-300 font-medium rounded-md    py-5 text-center"
+            className="text-white px-12 text-sm bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none  focus:bg-blue-700 font-medium rounded-md py-5 text-center"
           >
             <div className="flex items-center space-between">
               <svg
-                className="mr-2 -ml-1 w-4 h-4"
+                className="mr-2 -ml-1 w-5 h-5"
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"
@@ -430,10 +483,10 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </button>
         </div>
         <div>
-          <button className="text-white sm:px-12 px-4 text-sm sm:text-md bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none  focus:ring-red-300 font-medium rounded-md    py-5 text-center">
+          <button className="text-white px-12 text-sm sm:text-md bg-sky-500 hover:bg-sky-700 focus:ring-4 focus:outline-none  focus:ring-sky-500 font-medium rounded-md    py-5 text-center">
             <div className="flex items-center space-between">
               <svg
-                className="mr-2 -ml-1 w-4 h-4"
+                className="mr-2 -ml-1 w-5 h-5"
                 aria-hidden="true"
                 focusable="false"
                 data-prefix="fab"

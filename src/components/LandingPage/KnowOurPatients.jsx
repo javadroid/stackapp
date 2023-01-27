@@ -25,7 +25,7 @@ const KnowOurPatients = () => {
     },
   ];
   return (
-    <section className="w-full pb-8 md:pb-16 h-auto">
+    <section className="w-full pb-6 md:pb-14 h-auto">
       <h1 className="text-2xl md:text-3xl text-center pb-16 px-2 font-bold hidden sm:block">
         GET TO KNOW OUR PATIENTS MORE
       </h1>
@@ -35,7 +35,7 @@ const KnowOurPatients = () => {
       {/* The Swiper Component */}
       <Swiper
         slidesPerView={1}
-        spaceBetween={30}
+        spaceBetween={15}
         loop={true}
         navigation={true}
         modules={[Pagination, Navigation]}

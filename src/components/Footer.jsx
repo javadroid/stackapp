@@ -1,6 +1,6 @@
 import React from "react";
 import { MailIcon } from "@heroicons/react/outline";
-import { ChevronRightIcon } from "@heroicons/react/outline";
+import { PaperAirplaneIcon } from "@heroicons/react/outline";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { Link } from "react-router-dom";
 
@@ -12,22 +12,22 @@ const Footer = ({ toAppointmentPage, toRequestPage }) => {
           {/* First Grid */}
           <div className="lg:col-span-2">
             <div className="flex flex-col items-center h-full">
-              <p className="text-white text-center lg:text-start text-2xl md:text-4xl pb-4">
-                Sign up to our newsletter to stay
-                <span className="lg:block">up to date</span>
+              <p className="text-white text-center lg:text-start text-2xl md:text-3xl pb-4">
+                Subscribe to our newsletter and stay
+                <span className="lg:block"> up to date.</span>
               </p>
               <div className="flex flex-col items-center justify-center gap-4 w-full">
                 <p className="text-white text-center lg:mr-auto text-xl lg:text-2xl">
                   With our latest news
                 </p>
-                <div className="flex items-center w-full sm:w-[60%] lg:w-full">
+                <div className="flex items-center w-[60%] md:w-full">
                   <input
-                    className="w-full mx-auto py-2 text-center focus:ring-0 focus:border-none"
+                    className="w-full mx-auto py-2 text-center border-none focus:ring-0 focus:border-none rounded-l-md"
                     type="text"
-                    placeholder="example@gmail.com"
+                    placeholder="example@email.com"
                   />
-                  <div className=" px-4 py-2 bg-slate-600 flex items-center justify-center">
-                    <ChevronRightIcon className="h-6 w-6 text-white cursor-pointer" />
+                  <div className=" px-4 py-[10px] bg-[#DC2626] flex items-center justify-center rounded-r-md">
+                    <PaperAirplaneIcon className="h-5 w-5 text-white cursor-pointer rotate-45 pb-px" />
                   </div>
                 </div>
               </div>

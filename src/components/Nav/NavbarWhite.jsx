@@ -71,7 +71,7 @@ export default function NavBar({ bgColor, textColor }) {
           <div className="flex justify-between items-center py-6  md:space-x-10">
             <div className="flex justify-start lg:w-0 lg:flex-1">
               <Link to="/">
-                <img className="h-10 w-auto" src={LogoDark} alt="Logo" />
+                <img className="h-12 w-[20px]" src={LogoDark} alt="Logo" />
               </Link>
             </div>
             <div className="ml-auto md:hidden">
@@ -79,7 +79,7 @@ export default function NavBar({ bgColor, textColor }) {
                 className={`bg--${bgColor} rounded-md p-2 inline-flex items-center justify-center text--${textColor} hover:text-white-500 hover:bg-white-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500`}
               >
                 <span className="sr-only">Open menu</span>
-                <ViewListIcon className="h-6 w-6" aria-hidden="true" />
+                <ViewListIcon className="h-10 w-10" aria-hidden="true" />
               </Popover.Button>
             </div>
 
