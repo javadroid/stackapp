@@ -95,7 +95,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         emailAddress: response?.user?.email,
         pk: response?.user?.pk,
         username: name,
-        access_token: response?.access_token,
+        access_token: responseresponse?.access_token,
         refresh_token: response?.refresh_token,
         account_type: user?.data.account_type,
         blood_group: user?.data.blood_group,
