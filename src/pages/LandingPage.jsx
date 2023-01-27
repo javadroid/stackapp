@@ -15,8 +15,8 @@ const LandingPage = () => {
   //   useOutletContext();
   return (
     <>
-      {/* <SignInModal />
-      <SignUpModal /> */}
+      <SignInModal />
+      <SignUpModal />
       <Hero
         toAppointmentPage={toAppointmentPage}
         toRequestPage={toRequestPage}
