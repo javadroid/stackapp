@@ -88,7 +88,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${JSON.parse(response?.access_token)}`,
+          Authorization: `Bearer ${response.access_token}`,
         },
       });
       const user = await getUser.json();
