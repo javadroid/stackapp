@@ -38,7 +38,7 @@ export default function Tabs({
                 <button
                   key={idx}
                   ref={(el) => (tabsRef.current[idx] = el)}
-                  className="pt-2 text-left pb-3 w-full focus:text-red-500"
+                  className="pt-2 text-center md:text-left pb-3 w-full focus:text-red-500"
                   onClick={() => setActiveTabIndex(idx)}
                 >
                   {tab.label}

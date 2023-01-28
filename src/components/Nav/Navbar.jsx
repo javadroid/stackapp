@@ -36,8 +36,7 @@ export default function NavBar({ bgColor, textColor, modalState }) {
       const response = await logout().unwrap();
       if (response.detail === "Successfully logged out.") {
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   return (
@@ -51,11 +50,7 @@ export default function NavBar({ bgColor, textColor, modalState }) {
           <div className="flex justify-between items-center py-6  md:space-x-10">
             <div className="flex justify-start pl-5">
               <Link to="/">
-                <img
-                  className="h-[75px] w-[120px]"
-                  src={Logo}
-                  alt="Logo"
-                />
+                <img className="h-[75px] w-[120px]" src={Logo} alt="Logo" />
               </Link>
             </div>
             <div className="pt-4 ml-auto md:hidden">

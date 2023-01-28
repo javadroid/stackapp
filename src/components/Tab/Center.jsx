@@ -399,7 +399,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
           </div>
           <button
-            disabled={APP_MODE === "production" && (captchaRef || isLoading)}
+            disabled={APP_MODE !== "local" && (captchaRef || isLoading)}
             type="submit"
             className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
           >
@@ -425,12 +425,12 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
                       fill="currentFill"
                     />
                   </svg>{" "}
-                  CREATING YOUR ACCOUNT
+                  CREATING YOUR
                   <span className="sr-only">Logging in...</span>
                 </div>
               </>
             ) : (
-              " CREATE YOUR ACCOUNT"
+              `CREATE YOUR ACCOUNT`
             )}
           </button>
         </form>

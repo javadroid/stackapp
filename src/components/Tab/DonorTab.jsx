@@ -379,7 +379,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
         </div>
         <button
-          disabled={APP_MODE === "production" && (captchaRef || isLoading)}
+          disabled={APP_MODE !== "local" && (captchaRef || isLoading)}
           type="submit"
           className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
         >
@@ -424,10 +424,10 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </div>
         </div>
       </form>
-      <div className="flex justify-center gap-2 px-auto w-full mb-1 items-center">
+      <div className="flex justify-center gap-1.5 md:gap-2 px-auto w-full mb-1 items-center">
         <div>
-          <button className="text-white px-12 text-sm  bg-black hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-300 font-medium rounded-md  py-5 text-center">
-            <div className="flex items-center space-between">
+          <button className="text-white px-2 md:px-6 lg:px-12 text-sm  bg-black hover:bg-gray-600 focus:ring-4 focus:outline-none  focus:ring-gray-300 font-medium rounded-md  py-5 text-center">
+            <div className="flex items-center lg:space-between">
               <svg
                 className="mr-2 -ml-1 w-5 h-5"
                 aria-hidden="true"
@@ -450,7 +450,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         <div>
           <button
             type="submit"
-            className="text-white px-12 text-sm bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none  focus:bg-blue-700 font-medium rounded-md py-5 text-center"
+            className="text-white px-2 md:px-6 lg:px-12 text-sm bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:outline-none  focus:bg-blue-700 font-medium rounded-md py-5 text-center"
           >
             <div className="flex items-center space-between">
               <svg
@@ -473,7 +473,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           </button>
         </div>
         <div>
-          <button className="text-white px-12 text-sm sm:text-md bg-sky-500 hover:bg-sky-700 focus:ring-4 focus:outline-none  focus:ring-sky-500 font-medium rounded-md    py-5 text-center">
+          <button className="text-white px-2 md:px-6 lg:px-12 text-sm sm:text-md bg-sky-500 hover:bg-sky-700 focus:ring-4 focus:outline-none  focus:ring-sky-500 font-medium rounded-md    py-5 text-center">
             <div className="flex items-center space-between">
               <svg
                 className="mr-2 -ml-1 w-5 h-5"
