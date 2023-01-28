@@ -12,7 +12,7 @@ const Hero = ({ toAppointmentPage, toRequestPage }) => {
             <div className="flex-col items-start text-[30px] md:text-4xl lg:text-5xl xl:text-6xl text-center sm:text-left font-semibold px-0">
               <span>Save a Life Today By{" "}</span>
               <span className="block sm:flex lg:pt-3">
-                Donating <span className="lg:inline-block text-red-600 pl-2">Blood</span>
+                Donating<span className="lg:inline-block font-semibold text-red-600 pl-2">Blood</span>
               </span>
             </div>
             <div className="text-[14px] lg:text-base text-center md:text-left font-[300] text-[#FCFCFC] lg:pl-5 lg:py-2 lg:w-full w-[326px]">

@@ -14,7 +14,7 @@ const Footer = ({ toAppointmentPage, toRequestPage }) => {
             <div className="flex flex-col items-center h-full">
               <p className="text-white text-center lg:text-start text-2xl md:text-3xl pb-4">
                 Subscribe to our newsletter and stay
-                <span className="lg:block"> up to date.</span>
+                <span className="lg:block"> up to date</span>
               </p>
               <div className="flex flex-col items-center justify-center gap-4 w-full">
                 <p className="text-white text-center lg:mr-auto text-xl lg:text-2xl">
