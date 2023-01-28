@@ -12,7 +12,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const { loginState } = useSelector((state) => state.user);
   const [captchaRef, setCaptchaRef] = useState(true);
   const onCaptchaChange = () => setCaptchaRef(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [regInfo, setRegInfo] = useState({
     email: "",
     account_type: "donation_center",
@@ -82,7 +82,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${response?.access_token}`,
+          Authorization: `Bearer ${JSON.parse(response?.access_token)}`,
         },
       });
       const user = await getUser.json();
@@ -107,16 +107,14 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       } catch (e) {}
       if (r) {
         toast.success(
-          <span>
-            Your account has been successfully created.{" "}
-          </span>,
+          <span>Your account has been successfully created. </span>,
           {
             id: loadingToast,
             duration: 7500,
           }
         );
       }
-      navigate("/dashboard/main")
+      navigate("/dashboard/main");
     } catch (err) {
       toast.dismiss(loadingToast);
       if (err.status === 400) {
@@ -126,7 +124,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           }, 1000);
         }
       } else {
-        toast.remove()
+        toast.remove();
         toast.error(
           <p>
             BloodFuse is unable to process your request,{" "}
@@ -401,7 +399,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
           </div>
           <button
-          disabled={captchaRef || isLoading}
+            disabled={captchaRef || isLoading}
             type="submit"
             className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
           >

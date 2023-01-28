@@ -42,8 +42,8 @@ export default function NavBar({ bgColor, textColor, modalState }) {
 
   return (
     <>
-      {!loginState&&(<SignInModal />)}
-      {!loginState&&(<SignUpModal />)}
+      <SignInModal />
+      <SignUpModal />
       <Popover
         className={`relative bg-${bgColor} h-full md:overflow-visible overflow-x-clip text-${textColor} text-[14px]`}
       >
