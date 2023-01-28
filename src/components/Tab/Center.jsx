@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import { toast } from "react-hot-toast";
 import { API_URL, SITE_KEY } from "../../config";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
   const { loginState } = useSelector((state) => state.user);
   const [captchaRef, setCaptchaRef] = useState(true);
   const onCaptchaChange = () => setCaptchaRef(false);
+  const navigate = useNavigate()
   const [regInfo, setRegInfo] = useState({
     email: "",
     account_type: "donation_center",
@@ -108,7 +109,6 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         toast.success(
           <span>
             Your account has been successfully created.{" "}
-            <Link to="/dashboard/main">View Dashboard</Link>
           </span>,
           {
             id: loadingToast,
@@ -116,21 +116,23 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
           }
         );
       }
+      navigate("/dashboard/main")
     } catch (err) {
       toast.dismiss(loadingToast);
       if (err.status === 400) {
         for (const key in err?.data) {
           setTimeout(() => {
-            toast.error(err.data[key][0], { duration: 6000 });
+            toast.error(err.data[key][0], { duration: 6000, id: key });
           }, 1000);
         }
       } else {
+        toast.remove()
         toast.error(
           <p>
             BloodFuse is unable to process your request,{" "}
             <b>Try Again, Shortly</b>
           </p>,
-          { duration: 6000 }
+          { duration: 6000, id: "serverError" }
         );
       }
     }

@@ -15,7 +15,7 @@ const userSlice = createSlice({
     login: (state, action) => {
       state.email = action.payload.emailAddress;
       state.username = action.payload.username;
-      state.loginState = true;
+      state.loginState = !0;
       state.pk = action.payload.pk;
       state.access_token = action.payload.access_token;
       state.refresh_token = action.payload.refresh_token;
@@ -34,7 +34,7 @@ const userSlice = createSlice({
       //set state to initial state
       state.email = null;
       state.username = null;
-      state.loginState = false;
+      state.loginState = !1;
       state.pk = null;
       state.access_token = null;
       state.refresh_token = null;

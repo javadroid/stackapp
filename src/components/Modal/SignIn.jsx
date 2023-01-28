@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import { API_URL } from "../../config";
 import toast from "react-hot-toast";
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 
 export default function SignIn({
   isModalOpen,
@@ -20,6 +20,7 @@ export default function SignIn({
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const [loginAuth, { isLoading }] = useLoginAuthMutation();
+  const navigate = useNavigate()
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -70,7 +71,6 @@ export default function SignIn({
           ? toast.success(
               <b>
                 Hello! {response?.user?.first_name}, Glad to have you back.
-                <Link to="/dashboard/main">View Dashboard</Link>
               </b>,
               {
                 id: loadingToast,
@@ -80,20 +80,20 @@ export default function SignIn({
           : toast.success(
               <b>
                 Hello! {email}, Glad to have you back.{" "}
-                <Link to="/dashboard/main">View Dashboard</Link>
               </b>,
               {
                 id: loadingToast,
                 duration: 5000,
               }
             );
+            navigate("/dashboard/main")
       }
     } catch (err) {
       toast.dismiss(loadingToast);
       if (err.status === 400) {
         for (const key in err?.data) {
           setTimeout(() => {
-            toast.error(err.data[key][0], { duration: 6000 });
+            toast.error(err.data[key][0], { duration: 6000, id: key });
           }, 1000);
         }
       } else {
@@ -102,7 +102,7 @@ export default function SignIn({
             BloodFuse is unable to process your request,{" "}
             <b>Try Again, Shortly</b>
           </p>,
-          { duration: 6000 }
+          { duration: 6000, id: 'serverError' }
         );
       }
     }
