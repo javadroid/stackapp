@@ -5,7 +5,7 @@ import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/user/userSlice";
 import { toast } from "react-hot-toast";
-import { API_URL, SITE_KEY } from "../../config";
+import { API_URL, APP_MODE, SITE_KEY } from "../../config";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
@@ -82,7 +82,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${JSON.parse(response?.access_token)}`,
+          Authorization: `Bearer ${String(response.access_token)}`,
         },
       });
       const user = await getUser.json();
@@ -399,7 +399,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             <ReCAPTCHA sitekey={SITE_KEY} onChange={onCaptchaChange} />
           </div>
           <button
-            disabled={captchaRef || isLoading}
+            disabled={APP_MODE === "production" && (captchaRef || isLoading)}
             type="submit"
             className="text-white px-7 transform sm:uppercase text-lg bg-[#F00530] disabled:bg-red-800 disabled:cursor-not-allowed focus:ring-4 focus:outline-none leading-loose focus:ring-red-300 font-medium rounded-[4px]  w-full py-2 lg:py-4 text-center"
           >
