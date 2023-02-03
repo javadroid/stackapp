@@ -33,33 +33,38 @@ export default function SignIn({
       loadingToast = toast.loading("Logging you in...", { id: loadingToast });
     },
     onSuccess: async (res) => {
-      localStorage.setItem(
-        "cfb90493-c364-4ade-820d-b6848bc65f44",
-        res.access_token
-      );
-      toast.loading("Logging you in...", { id: loadingToast });
-      // localStorage.setItem(
-      //   "e2d0b95b-cf43-481f-8c7a-65dd35203800",
-      //   res.refresh_token
-      // );
+      if (self) {
+        localStorage.setItem(
+          "cfb90493-c364-4ade-820d-b6848bc65f44",
+          res.access_token
+        );
+        toast.loading("Logging you in...", { id: loadingToast });
+        // localStorage.setItem(
+        //   "e2d0b95b-cf43-481f-8c7a-65dd35203800",
+        //   res.refresh_token
+        // );
+      }
     },
     onError: (err) => {
-      if (err.status === 400) {
-        toast.remove(loadingToast);
-        for (const key in err.message) {
-          setTimeout(() => {
-            toast.error(err.message[key][0], { duration: 6000, id: key });
-          }, 1000);
+      if (self) {
+        if (err.status === 400) {
+          toast.remove(loadingToast);
+          for (const key in err.message) {
+            setTimeout(() => {
+              toast.error(err.message[key][0], { duration: 6000, id: key });
+            }, 1000);
+          }
+        } else {
+          toast.remove();
+          toast.error(
+            <p>
+              BloodFuse is unable to process your request,{" "}
+              <b>Try Again, Shortly</b>
+            </p>,
+            { duration: 6000, id: "serverError" }
+          );
+          // }
         }
-      } else {
-        toast.remove();
-        toast.error(
-          <p>
-            BloodFuse is unable to process your request,{" "}
-            <b>Try Again, Shortly</b>
-          </p>,
-          { duration: 6000, id: "serverError" }
-        );
       }
     },
   });
