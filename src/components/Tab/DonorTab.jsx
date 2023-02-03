@@ -1,17 +1,17 @@
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useRegisterAuthMutation } from "../../features/apiSlices/userApiSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../features/user/userSlice";
 import toast from "react-hot-toast";
-import { API_URL, APP_MODE, SITE_KEY } from "../../config";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { APP_MODE, SITE_KEY } from "../../config";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../../features/user/RegisterUser";
+import { getUserDetailsQuery } from "../../features/user/useUser";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
-  const { loginState } = useSelector((state) => state.user);
-  const [captchaRef, setCaptchaRef] = useState(true);
+  const [captchaRef, setCaptchaRef] = useState(!0);
+  const onCaptchaChange = () => setCaptchaRef(!1);
+  const [self, setSelf] = useState(!1);
   const [isFocus, setIsFocus] = useState(!1);
-  const onCaptchaChange = () => setCaptchaRef(false);
   const navigate = useNavigate();
   const [regInfo, setRegInfo] = useState({
     email: "",
@@ -25,8 +25,71 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     password2: "",
     location: "",
   });
-  const dispatch = useDispatch();
-  const [registerAuth, { isLoading }] = useRegisterAuthMutation();
+
+  let loadingToast;
+  const { mutate, isSuccess, isLoading } = useMutation({
+    mutationKey: "register",
+    mutationFn: registerUser,
+    onMutate: () => {
+      loadingToast = toast.loading("Creating account...", { id: loadingToast });
+    },
+    onSuccess: async (res) => {
+      localStorage.setItem(
+        "cfb90493-c364-4ade-820d-b6848bc65f44",
+        res.access_token
+      );
+      // localStorage.setItem(
+      //   "e2d0b95b-cf43-481f-8c7a-65dd35203800",
+      //   res.refresh_token
+      // );
+    },
+    onError: (err) => {
+      if (err.status === 400) {
+        toast.remove();
+        for (const key in err.message) {
+          setTimeout(() => {
+            toast.error(err.message[key][0], { duration: 6000, id: key });
+          }, 1000);
+        }
+      } else {
+        toast.remove();
+        toast.error(
+          <p>
+            BloodFuse is unable to process your request,{" "}
+            <b>Try Again, Shortly</b>
+          </p>,
+          { duration: 6000, id: "serverError" }
+        );
+      }
+    },
+  });
+
+  const { isLoading: Loading } = useQuery({
+    queryKey: ["user"],
+    queryFn: getUserDetailsQuery,
+    enabled: isSuccess,
+    onSuccess: () => {
+      toast.dismiss(loadingToast);
+      self &&
+        toast.success(
+          <span>Your donor account has been successfully created. </span>,
+          {
+            id: loadingToast,
+            duration: 5000,
+          }
+        );
+      setTimeout(() => navigate("/dashboard/main"), 1500);
+    },
+    onError: () => {
+      self &&
+        toast.error(<b>Unable to Log you in, Try again. DT</b>, {
+          id: loadingToast,
+          duration: 5000,
+        });
+    },
+  });
+
+  Loading && toast.loading("Logging you in...", { id: loadingToast });
 
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });
@@ -38,7 +101,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     const {
       email,
       blood_group,
-      account_type,
       first_name,
       last_name,
       gender,
@@ -51,7 +113,6 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       email === "" ||
       blood_group === "" ||
       gender === "" ||
-      account_type === "" ||
       first_name === "" ||
       last_name === "" ||
       location === "" ||
@@ -59,6 +120,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       password1 === "" ||
       password2 === ""
     ) {
+      toast.error(<b>All fields are required to register</b>);
       return;
     }
     const checkBox = document.getElementById("donor_checkbox");
@@ -77,70 +139,8 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
       return;
     }
     if (isLoading) return;
-    let loadingToast;
-    try {
-      loadingToast = toast.loading("Creating account...");
-      const response = await registerAuth(regInfo).unwrap();
-
-      const name = response?.user?.first_name + " " + response?.user?.last_name;
-      //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${API_URL}user/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${String(response.access_token)}`,
-        },
-      });
-      const user = await getUser.json();
-      const payload = {
-        emailAddress: response?.user?.email,
-        pk: response?.user?.pk,
-        username: name,
-        access_token: response?.access_token,
-        refresh_token: response?.refresh_token,
-        account_type: user?.data.account_type,
-        blood_group: user?.data.blood_group,
-        gender: user?.data.gender,
-        location: user?.data.location,
-        center_name: user?.data?.center_name,
-        phone: user?.data?.phone,
-        rc_number: user?.data?.rc_number,
-        id: user?.data?.id,
-      };
-      let r = !1;
-      try {
-        await dispatch(login(payload));
-        r = !0;
-      } catch (e) {}
-      if (r) {
-        toast.success(
-          <span>Your donor account has been successfully created. </span>,
-          {
-            id: loadingToast,
-            duration: 5000,
-          }
-        );
-      }
-      navigate("/dashboard/main");
-    } catch (err) {
-      toast.dismiss(loadingToast);
-      if (err.status === 400) {
-        for (const key in err?.data) {
-          setTimeout(() => {
-            toast.error(err.data[key][0], { duration: 6000, id: key });
-          }, 1000);
-        }
-      } else {
-        toast.remove();
-        toast.error(
-          <p>
-            BloodFuse is unable to process your request,{" "}
-            <b>Try Again, Shortly</b>
-          </p>,
-          { duration: 6000, id: "serverError" }
-        );
-      }
-    }
+    setSelf(!0);
+    await mutate(regInfo);
   };
   // if (loginState) return <Navigate to="/dashboard/main" />;
 

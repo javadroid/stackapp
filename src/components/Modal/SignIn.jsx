@@ -9,18 +9,97 @@ import { login } from "../../features/user/userSlice";
 import { API_URL } from "../../config";
 import toast from "react-hot-toast";
 import { Navigate, Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../../features/user/loginUser";
+import { getUserDetailsQuery } from "../../features/user/useUser";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export default function SignIn({
   isModalOpen,
   closeModalFunc,
   openSignUpModalFunc,
 }) {
-  const { loginState, account_type } = useSelector((state) => state.user);
+  // const { loginState, account_type, isLoading } = !1
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const dispatch = useDispatch();
-  const [loginAuth, { isLoading }] = useLoginAuthMutation();
-  const navigate = useNavigate()
+  const [self, setSelf] = useState(!1);
+  // const dispatch = useDispatch();
+  // const [loginAuth, { isLoading }] = useLoginAuthMutation();
+  const navigate = useNavigate();
+
+  let loadingToast;
+  const { mutate, isSuccess, isLoading } = useMutation({
+    mutationFn: loginUser,
+    onMutate: () => {
+      loadingToast = toast.loading("Logging you in...", { id: loadingToast });
+    },
+    onSuccess: async (res) => {
+      localStorage.setItem(
+        "cfb90493-c364-4ade-820d-b6848bc65f44",
+        res.access_token
+      );
+      toast.loading("Logging you in...", { id: loadingToast });
+      // localStorage.setItem(
+      //   "e2d0b95b-cf43-481f-8c7a-65dd35203800",
+      //   res.refresh_token
+      // );
+    },
+    onError: (err) => {
+      if (err.status === 400) {
+        toast.remove(loadingToast);
+        for (const key in err.message) {
+          setTimeout(() => {
+            toast.error(err.message[key][0], { duration: 6000, id: key });
+          }, 1000);
+        }
+      } else {
+        toast.remove();
+        toast.error(
+          <p>
+            BloodFuse is unable to process your request,{" "}
+            <b>Try Again, Shortly</b>
+          </p>,
+          { duration: 6000, id: "serverError" }
+        );
+      }
+    },
+  });
+
+  useQuery({
+    queryKey: ["user"],
+    queryFn: getUserDetailsQuery,
+    enabled: isSuccess,
+    onSuccess: (data) => {
+      if (self) {
+        toast.dismiss();
+        closeModalFunc();
+        setEmail("");
+        setPassword("");
+        data.account_type === "donor"
+          ? toast.success(
+              <b>Hello! {data?.first_name}, Glad to have you back.</b>,
+              {
+                id: loadingToast,
+                duration: 5000,
+              }
+            )
+          : toast.success(
+              <b>Hello! {data?.center_name}, Glad to have you back. </b>,
+              {
+                id: loadingToast,
+                duration: 5000,
+              }
+            );
+        navigate("/dashboard/main");
+      }
+    },
+    onError: () => {
+      self &&
+        toast.error(<b>Unable to Log you in, Try again.</b>, {
+          id: loadingToast,
+          duration: 5000,
+        });
+    },
+  });
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,81 +110,8 @@ export default function SignIn({
     }
 
     if (isLoading) return;
-    let loadingToast;
-    try {
-      loadingToast = toast.loading("Logging you in...");
-      const response = await loginAuth({ email, password }).unwrap();
-      const name = response?.user?.first_name + " " + response?.user?.last_name;
-      //Get user account details like account type, rc number, etc
-      const getUser = await fetch(`${API_URL}user/`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${String(response.access_token)}`,
-        },
-      });
-      const user = await getUser.json();
-      const payload = {
-        emailAddress: response?.user?.email,
-        pk: response?.user?.pk,
-        username: name,
-        access_token: response?.access_token,
-        refresh_token: response?.refresh_token,
-        account_type: user?.data.account_type,
-        blood_group: user?.data.blood_group,
-        center_name: user?.data?.center_name,
-        phone: user?.data?.phone,
-        rc_number: user?.data?.rc_number,
-        id: user?.data?.id,
-      };
-      let r = !1;
-      try {
-        await dispatch(login(payload));
-        r = !0;
-      } catch (e) {}
-      if (r) {
-        closeModalFunc();
-        setEmail("");
-        setPassword("");
-        account_type === "donor"
-          ? toast.success(
-              <b>
-                Hello! {response?.user?.first_name}, Glad to have you back.
-              </b>,
-              {
-                id: loadingToast,
-                duration: 5000,
-              }
-            )
-          : toast.success(
-              <b>
-                Hello! {email}, Glad to have you back.{" "}
-              </b>,
-              {
-                id: loadingToast,
-                duration: 5000,
-              }
-            );
-            navigate("/dashboard/main")
-      }
-    } catch (err) {
-      toast.dismiss(loadingToast);
-      if (err.status === 400) {
-        for (const key in err?.data) {
-          setTimeout(() => {
-            toast.error(err.data[key][0], { duration: 6000, id: key });
-          }, 1000);
-        }
-      } else {
-        toast.error(
-          <p>
-            BloodFuse is unable to process your request,{" "}
-            <b>Try Again, Shortly</b>
-          </p>,
-          { duration: 6000, id: 'serverError' }
-        );
-      }
-    }
+    setSelf(!0);
+    await mutate({ email, password });
   };
   // if (loginState) return <Navigate to="/dashboard/main" />;
 

@@ -13,7 +13,7 @@ const SearchBar = ({ CenterList, setCenters }) => {
     setCenters(centerListTemp);
   };
   return (
-    <div className="my-5 mx-10">
+    <div className="my-2 mx-10 lg:mx-0 lg:mb-4 lg:mt-0">
       <form>
         <label
           htmlFor="default-search"

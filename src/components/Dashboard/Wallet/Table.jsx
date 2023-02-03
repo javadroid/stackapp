@@ -11,10 +11,10 @@ const Table = ({ record }) => {
             <th scope="col" className="py-3 px-6   bg-white ">
               <input
                 id="default-radio-1"
-                type="radio"
+                type="checkbox"
                 value=""
                 name="default-radio"
-                className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 focus:ring-black  "
+                className="w-4 h-4 text-rose-500 bg-gray-100 border-gray-300 focus:ring-rose-600  "
               />
             </th>
             <th scope="col" className="py-3 px-6   z-10  bg-white ">
@@ -53,10 +53,10 @@ const Table = ({ record }) => {
                 >
                   <input
                     id="default-radio-1"
-                    type="radio"
+                    type="checkbox"
                     value=""
                     name="default-radio"
-                    className="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 focus:ring-black  "
+                    className="w-4 h-4 text-rose-500 bg-gray-100 border-gray-300 focus:ring-rose-600  "
                   />
                 </th>
                 <th
@@ -65,17 +65,21 @@ const Table = ({ record }) => {
                 >
                   {history.id}
                 </th>
-                <td className=" py-4 text-center text-black ">
+                <td className=" py-4 px-6 text-black ">
                   {" "}
                   {history.transactionType}
                 </td>
-                <td className="py-4  text-center "> {history.date}</td>
-                <td className="py-4 px-6  text-black"> {history.amount}</td>
+                <td className="py-4  px-6 "> {history.date}</td>
+                <td className="py-4 px-6  text-black">
+                  {" "}
+                  {history.amount} ≈ {" "}
+                  <span className="font-semibold font-sans">{"₦"}</span>
+                {history.ngn}</td>
                 <td className="py-4 px-6 ">{history.receiverAddress}</td>
                 <td className="py-4 px-6 text-black">{history.paymentType}</td>
                 <td className="py-4 px-6">
                   <span
-                    className={`py-2 px-4 rounded  ${
+                    className={`py-2 px-4 rounded-md font-semibold  ${
                       history.status === "Completed"
                         ? "text-[#44C13C] bg-[#F8FDF7] px-3"
                         : history.status === "Cancelled"

@@ -1,17 +1,20 @@
-import React from "react";
-
-const Center = ({ handleClick, setCenterId, CenterList }) => {
+const Center = ({ handleClick, setCenterId, CenterList, status }) => {
   const clickHandler = (e) => {
     setCenterId(e);
     handleClick();
   };
-  if (CenterList.length <= 0) return <>Loading ...</>;
+  if (status === "isLoading") return <>Loading ...</>;
+  if (status === "isError") return <>Unable to fetch centers.</>;
+  if (status === "isSuccess" && !CenterList.length)
+    return <>No centers available around you.</>;
   return (
     <div className="w-full">
-      {CenterList.map((center) => {
+      {CenterList.map((center, i) => {
         return (
           <div
-            className="mb-6 flex flex-col md:border-0 border border-x-0 border-b-0 border-t-gray-500 "
+            className={`mb-6 flex flex-col border-x-0 border-b-0 ${
+              i !== 0 ? "border-t-rose-400" : "border-t-0"
+            }`}
             key={center.id}
           >
             <div className=" py-4 md:pb-2">

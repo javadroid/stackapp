@@ -3,8 +3,6 @@ const TEST = process.env.REACT_APP_API_URL_TEST;
 const LOCAL = process.env.REACT_APP_API_URL_LOCAL;
 const MODE = process.env.REACT_APP_MODE;
 
-console.log(MODE)
-
 export const API_URL =
   MODE === "local"
     ? LOCAL

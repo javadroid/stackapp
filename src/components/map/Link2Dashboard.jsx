@@ -4,9 +4,9 @@ import { Union, Aid } from "../../assets/images";
 
 const Link2Dashboard = () => {
   return (
-    <div className="mb-4 flex flex-col  md:border-0 border border-x-0 border-b-0 border-t-gray-500 ">
+    <div className="mb-4 flex flex-col">
       <div className="py-3 md:pb-2 ">
-        <span>Congratulations! Your Appointment have been Scheduled</span>
+        <span>Congratulations! Your Appointment have been Successfully Scheduled.</span>
       </div>
       <div className="py-8">
         <Link to="/dashboard/main">
@@ -25,8 +25,8 @@ const Link2Dashboard = () => {
           <img src={Union} alt="" />
         </div>
       </div>
-      <div className="pt-2 text-sm">
-        <span className="font-bold">Note :</span> After booking your appointment
+      <div className="pt-2 text-sm italic">
+        <span className="font-bold capitalize">Note:</span> After booking your appointment
         with donation center, blood bank or hospital you’ll need to log into
         your dashboard to be able to view or cancel appointments.
       </div>

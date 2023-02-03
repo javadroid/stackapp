@@ -6,22 +6,18 @@ import { LogoDark } from "../../assets/images";
 
 import { Link } from "react-router-dom";
 import { solutions, resources } from "./NavbarData";
-import { useSelector, useDispatch } from "react-redux";
-import { logout as logoutDispatch } from "../../features/user/userSlice";
-import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
+import { Logout } from "../../features/user/Logout";
+import { useUserQuery } from "../../features/user/useUser";
 
 const Sidebar = ({ openModal, openSignUpModal }) => {
-  const { loginState } = useSelector((state) => state.user);
+  const { isSuccess, isError: Error, data } = useUserQuery();
+  const LG = Logout();
 
-  const dispatch = useDispatch();
-  const [logout] = useLogoutMutation();
+  let loginState = data?.loginState;
+  Error && (loginState = !1);
+
   const handleLogout = async () => {
-    try {
-      const response = await logout().unwrap();
-      if (response.detail === "Successfully logged out.") {
-        dispatch(logoutDispatch());
-      }
-    } catch (error) {}
+    LG.mutate();
   };
 
   try {
@@ -193,19 +189,21 @@ const Sidebar = ({ openModal, openSignUpModal }) => {
                     {loginState && (
                       <>
                         <div className="mt-2 py-5 border-t-2 border-solid">
-                          <Link
-                            className="text-black text-base font-medium px-4"
-                            to="/dashboard/main"
-                          >
-                            <Popover.Button>Dashboard</Popover.Button>
-                          </Link>
-                        </div>
-                        <div className="mt-2 py-5 border-t-2 border-solid">
                           <div
-                            className="text-black text-base font-medium px-4"
                             onClick={handleLogout}
+                            className="text-black text-base font-medium px-4"
                           >
                             <Popover.Button>Logout</Popover.Button>
+                          </div>
+                        </div>
+                        <div className="mt-2 py-5 flex justify-center items-center gap-10">
+                          <div
+                            className="text-base font-medium px-8 py-3 border border-transparent rounded-md shadow-sm text-[12px] lg:text-base text-white bg-red-600 hover:bg-red-700 "
+                            onClick={openModal}
+                          >
+                            <Link to="/dashboard/main">
+                              <Popover.Button>Dashboard</Popover.Button>
+                            </Link>
                           </div>
                         </div>
                       </>
