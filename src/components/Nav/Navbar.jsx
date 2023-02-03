@@ -8,18 +8,18 @@ import { Link } from "react-router-dom";
 
 import Sidebar from "./Sidebar";
 import { solutions, resources } from "./NavbarData";
-import { useDispatch, useSelector } from "react-redux";
-import { logout as logoutDispatch } from "../../features/user/userSlice";
-import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
+import { Logout } from "../../features/user/Logout";
+import { useUserQuery } from "../../features/user/useUser";
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+const init = {
+  first_name: "",
+  last_name: "",
+  center_name: "",
+  account_type: "",
+};
 
 export default function NavBar({ bgColor, textColor, modalState }) {
-  const { loginState, username, center_name, account_type } = useSelector(
-    (state) => state.user
-  );
+  const LG = Logout();
   const [
     SignUpModal,
     SignInModal,
@@ -28,16 +28,32 @@ export default function NavBar({ bgColor, textColor, modalState }) {
     closeModal,
     closeSignUpModal,
   ] = modalState;
-  const dispatch = useDispatch();
-  const [logout] = useLogoutMutation();
+  const { isSuccess, isError: Error, data } = useUserQuery();
+
+  const { first_name, last_name, center_name, account_type } = isSuccess
+    ? data
+    : init;
+  const username = `${first_name} ${last_name}`;
+
+  let loginState = data?.loginState;
+  Error && (loginState = !1);
+
+  // if (!isLoading) {
+  //   if (!loginState) {
+  //     customToast(
+  //       "You have been logged out. Please login to continue or sign-up if you don't have an account."
+  //     );
+  //     return <Navigate to="/" replace />;
+  //   }
+  // }
   const handleLogout = async () => {
-    try {
-      dispatch(logoutDispatch());
-      const response = await logout().unwrap();
-      if (response.detail === "Successfully logged out.") {
-      }
-    } catch (error) {}
+    LG.mutate();
+    // res && <Navigate to="/" replace />;
   };
+
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(" ");
+  }
 
   return (
     <>
@@ -223,11 +239,11 @@ export default function NavBar({ bgColor, textColor, modalState }) {
                         </div>
                         {/* If account type is donor, render username, else if account type is donation_center, render center_name */}
                         {account_type === "donor" ? (
-                          <div className="text-[12px] lg:text-base font-[400] hidden md:flex trans">
+                          <div className="capitalize text-[12px] lg:text-base font-[400] hidden md:flex trans">
                             {username}
                           </div>
                         ) : (
-                          <div className="text-[12px] lg:text-base font-[400] hidden md:flex trans">
+                          <div className="capitalize text-[12px] lg:text-base font-[400] hidden md:flex trans">
                             {center_name}
                           </div>
                         )}
@@ -258,8 +274,8 @@ export default function NavBar({ bgColor, textColor, modalState }) {
                               </div>
                             </Link>
                             <div
-                              className="flex items-center gap-1 text-[12px] lg:text-base text-gray-900 cursor-pointer"
                               onClick={handleLogout}
+                              className="flex items-center gap-1 text-[12px] lg:text-base text-gray-900 cursor-pointer"
                             >
                               <UploadIcon className="rotate-90 h-4 w-4" />
                               Sign out

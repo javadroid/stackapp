@@ -37,27 +37,24 @@ const MedicalsPage = () => {
       <div className="w-full  h-full p-4 overflow-x-hidden">
         <h1 className="font-[500] text-xl md:text-2xl">Medical Report</h1>
         {/* Grid of Cards*/}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-4 w-full md:max-w-7xl mt-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-2 gap-y-4 w-full mt-4 mb-8">
           {/*Blood Group */}
           <div className="w-full h-48 rounded-[4px]">
             <div className="w-full h-full py-4 px-4 shadow-sm bg-white flex flex-col gap-4 items-start">
-              <span className="font-mod-light  text-xl"> Blood Group</span>
+              <span className="font-mod-light text-xl font-semibold"> Blood Group</span>
               <div className="flex items-center justify-between w-full text-[#F00530]">
                 <span className="font-mod-bold text-2xl md:text-3xl">
                   {personData.bloodGroup}
                 </span>
                 <BsPeople className="w-16 h-16 md:w-12 md:h-12" />
               </div>
-              <span className="font-mod-light text-[#333333] text-opacity-40">
-                10% higher than last month
-              </span>
             </div>
           </div>
           <div className="w-full h-48 rounded-[4px]">
             {/*Heart Rate */}
 
             <div className="w-full h-full py-4 px-4 shadow-sm bg-white flex flex-col gap-4 items-start">
-              <span className="font-mod-light text-xl">Heart Rate</span>
+              <span className="font-mod-light text-xl font-semibold">Heart Rate</span>
               <div className="flex items-center justify-between w-full text-[#44C13C]">
                 <span className="font-mod-bold text-2xl md:text-3xl">
                   {personData.heartRate}bmp
@@ -65,7 +62,7 @@ const MedicalsPage = () => {
                 <img src={Heart} className="w-16 h-16 md:w-12 md:h-12" alt="" />
               </div>
               <span className="font-mod-light text-[#333333] text-opacity-40">
-                10% higher than last month
+                10% higher than last medical check
               </span>
             </div>
           </div>
@@ -73,7 +70,7 @@ const MedicalsPage = () => {
             {/*Weight */}
 
             <div className="w-full h-full py-4 px-4 shadow-sm bg-white flex flex-col gap-4 items-start">
-              <span className="font-mod-light text-xl">Weight</span>
+              <span className="font-mod-light text-xl font-semibold">Weight</span>
               <div className="flex items-center justify-between w-full text-[#FB9637]">
                 <span className="font-mod-bold text-2xl md:text-3xl">
                   {personData.weight}
@@ -85,14 +82,14 @@ const MedicalsPage = () => {
                 />
               </div>
               <span className="font-mod-light text-[#333333] text-opacity-40">
-                10% higher than last month
+                10% higher than last medical check
               </span>
             </div>
           </div>
           <div className="w-full h-48 rounded-[4px]">
             {/*Blood Count */}
             <div className="w-full h-full py-4 px-4 shadow-sm bg-white flex flex-col gap-4 items-start">
-              <span className="font-mod-light text-xl">Blood Count</span>
+              <span className="font-mod-light text-xl font-semibold">Blood Count</span>
               <div className="flex items-center justify-between w-full text-[#61A0FF]">
                 <span className="font-mod-bold text-2xl md:text-3xl">
                   {personData.bloodCount}
@@ -104,7 +101,7 @@ const MedicalsPage = () => {
                 />
               </div>
               <span className="font-mod-light text-[#333333] text-opacity-40">
-                10% higher than last month
+                10% higher than last medical check
               </span>
             </div>
           </div>
@@ -166,7 +163,7 @@ const MedicalsPage = () => {
                 </Popover>
                 <div className="hidden lg:block cursor-pointer">
                   <button className="bttn bttn-black">
-                    <PlusIcon className="w-4 h-4" />
+                    <PlusIcon className="w-4 h-4 mr-2" />
                     <span className="font-mod-light" onClick={openModal}>
                       Create Medical Report
                     </span>
@@ -189,7 +186,7 @@ const MedicalsPage = () => {
               <Popover className="relative block lg:hidden">
                 {({ open }) => (
                   <>
-                    <Popover.Button className=" flex justify-between gap-2 items-center  text-gray-200 px-3 py-1">
+                    <Popover.Button className=" flex justify-between gap-2 items-center  text-gray-600 px-3 py-1">
                       <DotsVerticalIcon className="w-6 h-6 text-[#445665]" />
                     </Popover.Button>
                     <Transition
@@ -203,7 +200,7 @@ const MedicalsPage = () => {
                     >
                       <Popover.Panel className="absolute z-20 left-1/2 transform -translate-x-1/2 mt-3 pr-36 w-max ">
                         <div className="rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 ">
-                          <div className="relative grid text-[14px] gap-4 bg-white p-2 text-gray-200  ">
+                          <div className="relative grid text-[14px] gap-4 bg-white p-2 text-gray-600  ">
                             <div className=" px-4 py-2 flex items-center justify-start gap-1 hover:bg-gray-300 rounded cursor-pointer hover:text-red-400 whitespace-nowrap ">
                               <PlusIcon className="w-4 h-4" />{" "}
                               <span

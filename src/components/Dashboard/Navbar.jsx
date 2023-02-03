@@ -6,45 +6,57 @@ import { Link } from "react-router-dom";
 import { Popover, Transition } from "@headlessui/react";
 import SideBarMobile from "./SideBarMobile";
 import { UploadIcon } from "@heroicons/react/outline";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { logout } from "../../features/user/userSlice";
+import { Logout } from "../../features/user/Logout";
+import { useUserQuery } from "../../features/user/useUser";
+
+const init = {
+  first_name: "",
+  last_name: "",
+  center_name: "",
+  account_type: "",
+};
 
 const Navbar = () => {
-  const { username, center_name, account_type } = useSelector((state) => state.user);
+  const { isSuccess, isError: Error, data } = useUserQuery();
+  const { first_name, last_name, center_name, account_type } = isSuccess
+    ? data
+    : init;
+  const username = `${first_name} ${last_name}`;
+  const LG = Logout();
 
-  const dispatch = useDispatch();
+  let loginState = data?.loginState;
+  Error && (loginState = !1);
 
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async () => {
+    LG.mutate();
   };
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
   return (
-    <Popover className="flex items-center w-full justify-between px-6 py-6 bg-[#FCFCFC] relative lg:overflow-visible overflow-x-clip">
+    <Popover className="flex items-center w-full justify-between pl-6 pr-3 lg:px-6 py-6 bg-[#FCFCFC] relative lg:overflow-visible overflow-x-clip">
       <div className="flex items-center w-full justify-between bg-[#FCFCFC]">
         <div className="flex lg:hidden gap-2 items-center">
           <Link to="/">
-            <img className="h-8 w-auto" src={DropletIcon} alt="Logo" />
+            <img className="h-8 w-[22px]" src={DropletIcon} alt="Logo" />
           </Link>
-          <Popover.Button className="flex items-center justify-center rounded-md p-1 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-red-500">
-            <span className="sr-only">Open menu</span>
-            <MenuIcon className="h-8 w-8 text-[#575757]" aria-hidden="true" />
-          </Popover.Button>
         </div>
         <div className="hidden lg:block text-2xl">Dashboard</div>
         <div className="flex items-center gap-6">
-          <button className="hidden sm:block bg-[#FFF5F7] py-2 px-4 rounded-full text-[#F00530] border border-transparent focus:border-[#F00530]">
+          <button className="block bg-rose-100 py-2 px-4 rounded-full text-[#F00530] border border-transparent font-semibold shadow-sm focus:border-[#F00530]">
             Connect STX Account
           </button>
           {/* Notifications Icon */}
           <div>
             <BellIcon className="text-[#575757] h-8 w-8 cursor-pointer" />
           </div>
+          <Popover.Button className="lg:hidden flex items-center bg-zinc-100 justify-center rounded-md p-1 focus:outline-none focus:ring-1 focus:ring-inset focus:ring-red-500">
+            <span className="sr-only">Open menu</span>
+            <MenuIcon className="h-8 w-8 text-[#575757]" aria-hidden="true" />
+          </Popover.Button>
           {/* Profile Icon */}
-          <div className="flex items-center gap-2 cursor-pointer">
+          <div className="hidden lg:flex items-center gap-2 cursor-pointer">
             <Popover className="relative">
               {({ open }) => (
                 <>
@@ -66,11 +78,11 @@ const Navbar = () => {
                       </div>
                       {/* If account type is donor, render username, else if account type is donation_center, render center_name */}
                       {account_type === "donor" ? (
-                        <div className="text-[12px] lg:text-base font-[400] hidden md:flex trans">
+                        <div className="capitalize text-[12px] lg:text-base font-[400] hidden md:flex trans">
                           {username}
                         </div>
                       ) : (
-                        <div className="text-[12px] lg:text-base font-[400] hidden md:flex trans">
+                        <div className="capitalize text-[12px] lg:text-base font-[400] hidden md:flex trans">
                           {center_name}
                         </div>
                       )}
@@ -95,11 +107,11 @@ const Navbar = () => {
                     <Popover.Panel className="absolute z-20 left-1/2 transform -translate-x-1/2 mt-3 px-2 w-full max-w-md sm:px-0">
                       <div className="rounded-sm shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden">
                         <div className="relative grid gap-4 bg-white px-4 py-6">
-                          <Link to="/dashboard/main">
+                          {/* <Link to="/dashboard/main">
                             <div className="text-[12px] lg:text-base text-gray-900">
                               Dashboard
                             </div>
-                          </Link>
+                          </Link> */}
                           <div
                             className="flex items-center gap-1 text-[12px] lg:text-base text-gray-900 cursor-pointer"
                             onClick={handleLogout}

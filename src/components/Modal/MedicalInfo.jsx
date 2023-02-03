@@ -21,7 +21,7 @@ export default function MedicalInfo({ isModalOpen, closeModalFunc }) {
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto ">
-            <div className="flex h-auto sm:min-h-full items-center justify-center md:p-4 text-center ">
+            <div className="flex md:h-auto min-h-full items-center justify-center md:p-4 text-center ">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -31,7 +31,7 @@ export default function MedicalInfo({ isModalOpen, closeModalFunc }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full sm:w-[80%] sm:mx-auto h-full sm:h-auto px-5 md:px-16 max-w-2xl transform overflow-hidden sm:rounded-[4px] py-2 bg-[#FCFCFC]  text-left align-middle shadow-xl">
+                <Dialog.Panel className="md:w-[80%] m-full mx-auto md:h-full h-auto px-5 max-w-2xl transform overflow-hidden md:rounded-[4px] py-2 bg-[#FCFCFC]  text-left align-middle shadow-xl">
                   <Dialog.Title
                     as="h2"
                     className=" w-full my-5  flex md:text-3xl text-xl justify-between font-extrabold text-gray-900"

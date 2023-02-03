@@ -10,18 +10,31 @@ const location = {
 };
 
 const BookAppointment = () => {
-  const { data: centersList = [] } = useCentersListQuery();
+  const { isSuccess, isLoading, isError, data } = useCentersListQuery();
 
-  const [Centers, setCenters] = useState(centersList);
+  const [Centers, setCenters] = useState([]);
+
+  let status;
+  if (isLoading) status = "isLoading";
+  if (isError) status = "isError";
+  if (isSuccess) status = "isSuccess";
   useEffect(() => {
-    setCenters(centersList);
-  }, [centersList]);
+    if (isSuccess) setCenters(data);
+  }, [status]);
 
   return (
     <div className="w-full">
-      <SearchBar CenterList={Centers} setCenters={setCenters} />
+      <div className="inline lg:hidden ">
+        <SearchBar CenterList={Centers} setCenters={setCenters} />
+      </div>
 
-      <Map location={location} zoomLevel={17} CenterList={Centers} />
+      <Map
+        location={location}
+        zoomLevel={17}
+        CenterList={Centers}
+        setCenters={setCenters}
+        status={status}
+      />
     </div>
   );
 };

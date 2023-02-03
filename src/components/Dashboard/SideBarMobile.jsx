@@ -7,21 +7,14 @@ import { RiHistoryLine, RiLogoutCircleLine } from "react-icons/ri";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { BsWallet } from "react-icons/bs";
 import { TbHeartbeat } from "react-icons/tb";
-import { useDispatch } from "react-redux";
-import { logout as logoutDispatch } from "../../features/user/userSlice";
-import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
+import {Logout} from "../../features/user/Logout";
+
 const SideBarMobile = () => {
-  const dispatch = useDispatch();
-  const [logout] = useLogoutMutation();
+  const LG = Logout();
   const handleLogout = async () => {
-    try {
-      const response = await logout().unwrap();
-      if (response.detail === "Successfully logged out.") {
-        dispatch(logoutDispatch());
-      }
-    } catch (error) {
-    }
+    LG.mutate();
   };
+
   return (
     <Transition
       as={Fragment}

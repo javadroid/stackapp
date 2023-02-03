@@ -9,28 +9,34 @@ import SignIn from "../Modal/SignIn";
 import SignUp from "../Modal/SignUp";
 import Sidebar from "./Sidebar";
 import { solutions, resources } from "./NavbarData";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { logout as logoutDispatch } from "../../features/user/userSlice";
-import { useLogoutMutation } from "../../features/apiSlices/userApiSlice";
+import { Logout } from "../../features/user/Logout";
+import { useUserQuery } from "../../features/user/useUser";
+import { Navigate } from "react-router-dom";
+
+const init = {
+  first_name: "",
+  last_name: "",
+  center_name: "",
+  account_type: "",
+};
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function NavBar({ bgColor, textColor }) {
-  const { username, loginState, center_name, account_type } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  const [logout] = useLogoutMutation();
+  const LG = Logout();
+  const { isSuccess, isError: Error, data } = useUserQuery();
+
+  const { first_name, last_name, center_name, account_type } = isSuccess ? data : init;
+    const username = `${first_name} ${last_name}`;
+
+  let loginState = data?.loginState;
+  Error && (loginState = !1);
 
   const handleLogout = async () => {
-    try {
-      const response = await logout().unwrap();
-      if (response.detail === "Successfully logged out.") {
-        dispatch(logoutDispatch());
-      }
-    } catch (error) {
-    }
+    LG.mutate();
+    // res && <Navigate to='/' replace/>;
   };
   let [SignUpOpen, setSignUpOpen] = useState(false);
 
@@ -71,7 +77,7 @@ export default function NavBar({ bgColor, textColor }) {
           <div className="flex justify-between items-center py-6  md:space-x-10">
             <div className="flex justify-start lg:w-0 lg:flex-1">
               <Link to="/">
-                <img className="h-12 w-[20px]" src={LogoDark} alt="Logo" />
+                <img className="h-12 w-[80px]" src={LogoDark} alt="Logo" />
               </Link>
             </div>
             <div className="ml-auto md:hidden">
@@ -243,11 +249,11 @@ export default function NavBar({ bgColor, textColor }) {
                           </div>
                           {/* If account type is donor, render username, else if account type is donation_center, render center_name */}
                           {account_type === "donor" ? (
-                            <div className="text-[12px] lg:text-base font-[400] hidden md:flex trans">
+                            <div className="capitalize text-[12px] lg:text-base font-[400] hidden md:flex trans">
                               {username}
                             </div>
                           ) : (
-                            <div className="text-[12px] lg:text-base font-[400] hidden md:flex trans">
+                            <div className="capitalize text-[12px] lg:text-base font-[400] hidden md:flex trans">
                               {center_name}
                             </div>
                           )}

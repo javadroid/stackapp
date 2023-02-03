@@ -8,6 +8,7 @@ import { DonationCenter, Hospital, BloodBag } from "../../assets/images";
 import Center from "./Center";
 import Schedule from "./Schedule";
 import { GOOGLE_KEY } from "../../config";
+import SearchBar from "./SearchBar";
 
 const LocationPin = ({ text }) => (
   <div className="pin">
@@ -16,7 +17,7 @@ const LocationPin = ({ text }) => (
   </div>
 );
 
-const Map = ({ location, zoomLevel, CenterList }) => {
+const Map = ({ location, zoomLevel, CenterList, setCenters, status }) => {
   const [show, setShow] = useState(true);
   const [centerId, setCenterId] = useState();
 
@@ -26,9 +27,9 @@ const Map = ({ location, zoomLevel, CenterList }) => {
 
   return (
     <div className="">
-      <div className="flex flex-col h-full md:h-screen justify-between border-t-red-500 border-4 md:border-b-gray-500 border-b-0 border-x-0  md:flex-row-reverse w-full pl-10 my-5 md:my-5">
-        <div className="md:w-[75%] flex flex-col justify-between md:-ml-0 border-b-red-500 border-4 border-x-0 -ml-10">
-          <div className=" flex flex-col justify-between w-full h-[50vh]  md:h-[75%]">
+      <div className="flex flex-col h-full justify-between border-t-red-500 border-4 md:border-b-gray-500 border-b-0 border-x-0  md:flex-row-reverse w-full my-5 md:my-5">
+        <div className="md:w-[75%] flex flex-col justify-between md:-ml-0 border-b-red-500 border-4 border-x-0">
+          <div className=" flex flex-col justify-between w-full h-[40vh] lg:h-[70vh]">
             <GoogleMapReact
               bootstrapURLKeys={{ key: GOOGLE_KEY }}
               defaultCenter={location}
@@ -41,33 +42,33 @@ const Map = ({ location, zoomLevel, CenterList }) => {
               />
             </GoogleMapReact>
           </div>
-          <div className="flex h-[25%] w-full text-sm ">
-            <div className="bg-red-600 text-white flex flex-col gap-4 items-center justify-center w-[33%] ">
-              <img src={BloodBag} alt="" className="md:w-14 md:h-14 w-7 h-7" />
+          <div className="flex justify-between w-full text-sm ">
+            <div className="bg-red-600 text-white flex flex-row gap-1 items-center justify-center lg:gap-3 w-full px-4 py-2 lg:py-3">
+              <img src={BloodBag} alt="" className="lg:w-10 lg:h-10 w-7 h-7" />
               <span className="text-white text-center">
                 CONNECT WITH BLOOD BANK
               </span>
             </div>
-            <div className="bg-white text-white flex flex-col gap-4 items-center justify-center w-[33%] ">
+            <div className="bg-white text-white flex flex-row gap-1 items-center justify-center lg:gap-3 w-full px-4 py-2 lg:py-3">
               <img
                 src={DonationCenter}
                 alt=""
-                className="md:w-14 md:h-14 w-7 h-7 "
+                className="md:w-10 md:h-10 w-7 h-7 "
               />
               <span className="text-gray-500 text-center">
                 CONNECT WITH DONATION CENTER
               </span>
             </div>
             <div className=" border-r-gray-500 border my-4"></div>
-            <div className="bg-white text-white flex flex-col gap-4 items-center justify-center w-[33%] ">
-              <img src={Hospital} alt="" className="md:w-14 md:h-14 w-7 h-7" />
+            <div className="bg-white text-white flex flex-row gap-1 items-center justify-center lg:gap-3 w-full px-4 py-2 lg:py-3">
+              <img src={Hospital} alt="" className="md:w-10 md:h-10 w-7 h-7" />
               <span className="text-gray-500 text-center">
                 CONNECT WITH HOSPITAL
               </span>
             </div>
           </div>
         </div>
-        <div className="md:w-[25%] w-full md:h-full  flex  flex-col pr-6 md:overflow-scroll float-left">
+        <div className="lg:w-[25%] w-full lg:h-full flex flex-col px-5">
           <div className=" pt-6 pb-0 md:py-3">
             {show ? (
               <span className="text-black">Donation Center Near You</span>
@@ -75,14 +76,23 @@ const Map = ({ location, zoomLevel, CenterList }) => {
               <span className="text-black">Schedule Appointment</span>
             )}{" "}
           </div>
-          <div className="md:border-b-red-500 border-0 md:border mb-6"></div>
+          <div className="border-b-red-500 border mb-6"></div>
           <div>
             {show ? (
-              <Center
-                handleClick={handleClick}
-                setCenterId={setCenterId}
-                CenterList={CenterList}
-              />
+              <>
+                <div className="hidden lg:inline ">
+                  <SearchBar CenterList={CenterList} setCenters={setCenters} />
+                </div>
+                <div className="h-[25vh] lg:h-[69vh] overflow-y-scroll">
+                  <Center
+                    handleClick={handleClick}
+                    setCenterId={setCenterId}
+                    CenterList={CenterList}
+                    status={status}
+                  />
+                  <br />
+                </div>
+              </>
             ) : (
               <Schedule centerId={centerId} CenterList={CenterList} />
             )}

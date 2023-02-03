@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SignIn from "../../components/Modal/SignIn";
 import SignUp from "../../components/Modal/SignUp";
+import { useUserQuery } from "../user/useUser";
 
 const useModal = () => {
-  const { loginState } = useSelector((state) => state.user);
+  const { isLoading, isError, data } = useUserQuery();
+  let loginState = data?.loginState;
+  isError && (loginState = !1);
   const navigate = useNavigate();
 
   let [SignUpOpen, setSignUpOpen] = useState(false);

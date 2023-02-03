@@ -45,3 +45,4 @@ export { default as WalletIcon } from "./wallet-icon.png";
 export { default as WeightIcon } from "./weight-2.png";
 export { default as Withdraw } from "./Withdraw.png";
 export { default as WittyIcon } from "./wittyhub-icon.png";
+export { default as Empty } from "./empty.png";
