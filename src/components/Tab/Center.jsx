@@ -71,7 +71,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     queryFn: getUserDetailsQuery,
     enabled: isSuccess,
     onSuccess: () => {
-      self && toast.dismiss(loadingToast);
+      if (self) toast.dismiss(loadingToast);
       self &&
         toast.success(
           <span>Your account has been successfully created. </span>,
@@ -80,7 +80,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             duration: 5000,
           }
         );
-      self && setTimeout(() => navigate("/dashboard/main"), 1500);
+      if(self) setTimeout(() => navigate("/dashboard/main"), 1500);
     },
     onError: () => {
       self &&
@@ -91,7 +91,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     },
   });
 
-  Loading && self && toast.loading("Logging you in...", { id: loadingToast });
+  if(Loading && self) toast.loading("Logging you in...", { id: loadingToast });
 
   const handleSignUp = async (e) => {
     e.preventDefault();
