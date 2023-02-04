@@ -25,13 +25,13 @@ export const useUserLoginQuery = () => {
   return useQuery({
     queryKey: ["checkAuth"],
     queryFn: getUserLoginQuery,
-    retry: 1,
-    refetchOnMount: !1,
-    refetchOnWindowFocus: !1,
-    refetchOnReconnect: !1,
-    retryOnMount: !1,
-    refetchInterval: 60000,
-    refetchIntervalInBackground: !0,
+    // retry: 1,
+    // refetchOnMount: !1,
+    // refetchOnWindowFocus: !1,
+    // refetchOnReconnect: !1,
+    // retryOnMount: !1,
+    // refetchInterval: 60000,
+    // refetchIntervalInBackground: !0,
 
     onSuccess: () => {
       qc.setQueriesData(["user"], (oldData) => [...oldData, { loginState: 0 }]);
