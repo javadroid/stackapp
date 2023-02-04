@@ -15,8 +15,11 @@ import {
 import "./index.css";
 import { MedicalsPage, Dashboard, History, Wallet } from "./components/Dashboard";
 import { Toaster } from 'react-hot-toast';
+import { useUserLoginQuery } from "./features/user/useCheckAuth";
 
 function App() {
+
+  useUserLoginQuery()
 
   const session = sessionStorage.getItem('INIT')
   if (session!==null) {
