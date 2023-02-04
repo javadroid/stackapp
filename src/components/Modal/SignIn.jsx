@@ -30,7 +30,9 @@ export default function SignIn({
   const { mutate, isSuccess, isLoading } = useMutation({
     mutationFn: loginUser,
     onMutate: () => {
-      loadingToast = toast.loading("Logging you in...", { id: loadingToast });
+      if (self) {
+        loadingToast = toast.loading("Logging you in...", { id: loadingToast });
+      }
     },
     onSuccess: async (res) => {
       if (self) {
