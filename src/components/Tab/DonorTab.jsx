@@ -89,7 +89,7 @@ const DonorTab = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     },
   });
 
-  Loading && toast.loading("Logging you in...", { id: loadingToast });
+  (Loading && self) && (toast.loading("Logging you in...", { id: loadingToast }))
 
   const handleChange = (event) => {
     setRegInfo({ ...regInfo, [event.target.name]: event.target.value });

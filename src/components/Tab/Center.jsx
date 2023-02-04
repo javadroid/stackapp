@@ -91,7 +91,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     },
   });
 
-  Loading && toast.loading("Logging you in...", { id: loadingToast });
+  Loading && self && toast.loading("Logging you in...", { id: loadingToast });
 
   const handleSignUp = async (e) => {
     e.preventDefault();
