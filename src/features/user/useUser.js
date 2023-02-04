@@ -30,8 +30,8 @@ export const useUserQuery = () =>
     refetchOnWindowFocus: !1,
     refetchOnReconnect: !1,
     retryOnMount: !1,
-    refetchInterval: 60000,
-    refetchIntervalInBackground: !0,
+    // refetchInterval: 60000,
+    // refetchIntervalInBackground: !0,
 
     onSuccess: (data) => {
       data["loginState"] = !0;
