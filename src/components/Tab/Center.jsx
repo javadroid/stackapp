@@ -71,7 +71,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
     queryFn: getUserDetailsQuery,
     enabled: isSuccess,
     onSuccess: () => {
-      toast.dismiss(loadingToast);
+      self && toast.dismiss(loadingToast);
       self &&
         toast.success(
           <span>Your account has been successfully created. </span>,
@@ -80,7 +80,7 @@ const Recepient = ({ activeTabIndex, closeModal, openLoginModalFunc }) => {
             duration: 5000,
           }
         );
-      setTimeout(() => navigate("/dashboard/main"), 1500);
+      self && setTimeout(() => navigate("/dashboard/main"), 1500);
     },
     onError: () => {
       self &&
