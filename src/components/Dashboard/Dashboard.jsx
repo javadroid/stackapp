@@ -37,7 +37,7 @@ const AreaChart = lazy(() =>
   })
 );
 
-const data = [
+let data = [
   {
     name: "Page A",
     uv: 0,
@@ -81,6 +81,7 @@ const data = [
     amt: 0,
   },
 ];
+data = []
 
 const PerformanceData = [
   {
@@ -272,7 +273,8 @@ const Dashboard = () => {
                 <div className="flex items-center justify-between text-[#FB9637] ">
                   <span className="text-3xl  ">
                     <span className="font-semibold font-sans">{"₦"}</span>
-                    {data.length}
+                    0
+                    {/* {data.length} */}
                   </span>
                   <ArrowUpIcon className=" h-7 w-6 rotate-45 pt-2 text-sm" />
                 </div>
@@ -609,17 +611,17 @@ const Dashboard = () => {
               <GaugeChart
                 id="gauge-chart2"
                 nrOfLevels={2}
-                percent={0.26}
+                percent={0}
                 colors={["red", "#FEE6EB"]}
                 arcPadding={0}
                 needleBaseColor="red"
                 needleColor="gray"
-                arcsLength={[0.26, 0.74]}
+                arcsLength={[0, 1]}
                 textColor="gray"
               />
               <div className="flex justify-around items-center -mt-4 ">
-                <span className="xl:pl-4">26%</span>
-                <span className="pl-20 xl:pl-28">74%</span>
+                <span className="xl:pl-4">0%</span>
+                <span className="pl-20 xl:pl-28">0%</span>
               </div>
               <div className="flex justify-around items-center mt-4 ">
                 <span className="">Completed</span>
@@ -665,12 +667,12 @@ const Dashboard = () => {
               arcPadding={0}
               needleBaseColor="red"
               needleColor="gray"
-              arcsLength={[0.26, 0.74]}
+              arcsLength={[0, 1]}
               textColor="gray"
             />
             <div className="flex justify-around items-center -mt-4 ">
-              <span className="">26%</span>
-              <span className="pl-20">74%</span>
+              <span className="">0%</span>
+              <span className="pl-20">0%</span>
             </div>
             <div className="flex justify-around items-center mt-4 ">
               <span className="">Completed</span>
