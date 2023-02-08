@@ -40,80 +40,80 @@ const AreaChart = lazy(() =>
 const data = [
   {
     name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
+    uv: 0,
+    pv: 0,
+    amt: 0,
   },
   {
     name: "Page B",
     uv: 0,
-    pv: 1398,
-    amt: 2210,
+    pv: 0,
+    amt: 0,
   },
   {
     name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
+    uv: 0,
+    pv: 0,
+    amt: 0,
   },
   {
     name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
+    uv: 0,
+    pv: 0,
+    amt: 0,
   },
   {
     name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
+    uv: 0,
+    pv: 0,
+    amt: 0,
   },
   {
     name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
+    uv: 0,
+    pv: 0,
+    amt: 0,
   },
   {
     name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
+    uv: 0,
+    pv: 0,
+    amt: 0,
   },
 ];
 
 const PerformanceData = [
   {
     name: "Jan",
-    pv: 58,
+    pv: 0,
   },
   {
     name: "Feb",
-    pv: 98,
+    pv: 0,
   },
   {
     name: "Mar",
-    pv: 38,
+    pv: 0,
   },
   {
     name: "Apr",
-    pv: 68,
+    pv: 0,
   },
   {
     name: "May",
-    pv: 48,
+    pv: 0,
   },
   {
     name: "Jun",
-    pv: 11,
+    pv: 0,
   },
   {
     name: "Jul",
-    pv: 7,
+    pv: 0,
   },
   {
     name: "Aug",
-    pv: 73,
+    pv: 0,
   },
 ];
 const init = {
