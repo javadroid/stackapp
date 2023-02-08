@@ -34,7 +34,7 @@ export const useUserLoginQuery = () => {
     // refetchIntervalInBackground: !0,
 
     onSuccess: () => {
-      qc.setQueriesData(["user"], (oldData) => [...oldData, { loginState: 0 }]);
+      qc.setQueriesData(["user"], (oldData) => [...oldData, { loginState: !0 }]);
     },
 
     onError: () => {
