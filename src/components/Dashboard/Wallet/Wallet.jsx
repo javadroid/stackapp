@@ -16,6 +16,7 @@ import Record from "./Record";
 import Pagination from "./Pagination";
 import Table from "./Table";
 import ReceiveWallet from "./ReceiveWallet";
+import SendWallet from "./SendWallet";
 
 const Wallet = () => {
   // User is currently on this page
@@ -43,9 +44,16 @@ const Wallet = () => {
     setReceive(!receive);
   }
 
+   const [send, setSend] = useState(false);
+
+  const handlesend = () => {
+    setSend(!send);
+  }
+
   return (
     <>
        {receive && <ReceiveWallet/>}
+       {send && <SendWallet/>}
        <div className="w-full h-full p-4 overflow-x-hidden">
       <div className="pb-4 pt-1">
         <span className="font-[500] hidden md:inline text-xl md:text-2xl whitespace-nowrap">
@@ -76,7 +84,7 @@ const Wallet = () => {
             <FiCopy className="ml-2 text-[#BFBFBF]" />
           </div>handle
           <div className="flex w-[60%] md:w-full items-center gap-6 md:gap-4 py-4 text-white">
-            <button className="align-center bg-red-500 w-[50%] py-3 px-3 lg:px-6 md:px-4 rounded flex gap-1 justify-center items-center ">
+            <button onClick={handlesend} className="align-center bg-red-500 w-[50%] py-3 px-3 lg:px-6 md:px-4 rounded flex gap-1 justify-center items-center ">
               <ArrowUpIcon className="h-5 w-5 mr-1" />
               Send
             </button>
