@@ -15,6 +15,7 @@ import {
 import Record from "./Record";
 import Pagination from "./Pagination";
 import Table from "./Table";
+import ReceiveWallet from "./ReceiveWallet";
 
 const Wallet = () => {
   // User is currently on this page
@@ -36,8 +37,16 @@ const Wallet = () => {
 
   const nPages = Math.ceil(Record.length / recordsPerPage);
 
+  const [receive, setReceive] = useState(false);
+
+  const handlereceive = () => {
+    setReceive(!receive);
+  }
+
   return (
-    <div className="w-full h-full p-4 overflow-x-hidden">
+    <>
+       {receive && <ReceiveWallet/>}
+       <div className="w-full h-full p-4 overflow-x-hidden">
       <div className="pb-4 pt-1">
         <span className="font-[500] hidden md:inline text-xl md:text-2xl whitespace-nowrap">
           My Wallet
@@ -65,13 +74,13 @@ const Wallet = () => {
           <div className="flex justify-start items-center gap-4 flex-wrap py-4">
             <span className="text-gray-500">Q0GP2DPPE4H9N0G...</span>
             <FiCopy className="ml-2 text-[#BFBFBF]" />
-          </div>
+          </div>handle
           <div className="flex w-[60%] md:w-full items-center gap-6 md:gap-4 py-4 text-white">
             <button className="align-center bg-red-500 w-[50%] py-3 px-3 lg:px-6 md:px-4 rounded flex gap-1 justify-center items-center ">
               <ArrowUpIcon className="h-5 w-5 mr-1" />
               Send
             </button>
-            <button className="bg-red-500 w-[50%] py-3 px-1 lg:px-5 md:px-2 rounded flex gap-1 justify-center items-center">
+            <button onClick={handlereceive} className="bg-red-500 w-[50%] py-3 px-1 lg:px-5 md:px-2 rounded flex gap-1 justify-center items-center">
               <ArrowDownIcon className="h-5 w-5 mr-1" />
               Receive
             </button>
@@ -180,6 +189,8 @@ const Wallet = () => {
         </div>
       </div>
     </div>
+    </>
+   
   );
 };
 
