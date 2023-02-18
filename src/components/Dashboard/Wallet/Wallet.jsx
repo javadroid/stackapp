@@ -52,8 +52,8 @@ const Wallet = () => {
 
   return (
     <>
-       {receive && <ReceiveWallet/>}
-       {send && <SendWallet/>}
+      {receive && <ReceiveWallet setReceive={setReceive } />}
+      {send && <SendWallet setSend={ setSend} />}
        <div className="w-full h-full p-4 overflow-x-hidden">
       <div className="pb-4 pt-1">
         <span className="font-[500] hidden md:inline text-xl md:text-2xl whitespace-nowrap">
