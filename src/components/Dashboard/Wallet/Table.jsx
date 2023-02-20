@@ -1,6 +1,90 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { userSession } from "../Navbar";
+import axios from "axios";
+import historyData from "./Record";
 
-const Table = ({ record }) => {
+const Table = ({ indexOfFirstRecord,indexOfLastRecord,stxIsConnect }) => {
+let [recordMain, setrecordMain] = useState(historyData)
+
+
+let [NGN, setNGN] = useState(0)
+const stxApi='https://stacks-node-api.testnet.stacks.co'
+let [stxAddress, setstxAddress] = useState("")
+  useEffect(() => {
+    
+    if(userSession.isUserSignedIn()){
+      stxAddress=(userSession.loadUserData().profile.stxAddress.testnet)
+      setstxAddress(userSession.loadUserData().profile.stxAddress.testnet) 
+      setrecordMain(recordMain.slice(indexOfFirstRecord, indexOfLastRecord))
+      recordMain=recordMain.slice(indexOfFirstRecord, indexOfLastRecord);
+      getBalances()
+    }else if(!userSession.isUserSignedIn()){
+      
+    }
+    
+  }, [stxIsConnect])
+    
+  function getBalances  (){
+
+    axios
+      .get(
+        `https://api.coingecko.com/api/v3/simple/price?ids=blockstack&vs_currencies=ngn`
+      )
+      .then(function (response) { 
+        let num =parseFloat(response.data.blockstack.ngn)
+        setNGN(num)
+        NGN=num
+      })
+    axios
+      .get(
+        `${stxApi}/extended/v1/address/${stxAddress}/transactions`
+      )
+      .then(function (response) { 
+
+        axios
+      .get(
+        `${stxApi}/extended/v1/address/${stxAddress}/mempool`
+      )
+      .then(function (mempool) { 
+
+          renderTranstions(response.data.results,mempool.data.results)
+          console.log("blockstack",stxAddress,mempool.data.results);
+          console.log("blockstack",stxAddress,response.data.results);
+      });
+          
+        
+      });
+  };
+
+  function renderTranstions(data,peendind){
+      const r=[]
+      // console.log("recording",data)
+    for (let i = 0; i < data.length; i++) {
+      
+      if(data[i].contract_call){
+ const records={}
+        console.log("11111",data[i])
+      records["id"]=data[i]?.tx_id.substring(56)
+      records["transactionType"]="Payment"
+      records["date"]=`${(data[i]?.parent_burn_block_time_iso).split('T')[0]}  `
+      records["amount"]=`${(data[i]?.post_conditions[0]?.amount/ 1000000).toFixed(2)}STX`
+      records["ngn"]=((data[i]?.post_conditions[0]?.amount/ 1000000)*NGN).toFixed(2)
+      records["receiverAddress"]=`${(data[i]?.contract_call?.function_args[0]).repr.split('to')[1].split(')')[0].substring(0,15)}...`
+      console.log("first",data[i]?.post_conditions[0]?.repr)
+      records["paymentType"]=data[i]?.tx_type
+      records["status"]=data[i]?.tx_status==='success'?"Completed":"Cancelled"
+      r.push(records)
+      const s=''
+      
+      }
+  
+    }
+
+    setrecordMain(r)
+    recordMain=r
+    // console.log("record",records,r)
+    
+  }
   // User is currently on this page
 
   return (
@@ -41,7 +125,7 @@ const Table = ({ record }) => {
           </tr>
         </thead>
         <tbody className="hover:bg-[#dadada]">
-          {record.map((history, index) => {
+          {recordMain.map((history, index) => {
             return (
               <tr
                 className="py-6 text-[#BFBFBF] hover:bg-gray-200  hover:text-black bg-white "

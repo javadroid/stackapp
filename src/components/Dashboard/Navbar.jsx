@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { BellIcon, MenuIcon } from "@heroicons/react/outline";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { ProfilePhoto, DropletIcon } from "../../assets/images";
@@ -8,7 +8,7 @@ import SideBarMobile from "./SideBarMobile";
 import { UploadIcon } from "@heroicons/react/outline";
 import { Logout } from "../../features/user/Logout";
 import { useUserQuery } from "../../features/user/useUser";
-
+import { AppConfig, showConnect, UserSession } from "@stacks/connect";
 const init = {
   first_name: "",
   last_name: "",
@@ -16,7 +16,23 @@ const init = {
   account_type: "",
 };
 
-const Navbar = () => {
+const appConfig = new AppConfig(["store_write", "publish_data"]);
+
+export const userSession = new UserSession({ appConfig });
+
+const Navbar = ({setstxIsConnect}) => {
+  const [stxAuth, setstxAuth] = useState(false)
+  useEffect(() => {
+    
+  if(userSession.isUserSignedIn()){
+    setstxAuth(true)
+    setstxIsConnect(true)
+  }else{
+    setstxAuth(false)
+    setstxIsConnect(false)
+  }
+    
+  }, [stxAuth])
   const { isSuccess, isError: Error, data } = useUserQuery();
   const { first_name, last_name, center_name, account_type } = isSuccess
     ? data
@@ -34,6 +50,24 @@ const Navbar = () => {
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
+  function authenticate() {
+    showConnect({
+      appDetails: {
+        name: "Bloodfuse",
+        icon: "https://www.linkpicture.com/q/logo-dark_2.png" ,
+      },
+     
+      onFinish: () => {
+        setstxAuth(true)
+        setstxIsConnect(true)
+      },
+      userSession,
+    });
+  }
+  function disconnect() {
+    userSession.signUserOut("");
+    setstxAuth(false)
+  }
   return (
     <Popover className="flex items-center w-full justify-between pl-6 pr-3 lg:px-6 py-6 bg-[#FCFCFC] relative lg:overflow-visible overflow-x-clip">
       <div className="flex items-center w-full justify-between bg-[#FCFCFC]">
@@ -44,9 +78,16 @@ const Navbar = () => {
         </div>
         <div className="hidden lg:block text-2xl">Dashboard</div>
         <div className="flex items-center gap-6">
-          <button className="block bg-rose-100 py-2 px-4 rounded-full text-[#F00530] border border-transparent font-semibold shadow-sm focus:border-[#F00530]">
+        {stxAuth?
+          (
+          <button onClick={disconnect} className="block bg-rose-100 py-2 px-4 rounded-full text-[#F00530] border border-transparent font-semibold shadow-sm focus:border-[#F00530]">
+            Disconnect STX Account
+          </button>
+          ):(
+          <button onClick={authenticate} className="block bg-rose-100 py-2 px-4 rounded-full text-[#F00530] border border-transparent font-semibold shadow-sm focus:border-[#F00530]">
             Connect STX Account
           </button>
+          )}
           {/* Notifications Icon */}
           <div>
             <BellIcon className="text-[#575757] h-8 w-8 cursor-pointer" />
