@@ -10,8 +10,7 @@ const KnowOurPatients = () => {
     {
      // name: "Oluwole Seun",
       videoSrc: "",
-     // details:
-        "Meet 14 years old Seun from Lagos. She and others who are fighting Leukemia often need blood trans-fusions while going through chemo treatments.",
+     // details: "Meet 14 years old Seun from Lagos. She and others who are fighting Leukemia often need blood trans-fusions while going through chemo treatments.",
       btnDescription: "Watch on Our Youtube",
       youtubeLink: "https://youtu.be/1Vb6srw5bR8",
     },
