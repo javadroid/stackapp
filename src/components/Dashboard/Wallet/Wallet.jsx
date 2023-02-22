@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { useState, Fragment } from "react";
+import { useState, Fragment,useEffect } from "react";
 import { FiCopy } from "react-icons/fi";
 import { BsClipboardPlus } from "react-icons/bs";
 import { ArrowUpIcon, ArrowDownIcon } from "@heroicons/react/solid";
 import { Popover, Transition } from "@headlessui/react";
-
+import { Connect, showConnect } from "@stacks/connect-react";
 import {
   Dollar,
   FundAccount,
@@ -17,8 +17,26 @@ import Pagination from "./Pagination";
 import Table from "./Table";
 import ReceiveWallet from "./ReceiveWallet";
 import SendWallet from "./SendWallet";
+import { userSession } from "../Navbar";
+import axios from "axios";
+import { useConnect } from "@stacks/connect-react";
+import React from "react";
+export const  stxApi='https://stacks-node-api.testnet.stacks.co'
+const Wallet = ({stxIsConnect}) => {
 
-const Wallet = () => {
+  
+  useEffect(() => {
+    
+    if(userSession.isUserSignedIn()){
+      stxAddress=(userSession.loadUserData().profile.stxAddress.testnet)
+      setstxAddress(userSession.loadUserData().profile.stxAddress.testnet) 
+      getBalances()
+    }else if(!userSession.isUserSignedIn()){
+        setBalance(0)
+        setNGN(0)
+        setstxAddress("")
+    }
+  }, [stxIsConnect])
   // User is currently on this page
   const [currentPage, setCurrentPage] = useState(1);
   // No of Records to be displayed on each page
@@ -50,11 +68,54 @@ const Wallet = () => {
     setSend(!send);
   }
 
+
+  // const stxAddress = userSession.loadUserData().profile.stxAddress.mainnet;
+  let [stxAddress, setstxAddress] = useState("")
+  const [balance, setBalance] = useState(0)
+  const [NGN, setNGN] = useState(0)
+  function getBalances  (){
+    axios
+      .get(
+        `${stxApi}/extended/v1/address/${stxAddress}/balances`
+      )
+      .then(function (response) { 
+        axios
+        .get(
+          `https://api.coingecko.com/api/v3/simple/price?ids=blockstack&vs_currencies=ngn`
+        )
+        .then( (blockstack:any)=> {
+
+          setBalance(parseInt(response.data.stx.balance) / 1000000);
+          console.log(response.data.stx.balance);
+          let num =parseFloat(blockstack.data.blockstack.ngn) 
+          setNGN((num)*parseInt(response.data.stx.balance) / 1000000);
+          console.log("blockstack",NGN);
+        });
+      });
+  };
+
+
+  const authenticate= {
+    
+      appDetails: {
+        name: "Bloodfuse",
+        icon: window.location.origin + "/logo512.png",
+      },
+      userSession,
+   
+  }
+  function copySTXaddress(){
+    navigator.clipboard.writeText(stxAddress);
+  }
+
   return (
     <>
-      {receive && <ReceiveWallet setReceive={setReceive } />}
+    <Connect  authOptions={authenticate}>
+      {receive && <ReceiveWallet setReceive={setReceive} />}
       {send && <SendWallet setSend={ setSend} />}
-       <div className="w-full h-full p-4 overflow-x-hidden">
+    </Connect>
+     
+       <div  className="w-full h-full p-4 overflow-x-hidden">
       <div className="pb-4 pt-1">
         <span className="font-[500] hidden md:inline text-xl md:text-2xl whitespace-nowrap">
           My Wallet
@@ -70,19 +131,19 @@ const Wallet = () => {
           </div>
           <div className="">
             <span className="tracking-wide">
-              <span className="text-5xl font-semibold">0.00</span>
+              <span className="text-5xl font-semibold">{balance===0?"0.00":balance.toFixed(2)}</span>
               <span className="text-1xl">
                 STX<span className="px-2 inline md:hidden lg:inline">≈</span>
               </span>
               <span className="text-gray-500 text-1xl inline md:block lg:inline">
-                <span className="font-semibold font-sans">{"₦"}</span>0.00
+                <span className="font-semibold font-sans">{"₦"}</span>{NGN===0?"0.00":NGN.toFixed(2)}
               </span>
             </span>
           </div>
           <div className="flex justify-start items-center gap-4 flex-wrap py-4">
-            <span className="text-gray-500">Q0GP2DPPE4H9N0G...</span>
-            <FiCopy className="ml-2 text-[#BFBFBF]" />
-          </div>handle
+            <span className="text-gray-500">{stxAddress.substring(0,15)}...</span>
+            <FiCopy onClick={copySTXaddress} className="ml-2 text-[#BFBFBF]" />
+          </div>
           <div className="flex w-[60%] md:w-full items-center gap-6 md:gap-4 py-4 text-white">
             <button onClick={handlesend} className="align-center bg-red-500 w-[50%] py-3 px-3 lg:px-6 md:px-4 rounded flex gap-1 justify-center items-center ">
               <ArrowUpIcon className="h-5 w-5 mr-1" />
@@ -170,7 +231,7 @@ const Wallet = () => {
           </div>
           {currentRecords.length ? (
             <>
-              <Table record={currentRecords} />
+              <Table indexOfFirstRecord={indexOfFirstRecord} indexOfLastRecord={indexOfLastRecord}stxIsConnect={stxIsConnect}  />
               <div className="sm:col-span-3">
                 <Pagination
                   nPages={nPages}

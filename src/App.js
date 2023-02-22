@@ -16,9 +16,13 @@ import "./index.css";
 import { MedicalsPage, Dashboard, History, Wallet } from "./components/Dashboard";
 import { Toaster } from 'react-hot-toast';
 import { useUserLoginQuery } from "./features/user/useCheckAuth";
+import { useConnect } from "@stacks/connect-react";
+import React, { useState } from "react";
 
 function App() {
-
+ 
+  const [stxIsConnect, setstxIsConnect] = useState()
+  
   useUserLoginQuery()
 
   const session = sessionStorage.getItem('INIT')
@@ -27,6 +31,7 @@ function App() {
   }
   return (
     <>
+   
     <Toaster position="top-center" reverseOrder={false} />
       <Router>
         <>
@@ -46,11 +51,11 @@ function App() {
               <Route index element={<RequestBlood />} />
             </Route>
             {/* Dashboard Page Routes */}
-            <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route path="/dashboard" element={<DashboardLayout setstxIsConnect={setstxIsConnect} />}>
               <Route index element={<Dashboard />} />
               <Route path="/dashboard/main" element={<Dashboard />} />
               <Route path="medical" element={<MedicalsPage />} />
-              <Route path="wallet" element={<Wallet />} />
+              <Route path="wallet" element={<Wallet stxIsConnect={stxIsConnect} />} />
               <Route path="history" element={<History />} />
             </Route>
           </Routes>
